@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,177 +8,188 @@
     <link rel="stylesheet" href="css/subject.css">
     <link rel="stylesheet" href="path/to/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"> 
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
+
 <body>
- <body>
-    <div class="container">
-        <aside>
-            <button id="toggle">
-                <i class="bi bi-list"></i>
-            </button>
-            
-            <!-- Container Bar สำหรับนักศึกษา -->
-            
-            <div class="link">
-                <ul>
-                    <li id="detailMenu">
-                        <a href="detail.html"><i class="bi bi-house"></i><label>ข้อมูลนักศึกษา</label></a>
-                    </li>
-                    <li class="active" id="subjectMenu">
-                        <a href="subject.html"><i class="bi bi-calendar3"></i><label>ตารางเรียน</label></a>
-                    </li>
-                    <li id="attendanceMenu">
-                        <a href="attendance_record.html"><i class="bi bi-folder2-open"></i><label>บันทึกการเข้าเรียน</label></a>
-                    </li>
-                    <li id="registerMenu">
-                        <a href="register.html"><i class="bi bi-person-plus"></i><label>เพิ่มสมาชิก</label></a>
-                    </li>
-                    <li id="memberlist">
-                        <a href="memberlist.html"><i class="bi bi-person-lines-fill"></i><label>รายชื่อสมาชิก</label></a>
-                    </li>
-                    <li id="addsubject">
-                        <a href="add_subject.html"><i class="bi bi-database-add"></i><label>เพิ่มรายวิชา</label></a>
-                    </li>
-                    <li id="register_all">
-                        <a href="register_all.html"><i class="bi bi-database-add"></i><label>ลงทะเบียนเรียนทั้งหมด</label></a>
-                    </li>
-                    <li id="year_1">
-                        <a href="year_1.html"><i class="bi bi-database-add"></i><label>ปี 1</label></a>
-                    </li>
-                    <li id="year_2">
-                        <a href="year_2.html"><i class="bi bi-database-add"></i><label>ปี 2</label></a>
-                    </li>
-                    <li id="year_3">
-                        <a href="year_3.html"><i class="bi bi-database-add"></i><label>ปี 3</label></a>
-                    </li>
-                    <li id="year_4">
-                        <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
-                    </li>
-                    <li>
-                        <a href="login.html" onclick="Logout()"><i class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <main> 
-            <div class="profile-block">
-                <div class="profile-details">
-                  <div>
-                    <span class="profile-title"></span>
-                    <p id="profile-name"></p>
-                    <pid="studentId"></p>
-                  </div>
-                  <div style="position:relative;">
-                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
-                    <span class="status-indicator"></span> <!-- Green dot -->
-                  </div>
+
+    <body>
+        <div class="container">
+            <aside>
+                <button id="toggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <!-- Container Bar สำหรับนักศึกษา -->
+
+                <div class="link">
+                    <ul>
+                        <li id="detailMenu">
+                            <a href="detail.html"><i class="bi bi-house"></i><label>ข้อมูลนักศึกษา</label></a>
+                        </li>
+                        <li class="active" id="subjectMenu">
+                            <a href="subject.html"><i class="bi bi-calendar3"></i><label>ตารางเรียน</label></a>
+                        </li>
+                        <li id="attendanceMenu">
+                            <a href="attendance_record.html"><i
+                                    class="bi bi-folder2-open"></i><label>บันทึกการเข้าเรียน</label></a>
+                        </li>
+                        <li id="registerMenu">
+                            <a href="register.html"><i class="bi bi-person-plus"></i><label>เพิ่มสมาชิก</label></a>
+                        </li>
+                        <li id="memberlist">
+                            <a href="memberlist.html"><i
+                                    class="bi bi-person-lines-fill"></i><label>รายชื่อสมาชิก</label></a>
+                        </li>
+                        <li id="addsubject">
+                            <a href="add_subject.html"><i class="bi bi-database-add"></i><label>เพิ่มรายวิชา</label></a>
+                        </li>
+                        <li id="register_all">
+                            <a href="register_all.html"><i
+                                    class="bi bi-database-add"></i><label>ลงทะเบียนเรียนทั้งหมด</label></a>
+                        </li>
+                        <li id="year_1">
+                            <a href="year_1.html"><i class="bi bi-database-add"></i><label>ปี 1</label></a>
+                        </li>
+                        <li id="year_2">
+                            <a href="year_2.html"><i class="bi bi-database-add"></i><label>ปี 2</label></a>
+                        </li>
+                        <li id="year_3">
+                            <a href="year_3.html"><i class="bi bi-database-add"></i><label>ปี 3</label></a>
+                        </li>
+                        <li id="year_4">
+                            <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
+                        </li>
+                        <li>
+                            <a href="login.html" onclick="Logout()"><i
+                                    class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
+                        </li>
+                    </ul>
                 </div>
-              </div>
-              <h3>ตารางเรียน/สอบ</h3>
-              <label for="academic-year">ปีการศึกษา:</label>
-              <label for="term" style="margin-left: 50px;margin-top: 15px;">ภาคที่:</label>
-              <div class="inline">
-              <select id="academic-year" name="academic_year">
-                  <option value="2567">2567</option>
-                  <option value="2566" selected>2566</option>
-                  <option value="2565">2565</option>
-                  <option value="2564">2564</option>
-              </select>
-              <div class="term-buttons" style="margin-left: 50px; margin-top: 15px;">
-                  <input type="radio" id="term1" name="term" value="1" checked>
-                  <label for="term1">1</label>
+            </aside>
+            <main>
+                <div class="profile-block">
+                    <div class="profile-details">
+                        <div>
+                            <span class="profile-title"></span>
+                            <p id="profile-name"></p>
+                            <pid="studentId">
+                                </p>
+                        </div>
+                        <div style="position:relative;">
+                            <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                            <span class="status-indicator"></span> <!-- Green dot -->
+                        </div>
+                    </div>
+                </div>
+                <div class="gard">
+                    <h3 class="title">ตารางเรียน/สอบ</h3>
+                    <div class="form-group">
+                      <label for="academic-year">ปีการศึกษา:</label>
+                      <select id="academic-year" name="academic_year">
+                        <option value="2567">2567</option>
+                        <option value="2566" selected>2566</option>
+                        <option value="2565">2565</option>
+                        <option value="2564">2564</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="term">ภาคที่:</label>
+                      <div class="term-buttons">
+                        <input type="radio" id="term1" name="term" value="1" checked>
+                        <label for="term1">1</label>
+                        <input type="radio" id="term2" name="term" value="2">
+                        <label for="term2">2</label>
+                        <input type="radio" id="term3" name="term" value="3">
+                        <label for="term3">3</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                <div class="table">
+                    <div class="header3">
+                        <div class="cellhead">วัน/เวลา</div>
+                        <div class="cellhead">8.00-9.00</div>
+                        <div class="cellhead">9.00-10.00</div>
+                        <div class="cellhead">10.00-11.00</div>
+                        <div class="cellhead">11.00-12.00</div>
+                        <div class="cellhead">12.00-13.00</div>
+                        <div class="cellhead">13.00-14.00</div>
+                        <div class="cellhead">14.00-15.00</div>
+                        <div class="cellhead">15.00-16.00</div>
+                        <div class="cellhead">16.00-17.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">จันทร์</div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">อังคาร</div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">พุธ</div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">พฤหัสบดี</div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">ศุกร์</div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
 
-                  <input type="radio" id="term2" name="term" value="2">
-                  <label for="term2">2</label>
+        <script src="js/detail.js"></script>
+        <script src="js/subject.js"></script>
 
-                  <input type="radio" id="term3" name="term" value="3">
-                  <label for="term3">3</label>
-              </div>
-      </div>
-        
-      <div class="table">
-        <div class="header3">
-            <div class="cellhead">วัน/เวลา</div>
-            <div class="cellhead">8.00-9.00</div>
-            <div class="cellhead">9.00-10.00</div>
-            <div class="cellhead">10.00-11.00</div>
-            <div class="cellhead">11.00-12.00</div>
-            <div class="cellhead">12.00-13.00</div>
-            <div class="cellhead">13.00-14.00</div>
-            <div class="cellhead">14.00-15.00</div>
-            <div class="cellhead">15.00-16.00</div>
-            <div class="cellhead">16.00-17.00</div>
-        </div>
-        <div class="row">
-            <div class="cell">จันทร์</div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
-        <div class="row">
-            <div class="cell">อังคาร</div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
-        <div class="row">
-            <div class="cell">พุธ</div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
-        <div class="row">
-            <div class="cell">พฤหัสบดี</div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
-        <div class="row">
-            <div class="cell">ศุกร์</div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
-    </div>
-        </main>
-    </div>
+    </body>
 
-    <script src="js/detail.js"></script>
-    <script src="js/subject.js"></script>
-
-</body>
 </html>
