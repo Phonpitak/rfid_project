@@ -10,34 +10,33 @@ $(document).ready(function() {
         fetchAttendanceData(teacherId); // เรียกฟังก์ชัน fetchAttendanceData เพื่อดึงข้อมูล
     }
 });
-function handleAccessControl(group_id) {
-    const allMenus = ['registerMenu', 'memberlist', 'addsubject', 'register_all', 'year_1', 'year_2', 'year_3', 'year_4', 'detailMenu', 'subjectMenu', 'attendanceMenu'];
+var group_id = sessionStorage.getItem("Group");
+console.log("Group ID:", group_id); // Debug ค่าของ group_id
 
-    if (group_id == 9) {
-        TB_Open();
-    } else if (group_id == 1 || group_id == 2) {
-        showElements(['year_1', 'year_2', 'year_3', 'year_4'], allMenus);
-    } else if (group_id == 5) {
-        showElements(['year_1', 'year_2', 'year_3', 'year_4'], allMenus);
-        TB_Open();
-    }
-}
 
-function showElements(showIds, allIds) {
-    allIds.forEach(id => {
-        if (showIds.includes(id)) {
-            $(`#${id}`).show(); // แสดงเมนูที่ระบุ
-        } else {
-            $(`#${id}`).hide(); // ซ่อนเมนูอื่น
-        }
-    });
+if (group_id == 9) {
+    TB_Open(); // สำหรับแอดมิน
+} else if (group_id == 1 || group_id == 2) {
+    console.log("Hiding menus for group 1 or 2...");
+    $('#registerMenu').remove(); 
+    $('#memberlist').remove();  
+    $('#addsubject').remove();
+    $('#register_all').remove();
+    // ยกเว้น year_1 ถึง year_4
+} else if (group_id == 5) {
+    console.log("Hiding menus for group 5...");
+    $('#registerMenu').remove(); 
+    $('#register_all').remove();
+    $('#memberlist').remove();  
+    $('#addsubject').remove();
+    $('#detailMenu').remove();
+    $('#subjectMenu').remove();
+    $('#attendanceMenu').remove();
+
+    TB_Open(); // เปิดเฉพาะ year_1 ถึง year_4
+} else {
+    console.warn("Unhandled group ID:", group_id);
 }
-function removeElements(ids) {
-    ids.forEach(id => $(`#${id}`).remove());
-}
-$(document).ready(() => {
-    handleAccessControl(group_id);
-});
 
 // ดึงข้อมูลโปรไฟล์จาก sessionStorage
 const firstName = sessionStorage.getItem('Firstname');
