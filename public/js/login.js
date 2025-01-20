@@ -15,7 +15,6 @@ function click_Login(event) {
         if (response.data.status === 'SUCCESS') {
             // เก็บ token ลงใน localStorage
             localStorage.setItem('authToken', response.data.token);
-            console.log('Token saved to localStorage:', localStorage.getItem('authToken'));
 
             // เก็บข้อมูลผู้ใช้ลงใน sessionStorage
             sessionStorage.setItem("TeacherID", response.data.user.u_id);
@@ -35,23 +34,18 @@ function click_Login(event) {
 
             console.log('User info saved to sessionStorage:', {
                 TeacherID: sessionStorage.getItem('TeacherID'),
-                U_ID: sessionStorage.getItem('U_ID'),
-                UserID: sessionStorage.getItem('UserID'),
-                Username: sessionStorage.getItem('Username'),
-                Firstname: sessionStorage.getItem('Firstname'),
-                Lastname: sessionStorage.getItem('Lastname'),
                 Group: sessionStorage.getItem('Group'),
-                IDMaps: sessionStorage.getItem('Year'),
-                Branch_ID: sessionStorage.getItem('Branch_ID'),
-                Branch: sessionStorage.getItem('Branch'),
-                Facully_ID: sessionStorage.getItem('Facully_ID'),
-                Facully: sessionStorage.getItem('Facully'),
-                Term: sessionStorage.getItem('Term'),
-                RFID_ID: sessionStorage.getItem('RFID_ID'),
             });
 
-            console.log('Login successful, redirecting to detail.html');
-            window.location.href = 'detail.html'; // นำทางไปยังหน้าใหม่
+            // ตรวจสอบ Group ของผู้ใช้
+            const group = response.data.user.group_id;
+            if (group == 5) { // ถ้าเป็นอาจารย์
+                console.log('Login as teacher, redirecting to year overview.');
+                window.location.href = 'year_1.html'; // หน้าใหม่สำหรับอาจารย์
+            } else {
+                console.log('Login as student, redirecting to detail.html');
+                window.location.href = 'detail.html'; // หน้าปกติสำหรับนักเรียน
+            }
         } else {
             alert('Login failed: ' + response.data.message);
         }
