@@ -1,0 +1,284 @@
+/* ตั้งค่าโครงสร้างเบื้องต้น */
+body {
+  font-family: 'Sarabun', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    display: flex;
+  }
+  .info-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column;
+  }
+/* ส่วนของ Sidebar */
+aside {
+  background-color: #fbf8f8;
+  color: rgb(4, 4, 4);
+  height: auto;
+  transition: width 0.3s ease;
+  position: relative;
+  font-weight: bold;
+}
+
+aside.mini {
+  width: 4rem;
+}
+
+/* ปุ่ม Toggle */
+#toggle {
+  background-color: transparent;
+  border: none;
+  color: rgb(4, 4, 4);
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+#toggle i {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Link ใน Sidebar */
+.link ul {
+  list-style: none;
+  padding: 0.70rem;
+  margin: 0;
+}
+
+.link ul li {
+  display: flex;
+  align-items: center;
+  padding: 0.70rem;
+  cursor: pointer;
+}
+
+.link ul li:hover {
+  background-color: #a1b5d8;
+  border-radius: 15px;
+  
+}
+
+.link ul li.active {
+  background-color: #a1b5d8;
+  border-radius: 15px;
+
+}
+
+.link ul li i {
+  margin-right: 1rem;
+}
+
+.link ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: rgb(4, 4, 4);
+  width: 100%;
+
+}
+
+.link ul li a label {
+  font-size: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* Main content */
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #b8d4f0;
+  min-height: 100vh;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+main h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.profile-block {
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end; /* Aligns the content to the right */
+}
+
+.profile-title {
+  display: flex;
+  align-items: center;
+}
+
+.profile-title h6 {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-options {
+  display: flex;
+  align-items: center;
+}
+
+.profile-options .icon {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.profile-flag {
+  margin-right: 15px;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+}
+
+.profile-details img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  position: relative;
+}
+
+.profile-details img::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  border: 2px solid white;
+}
+
+.profile-picture {
+  margin-right: 2rem;
+  text-align: center;
+}
+.dropdown-container {
+    margin-bottom: 0;
+    border-radius: 10%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Sarabun', Arial, sans-serif;
+}
+
+.dropdown-container select {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+    border-radius: 10%;
+}
+.block {
+  display: block;
+  background-color: #acd6f2;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.block h3 {
+  display: block; /* Ensure h3 is on its own line */
+  margin-bottom: 10px; /* Adjust spacing */
+}
+
+.inline {
+  display: flex; /* Align h4 elements on the same line */
+  margin-right: 20px; /* Adjust space between h4 elements */
+}
+
+.inline h4 {
+  margin-right: 20px; /* Adjust space between h4 elements */
+}
+select {
+  width: 70px;
+  height: 30px;
+  padding: 4px; /* ระยะห่างภายใน */
+  border: 1px solid #b396ed; /* สีขอบ */
+  border-radius: 4px; /* ขอบโค้งมน */
+  background-color: #b7b4ff; /* สีพื้นหลัง */
+  font-size: 14px; /* ขนาดตัวอักษร */
+  color: #333; /* สีตัวอักษร */
+}
+
+option {
+  padding: 10px; /* ระยะห่างภายใน */
+  font-size: 16px; /* ขนาดตัวอักษร */
+  color: #333; /* สีตัวอักษร */
+}
+
+select:hover {
+  background-color: #e9e9e9; /* สีพื้นหลังเมื่อ hover */
+}
+
+select:focus {
+  border-color: #88a4fb; /* เปลี่ยนสีขอบเมื่อ focus */
+  outline: none; /* เอาเส้นขอบออกเมื่อ focus */
+}
+
+.table {
+  border-radius: 8px;
+  background-color: #4a6c9b;
+  overflow: hidden;
+}
+
+.header3, .row {
+  display: flex;
+  font-family: 'Sarabun', Arial, sans-serif;
+  
+}
+
+.cellhead{
+  border: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+  flex: 1;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+.cell {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  flex: 1;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+.header .cell {
+  background-color: #e20074;
+  color: white;
+  font-weight: bold;
+
+}
+
+.row:nth-child(even) .cell {
+  background-color: #f0f0f0;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+.row:nth-child(odd) .cell {
+  background-color: #fff;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+.cell[colspan="2"] {
+  flex: 2; /* Span two columns by occupying twice the space */
+  background-color: #f9f9f9;
+  font-family: 'Sarabun', Arial, sans-serif;
+}

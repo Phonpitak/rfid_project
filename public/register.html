@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพิ่มรายชื่อนักศึกษา</title>
+    <!-- <link rel="stylesheet" href="css/detail.css"> -->
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="css/detail.css">
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet">   
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <button id="toggle">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="link">
+                <ul>
+                    <li id="detailMenu">
+                        <a href="detail.html"><i class="bi bi-house"></i><label>ข้อมูลนักศึกษา</label></a>
+                    </li>
+                    <li id="subjectMenu">
+                        <a href="subject.html"><i class="bi bi-calendar3"></i><label>ตารางเรียน</label></a>
+                    </li>
+                    <li id="attendanceMenu">
+                        <a href="attendance_record.html"><i class="bi bi-folder2-open"></i><label>บันทึกการเข้าเรียน</label></a>
+                    </li>
+                    <li id="registerMenu" class="active">
+                        <a href="register.html"><i class="bi bi-person-plus"></i><label>เพิ่มสมาชิก</label></a>
+                    </li>
+                    <li id="memberlist">
+                        <a href="memberlist.html"><i class="bi bi-person-lines-fill"></i><label>รายชื่อสมาชิก</label> </a>
+                    </li>
+                    <li id="addsubject">
+                        <a href="add_subject.html"> <i class="bi bi-database-add"></i><label>เพิ่มรายวิชา</label></a>
+                    </li>
+                    <li id="register_all">
+                        <a href="register_all.html"><i class="bi bi-database-add"></i><label>ลงทะเบียนเรียนทั้งหมด</label></a>
+                    </li>
+                    <li id="year_1">
+                        <a href="year_1.html"><i class="bi bi-database-add"></i><label>ปี 1</label></a>
+                    </li>
+                    <li id="year_2">
+                        <a href="year_2.html"><i class="bi bi-database-add"></i><label>ปี 2</label></a>
+                    </li>
+                    <li id="year_3">
+                        <a href="year_3.html"><i class="bi bi-database-add"></i><label>ปี 3</label></a>
+                    </li>
+                    <li id="year_4">
+                        <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
+                    </li>
+                    <li>
+                        <a href="login.html" onclick="Logout()"><i class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+
+        <main>
+            <div class="profile-block">
+                <div class="profile-details">
+                  <div>
+                    <span class="profile-title"></span>
+                    <p id="profile-name"></p>
+                    <pid="studentId"></p>
+                  </div>
+                  <div style="position:relative;">
+                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                    <span class="status-indicator"></span> <!-- Green dot -->
+                  </div>
+                </div>
+              </div>
+              <h3>ลงทะเบียนผู้ใช้ใหม่</h3>
+              <div class ="block"  >
+              <form id="registerForm" >
+                  <div class="inline">
+                  <div class="form-group ">
+                      <label for="std_firstname">ชื่อจริง:</label>
+                      <input type="text" id="std_firstname" name="std_firstname" placeholder="กรอกชื่อจริง" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="std_lastname">นามสกุล:</label>
+                      <input type="text" id="std_lastname" name="std_lastname" placeholder="กรอกนามสกุล" required>
+                  </div>
+                  </div> 
+                  <div class="inline">              
+                  <div class="form-group">
+                      <label for="user_id">รหัสนักศึกษา:</label>
+                      <input type="text" id="user_id" name="user_id" placeholder="กรอกรหัสผู้ใช้" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="group_id">กลุ่ม:</label>
+                      <input type="text" id="group_id" name="group_id" placeholder="กรอกกลุ่ม" required>
+                  </div>
+                  </div> 
+                  <div class="inline">  
+                  <div class="form-group">
+                      <label for="b_branch_id">รหัสสาขา:</label>
+                      <input type="text" id="b_branch_id" name="b_branch_id" placeholder="กรอกรหัสสาขา" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="b_branch">ชื่อสาขา:</label>
+                      <input type="text" id="b_branch" name="b_branch" placeholder="กรอกชื่อสาขา" required>
+                  </div>
+                  </div>
+                  <div class="inline">  
+                  <div class="form-group">
+                      <label for="f_facully_id">รหัสคณะ:</label>
+                      <input type="text" id="f_facully_id" name="f_facully_id" placeholder="กรอกรหัสคณะ" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="f_facully">ชื่อคณะ:</label>
+                      <input type="text" id="f_facully" name="f_facully" placeholder="กรอกชื่อคณะ" required>
+                  </div>
+                  </div>
+                  <div class="inline">  
+                  <div class="form-group">
+                      <label for="term">เทอม:</label>
+                      <input type="text" id="term" name="term" placeholder="กรอกเทอม" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="std_year">ปีที่เข้าเรียน:</label>
+                      <input type="text" id="std_year" name="std_year" placeholder="กรอกปีที่เข้าเรียน" required>
+                  </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="std_username">Email:</label>
+                      <input type="text" id="std_username" name="std_username" placeholder="กรอกชื่อผู้ใช้" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="std_password">รหัสผ่าน:</label>
+                      <input type="password" id="std_password" name="std_password" placeholder="กรอกรหัสผ่าน" required>
+                  </div>
+                  <div class="form-group" style="text-align: center;">
+                  <button class="button" type="submit">ลงทะเบียน</button>
+                  </div>
+              </form>
+              <div id="statusMessage"></div> <!-- Added for status messages --> 
+          
+        </main>
+    </div>
+    <!-- เพิ่ม JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/detail.js"></script>
+    <script src="js/register.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+/* เพิ่มการจัดรูปแบบตาราง */
+.table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    font-family: 'Sarabun', Arial, sans-serif;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.table td {
+    font-size: 14px;
+}
+
+/* ปุ่มแก้ไขและลบ */
+.btn {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+}
+
+.btn-delete {
+    background-color: #f44336;
+}
+
+/* ปุ่ม hover */
+.btn-edit:hover {
+    background-color: #45a049;
+}
+
+.btn-delete:hover {
+    background-color: #e60000;
+}
+.block {
+    margin: 0 0 10px;
+    padding: 20px 15px 1px;
+    background-color: #ffffff;
+    border: 1px solid #dbe1e8;
+}
+.block-options {
+    margin: 0 6px;
+    line-height: 37px;
+}
+/* ปรับแต่งช่องค้นหา */
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 25px; /* เพิ่มขอบมน */
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 200px; /* กำหนดขนาดความกว้าง */
+}
+
+/* เพิ่มเอฟเฟคเมื่อโฟกัสที่ช่องค้นหา */
+.search-input:focus {
+    border-color: #007bff; /* เปลี่ยนสีขอบเมื่อคลิก */
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.5);
+}
+
+/* จัดการ flexbox ให้จัดวางตำแหน่งทางขวา */
+.block-options {
+    display: flex;
+    justify-content: flex-end; /* จัดให้อยู่ทางขวาสุด */
+    align-items: center;
+    width: 100%;
+    margin-right: 20px; /* ปรับระยะห่างจากขอบขวา */
+}
+.container {
+  display: flex;
+}
+.info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ส่วนของ Sidebar */
+aside {
+  background-color: #fbf8f8;
+  color: rgb(4, 4, 4);
+  height: auto;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+aside.mini {
+  width: 4rem;
+}
+
+/* ปุ่ม Toggle */
+#toggle {
+  background-color: transparent;
+  border: none;
+  color: rgb(4, 4, 4);
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+#toggle i {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Link ใน Sidebar */
+.link ul {
+  list-style: none;
+  padding: 0.70rem;
+  margin: 0;
+}
+
+.link ul li {
+  display: flex;
+  align-items: center;
+  padding: 0.70rem;
+  cursor: pointer;
+}
+
+.link ul li:hover {
+  background-color: #a1b5d8;
+  border-radius: 15px;
+  
+}
+
+.link ul li.active {
+  background-color: #a1b5d8;
+  border-radius: 15px;
+
+}
+
+.link ul li i {
+  margin-right: 1rem;
+}
+
+.link ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: rgb(4, 4, 4);
+  width: 100%;
+
+}
+
+.link ul li a label {
+  font-size: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Main content */
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #b8d4f0;
+  min-height: 100vh;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+main h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.personal-info {
+  display: flex;
+  background-color: #f9f9f9;
+  padding: 15rem;
+  border-radius: 0;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+.profile-block {
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end; /* Aligns the content to the right */
+}
+
+.profile-title {
+  display: flex;
+  align-items: center;
+}
+
+.profile-title h6 {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-options {
+  display: flex;
+  align-items: center;
+}
+
+.profile-options .icon {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.profile-flag {
+  margin-right: 15px;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+}
+
+.profile-details img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  position: relative;
+}
+
+.profile-details img::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  border: 2px solid white;
+}
+
+.profile-picture {
+  margin-right: 2rem;
+  text-align: center;
+}
+  
+
+

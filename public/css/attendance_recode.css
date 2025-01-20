@@ -1,0 +1,420 @@
+body {
+    font-family: 'Sarabun', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      display: flex;
+    }
+    .info-container {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .info-container {
+      display: flex;
+      flex-direction: column;
+    }
+/* ส่วนของ Sidebar */
+aside {
+    background-color: #fbf8f8;
+    color: rgb(4, 4, 4);
+    height: auto;
+    transition: width 0.3s ease;
+    position: relative;
+    font-weight: bold;
+  }
+  
+  aside.mini {
+    width: 4rem;
+  }
+  
+  /* ปุ่ม Toggle */
+  #toggle {
+    background-color: transparent;
+    border: none;
+    color: rgb(4, 4, 4);
+    cursor: pointer;
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  #toggle i {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Link ใน Sidebar */
+  .link ul {
+    list-style: none;
+    padding: 0.70rem;
+    margin: 0;
+  }
+  
+  .link ul li {
+    display: flex;
+    align-items: center;
+    padding: 0.70rem;
+    cursor: pointer;
+  }
+  
+  .link ul li:hover {
+    background-color: #a1b5d8;
+    border-radius: 15px;
+    
+  }
+  
+  .link ul li.active {
+    background-color: #a1b5d8;
+    border-radius: 15px;
+  
+  }
+  
+  .link ul li i {
+    margin-right: 1rem;
+  }
+  
+  .link ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(4, 4, 4);
+    width: 100%;
+  
+  }
+  
+  .link ul li a label {
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  /* ส่วนผู้ใช้ */
+  .user {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0rem;
+    background-color: #222;
+    margin: 0%;
+    height: 4.5rem;
+    font-family: 'TH SarabunPSK', Arial, sans-serif;
+  }
+  
+  .user ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .user ul li {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user ul li img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+  
+  .personal-info {
+    display: flex;
+    background-color: #f9f9f9;
+    padding: 15rem;
+    border-radius: 0;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  }
+  .profile-block {
+    margin: 0 0 10px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end; /* Aligns the content to the right */
+  }
+  
+  .profile-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-title h6 {
+    margin: 0;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .profile-options {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-options .icon {
+    margin-left: 10px;
+    font-size: 18px;
+  }
+  
+  .profile-flag {
+    margin-right: 15px;
+  }
+  
+  .profile-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-details img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    position: relative;
+  }
+  
+  .profile-details img::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #00ff00;
+    border-radius: 50%;
+    bottom: 0;
+    right: 0;
+    border: 2px solid white;
+  }
+  
+  .profile-picture {
+    margin-right: 2rem;
+    text-align: center;
+  }
+/* Main content */
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #b8d4f0;
+  min-height: 100vh;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+main h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.col-lg-4, .col-sm-5 {
+    margin: 15px;
+}
+
+.widget-hover-effect2 {
+    display: block;
+    text-decoration: none;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.widget-hover-effect2:hover {
+    transform: scale(1.02); /* เพิ่มการขยายเมื่อ hover */
+}
+
+.themed-background {
+    background-color: #171917; /* สีพื้นหลังเขียว */
+    padding: 20px;
+    text-align: center;
+}
+
+.widget-content-light {
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+}
+
+.widget-extra-full {
+    padding: 20px;
+    text-align: center;
+    font-size: 40px;
+    color: #333;
+}
+
+.table-vcenter th, .table-vcenter td {
+    vertical-align: middle; /* เนื้อหาตรงกลางแนวตั้ง */
+}
+
+.table-bordered {
+    border: 1px solid #ddd;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #fff;
+}
+
+.table-vcenter {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.table-vcenter th, .table-vcenter td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table-vcenter th {
+    background-color: #171817;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.table-vcenter tbody td {
+    font-size: 14px;
+}
+/* Custom Color Labels */
+.label {
+    padding: 5px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.label-normal {
+    background-color: #28a745; /* สีเขียว (ปกติ) */
+}
+
+.label-late {
+    background-color: #ffc107; /* สีเหลือง (สาย) */
+}
+
+.label-absent {
+    background-color: #dc3545; /* สีแดง (ขาด) */
+}
+
+#TH_Button {
+    color: red;
+}
+.inline {
+    display: flex;
+    align-items: center; /* จัดให้อยู่ตรงกลางในแนวตั้ง */
+    gap: 40px; /* เว้นระยะห่างระหว่าง h4 */
+    font-family: 'Sarabun', Arial, sans-serif;
+}
+.block {
+    margin: 0 0 10px;
+    padding: 20px 15px 1px;
+    background-color: #ffffff;
+    border: 1px solid #dbe1e8;
+}
+.block-title {
+    margin: -20px -15px 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+.block-options {
+    margin: 0 6px;
+    line-height: 37px;
+}
+
+.block-options .label {
+    display: inline-block;
+    padding: 6px;
+    vertical-align: middle;
+    font-size: 13px;
+}
+/* Tables */
+.table.table-vcenter th,
+.table.table-vcenter td {
+    vertical-align: middle;
+}
+.input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.table-options {
+    padding: 6px 0;
+}
+
+.table thead > tr > th {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.table thead > tr > th > small {
+    font-weight: 400;
+    font-size: 75%;
+}
+
+.table thead > tr > th,
+.table thead > tr > td,
+.table tfoot > tr > th,
+.table tfoot > tr > td {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.table tfoot > tr > th,
+.table tfoot > tr > td {
+    background-color: #f9fafc; /* Background color for the footer */
+}
+
+/* Updated styles to ensure a single border */
+.table-borderless tbody > tr > th,
+.table-borderless tbody > tr > td {
+    border: none; /* Remove border for borderless style */
+}
+
+.table thead > tr > th,
+.table tbody > tr > th,
+.table tfoot > tr > th,
+.table thead > tr > td,
+.table tbody > tr > td,
+.table tfoot > tr > td,
+.table-bordered,
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+    border: 1px solid #ccc; /* Ensure only one border is applied */
+}
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    background-color: #eaedf1;
+}
+
+/* To remove extra borders between cells */
+.table {
+    border-collapse: collapse; /* Collapses borders into a single line */
+    background-color: #f0f0f0; /* Background color for the entire table */
+}
+
+.table thead {
+    background-color: #d1e4ea; /* Background color for the header */
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #fafafa; /* Light color for odd rows */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White color for even rows */
+}

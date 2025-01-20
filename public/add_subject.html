@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพิ่มสมาชิก</title>
+    <!-- <link rel="stylesheet" href="css/subject.css"> -->
+    <!-- <link rel="stylesheet" href="css/register.css"> -->
+    <link rel="stylesheet" href="css/attendance_recode.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet">
+     
+
+     <!-- เพิ่มลิงก์สำหรับโหลด jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <button id="toggle">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <!-- Container Bar สำหรับนักศึกษา -->
+            
+            <div class="link">
+                <ul>
+                    <li id="detailMenu">
+                        <a href="detail.html"><i class="bi bi-house"></i><label>ข้อมูลนักศึกษา</label></a>
+                    </li>
+                    <li id="subjectMenu">
+                        <a href="subject.html"><i class="bi bi-calendar3"></i><label>ตารางเรียน</label></a>
+                    </li>
+                    <li id="attendanceMenu">
+                        <a href="attendance_record.html"><i class="bi bi-folder2-open"></i><label>บันทึกการเข้าเรียน</label></a>
+                    </li>
+                    <!-- เมนูสำหรับ Admin (จะซ่อนสำหรับผู้ใช้ทั่วไป) -->
+                    <li id="registerMenu">
+                        <a href="register.html"><i class="bi bi-person-plus"></i><label>เพิ่มสมาชิก</label></a>
+                    </li>
+                    <li id="memberlist">
+                        <a href="memberlist.html"><i class="bi bi-person-lines-fill"></i><label>รายชื่อสมาชิก</label></a>
+                    </li>
+                    <li class="active" id="addsubject">
+                        <a href="add_subject.html"><i class="bi bi-database-add"></i><label>เพิ่มรายวิชา</label></a>
+                    </li>
+                    <li id="register_all">
+                        <a href="register_all.html"><i class="bi bi-database-add"></i><label>ลงทะเบียนเรียนทั้งหมด</label></a>
+                    </li>
+                    <li id="year_1">
+                        <a href="year_1.html"><i class="bi bi-database-add"></i><label>ปี 1</label></a>
+                    </li>
+                    <li id="year_2">
+                        <a href="year_2.html"><i class="bi bi-database-add"></i><label>ปี 2</label></a>
+                    </li>
+                    <li id="year_3">
+                        <a href="year_3.html"><i class="bi bi-database-add"></i><label>ปี 3</label></a>
+                    </li>
+                    <li id="year_4">
+                        <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
+                    </li>
+                    <li>
+                        <a href="login.html" onclick="Logout()"><i class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="user">
+                <ul>
+                    <li>
+                        <i>
+                            <img src="" alt="" />
+                        </i>
+                        <label>Andrea</label>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main>
+            <div class="profile-block">
+                <div class="profile-details">
+                  <div>
+                    <span class="profile-title"></span>
+                    <p id="profile-name"></p>
+                    <pid="studentId"></p>
+                  </div>
+                  <div style="position:relative;">
+                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                    <span class="status-indicator"></span> <!-- Green dot -->
+                  </div>
+                </div>
+              </div>
+            <div>
+                <h3>บันทึกการเข้าชั้นเรียน</h3>
+            </div>
+            <div class="inline">
+                <h4>วันที่</h4>
+                <h4>เดือน</h4>
+                <h4>ปีการศึกษา</h4>
+                <h4>วิชา</h4>
+            </div>
+
+            <div class="col-lg-12 col-sm-12">
+                <div class="block">
+                    <div class="block-title" style="display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Title section -->
+                        <h5 style="display: flex; align-items: center; margin: 0;">
+                            <i class="bi bi-bar-chart-line-fill"></i>
+                            <strong style="font-size: 15px; margin-left: 5px;">บันทึกเข้าชั้นเรียน</strong>
+                            <strong id="LA_Name" style="color: rgb(109, 178, 224); margin-left: 5px;"></strong>
+                        </h5>
+
+                        <!-- Block options -->
+                        <div class="block-options form-inline">
+                            <input type="text" placeholder="Search.." class="form-control input-sm" id="search_TH" name="search_TH" style="margin-right: 10px;">
+                            <button type="button" data-target="#Print" title="Print" style="margin-right: 10px;">
+                                <i class="fas fa-print" style="color: rgb(175, 33, 156);"></i>
+                            </button>
+                            <button type="button" data-target="#setting" title="Setting" style="margin-right: 10px;">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table table-bordered table-striped table-vcenter" id="table-request">
+                        <thead>
+                            <tr>
+                                <th hidden class="text-center">id</th>
+                                <th class="text-center">วันที่</th>
+                                <th class="text-center">เวลา</th>
+                                <th class="text-center">รหัสวิชา</th>
+                                <th class="text-center">ชื่อวิชา</th>
+                                <th class="text-center">รหัสอาจารย์</th>
+                                <th class="text-center">ชื่ออาจารย์</th>
+                                <th class="text-center">ห้องเรียน</th>
+                                <th class="text-center">สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="show_Detail"></tbody>
+                    </table>
+                </div>
+            </div>        
+        </main>        
+    </div>
+    <script src="js/detail.js"></script>
+    <script src="js/add_subject.js"></script>
+
+
+</body>
+</html>

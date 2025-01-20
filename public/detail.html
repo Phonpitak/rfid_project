@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดนักศึกษา</title>
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="css/detail.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet"> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <button id="toggle">
+                <i class="bi bi-list"></i>
+            </button>
+            
+            <!-- Container Bar สำหรับนักศึกษา -->
+            
+            <div class="link">
+                <ul>
+                    <li class="active" id="detailMenu">
+                        <a href="detail.html"><i class="bi bi-house"></i><label>ข้อมูลนักศึกษา</label></a>
+                    </li>
+                    <li id="subjectMenu">
+                        <a href="subject.html"><i class="bi bi-calendar3"></i><label>ตารางเรียน</label></a>
+                    </li>
+                    <li id="attendanceMenu">
+                        <a href="attendance_record.html"><i class="bi bi-folder2-open"></i><label>บันทึกการเข้าเรียน</label></a>
+                    </li>
+                    <li id="registerMenu">
+                        <a href="register.html"><i class="bi bi-person-plus"></i><label>เพิ่มสมาชิก</label></a>
+                    </li>
+                    <li id="memberlist">
+                        <a href="memberlist.html"><i class="bi bi-person-lines-fill"></i><label>รายชื่อสมาชิก</label> </a>
+                    </li>
+                    <li id="addsubject">
+                        <a href="add_subject.html"> <i class="bi bi-database-add"></i><label>เพิ่มรายวิชา</label></a>
+                    </li>
+                    <li id="register_all">
+                        <a href="register_all.html"><i class="bi bi-database-add"></i><label>ลงทะเบียนเรียนทั้งหมด</label></a>
+                    </li>
+                    <li id="year_1">
+                        <a href="year_1.html"><i class="bi bi-database-add"></i><label>ปี 1</label></a>
+                    </li>
+                    <li id="year_2">
+                        <a href="year_2.html"><i class="bi bi-database-add"></i><label>ปี 2</label></a>
+                    </li>
+                    <li id="year_3">
+                        <a href="year_3.html"><i class="bi bi-database-add"></i><label>ปี 3</label></a>
+                    </li>
+                    <li id="year_4">
+                        <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
+                    </li>
+                    <li>
+                        <a href="login.html" onclick="Logout()"><i class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main >
+            <div class="profile-block">
+                <div class="profile-details">
+                  <div>
+                    <span class="profile-title"></span>
+                    <p id="profile-name"></p>
+                    <pid="studentId"></p>
+                  </div>
+                  <div style="position:relative;">
+                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                    <span class="status-indicator"></span> <!-- Green dot -->
+                  </div>
+                </div>
+              </div>
+             <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-primary">ข้อมูลนักศึกษา</h3>
+            </div>
+            <div class="container" style="display: flex;">
+                <div class="card" style="background-color: #f2e3d0;width: 200px;height: 250px; position: relative;">
+                  <div class="image-preview" id="imagePreview" style="background-color: #ffff; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">
+                    <img src="img/profile-placeholder.png" alt="Profile Picture" id="imageDisplay" />
+                    <span id="imagePlaceholder">รูปภาพจะปรากฏที่นี่</span>
+                  </div>
+              
+                  <!-- ย้าย input type="file" ออกมาเพื่อให้แสดงด้านล่างกล่อง -->
+                  <br>
+                  <label for="imageUpload" style="position: absolute; top: calc(40% + 100px); left: 20%; transform: translateX(-50%); margin-left: 70px;margin-top: 20px;cursor: pointer; background-color: #97c2ec; color: white; padding: 10px 20px; border-radius: 20px;">Upload</label>
+                  <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                </div>
+              
+                <!-- The second card next to the first one -->
+                <div class="information" style="background-color: #fefefe;width: 870px;height: 250px;margin-left: 50px;">
+                    <div class="info-container">
+                        <div class="info-item">
+                        <label>ชื่อ-นามสกุล:</label>
+                        <p  id="studentName"></p>
+                    </div>
+                    <div class="info-item">
+                        <label>รหัสนักศึกษา:</label>
+                        <p  id="studentId"></p>
+                    </div>
+                    <div class="info-item">
+                        <label>สาขาวิชา:</label>
+                        <p  id="studentBranch"></p>
+                    </div>
+                    <div class="info-item">
+                        <label>คณะ:</label>
+                        <p  id="studentFaculty"></p>
+                    </div>
+                    <div class="info-item">
+                        <label>กลุ่ม/ห้อง:</label>
+                        <p  id="studentGroup"></p>
+                    </div>
+                    <div class="info-item">
+                        <label>ปีการศึกษา:</label>
+                        <p  id="studentyear"></p>
+                    </div>
+                    <div class="info-item">
+                        <label>เทอม:</label>
+                        <p  id="studenterm"></p>
+                    </div>
+                </div>
+                </div>
+              </div>
+              
+              
+              
+        
+           <!-- Profile Card
+            <div class="card shadow-sm mb-4">
+                <div class="card-body d-flex align-items-center">
+                    <div class="me-4">
+                        <img src="https://scontent.fbkk29-1.fna.fbcdn.net/v/t39.30808-6/457445454_1032555585081629_2114165796527209450_n.jpg" alt="Profile Picture" class="rounded-circle" width="150">
+                    </div>
+                    <div>
+                        <h5 class="card-title" id="profile-name">John Doe</h5>
+                        <p class="card-text text-muted">นักศึกษา (ปกติ)</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Personal Information -->
+            <!-- <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">รหัสนักศึกษา</h6>
+                            <p class="card-text" id="studentId">123456</p>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">ชื่อ-นามสกุล</h6>
+                            <p class="card-text" id="studentName">John Doe</p>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">สาขาวิชา</h6>
+                            <p class="card-text" id="studentBranch">Computer Science</p>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">คณะ</h6>
+                            <p class="card-text" id="studentFaculty">Engineering</p>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">กลุ่ม/ห้อง</h6>
+                            <p class="card-text" id="studentGroup">Group A</p>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">ปีการศึกษา</h6>
+                            <p class="card-text" id="studentyear">2024</p>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-muted">เทอม</h6>
+                            <p class="card-text" id="studenterm">2</p>
+                        </div>
+                    </div>
+                </div>
+            </div>  -->
+        </main>
+        
+    </div>
+
+    <script src="js/detail.js"></script>
+
+</body>
+</html>

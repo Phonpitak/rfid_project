@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายชื่อสมาชิก</title>
+    <!-- นำเข้า CSS -->
+    <link rel="stylesheet" href="css/detail.css">
+    <link rel="stylesheet" href="css/memberlist.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- นำเข้า jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    
+    <div class="container">
+        <aside>
+            <button id="toggle">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <!-- Container Bar สำหรับนักศึกษา -->
+            <div class="link">
+                <ul>
+                    <li id="detailMenu">
+                        <a href="detail.html"><i class="bi bi-house"></i><label>ข้อมูลนักศึกษา</label></a>
+                    </li>
+                    <li id="subjectMenu">
+                        <a href="subject.html"><i class="bi bi-calendar3"></i><label>ตารางเรียน</label></a>
+                    </li>
+                    <li id="attendanceMenu">
+                        <a href="attendance_record.html"><i class="bi bi-folder2-open"></i><label>บันทึกการเข้าเรียน</label></a>
+                    </li>
+                    <li id="registerMenu">
+                        <a href="register.html"><i class="bi bi-person-plus"></i><label>เพิ่มสมาชิก</label></a>
+                    </li>
+                    <li class="active">
+                        <a href="memberlist.html"><i class="bi bi-person-lines-fill"></i><label>รายชื่อสมาชิก</label></a>
+                    </li>
+                    <li id="addsubject">
+                        <a href="add_subject.html"><i class="bi bi-database-add"></i><label>เพิ่มรายวิชา</label></a>
+                    </li>
+                    <li id="register_all">
+                        <a href="register_all.html"><i class="bi bi-database-add"></i><label>ลงทะเบียนเรียนทั้งหมด</label></a>
+                    </li>
+                    <li id="year_1">
+                        <a href="year_1.html"><i class="bi bi-database-add"></i><label>ปี 1</label></a>
+                    </li>
+                    <li id="year_2">
+                        <a href="year_2.html"><i class="bi bi-database-add"></i><label>ปี 2</label></a>
+                    </li>
+                    <li id="year_3">
+                        <a href="year_3.html"><i class="bi bi-database-add"></i><label>ปี 3</label></a>
+                    </li>
+                    <li id="year_4">
+                        <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
+                    </li>
+                    <li>
+                        <a href="login.html" onclick="Logout()"><i class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
+                    </li>
+                </ul>
+            </div>
+    
+        </aside>
+
+        <main>
+            <div class="profile-block">
+                <div class="profile-details">
+                  <div>
+                    <span class="profile-title"></span>
+                    <p id="profile-name"></p>
+                    <pid="studentId"></p>
+                  </div>
+                  <div style="position:relative;">
+                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                    <span class="status-indicator"></span> <!-- Green dot -->
+                  </div>
+                </div>
+              </div>
+            <div>
+                <h3>รายชื่อสมาชิก</h3>
+            </div>
+            <!-- group สาขากับคณะ -->
+            <div class="inline">
+                <h4>ปีการศึกษา</h4>
+                <h4>สาขาวิชา</h4>
+                <h4>คณะ</h4>
+            </div>
+            <div class="block">
+                <div class="block-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; margin-bottom: 10px;">
+                    <!-- Title section (left aligned) -->
+                    <h5 style="display: flex; align-items: center; margin: 0;">
+                        <i class="bi bi-bar-chart-line-fill" style="margin-right: 5px; margin-left: 15px;"></i>
+                        <strong style="font-size: 15px; margin-left: 10px;display: inline-block;">รายชื่อนักศึกษาทั้งหมด</strong>
+                    </h5>
+                <!-- Block options (right aligned) -->
+                <div class="block-options form-inline" style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">   
+                    <input type="text" placeholder="Search.." class="form-control input-sm search-input" id="search_TH" name="search_TH" style="margin-right: 10px;">
+                </div>
+            </div>
+                
+                <!-- ตารางรายชื่อสมาชิก -->
+                <table class="table table-bordered table-striped table-vcenter" id="table-request">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 150px; font-size: 15px;">รหัส</th>
+                            <th class="text-center" style="width: 350px; font-size: 15px;">ชื่อ-นามสกุล</th>
+                            <th class="text-center" style="width: 200px; font-size: 15px;">สาขาวิชา</th>
+                            <th class="text-center" style="width: 200px; font-size: 15px;">คณะ</th>
+                            <th class="text-center" style="width: 100px; font-size: 15px;">แก้ไข</th>
+                            <th class="text-center" style="width: 100px; font-size: 15px;">ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberlist"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- นำเข้า JavaScript -->
+    <script src="js/detail.js"></script>
+    <script src="js/memberlist.js"></script>
+</body>
+</html>

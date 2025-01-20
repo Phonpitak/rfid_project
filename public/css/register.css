@@ -1,0 +1,418 @@
+/* ตั้งค่าโครงสร้างเบื้องต้น */
+body {
+  font-family: 'Sarabun', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+
+}
+/* ฟอร์มลงทะเบียน */
+.block {
+  margin: 0 0 10px;
+  padding: 20px 15px 1px;
+  background-color: #ffffff;
+  border: 1px solid #dbe1e8;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+label {
+  display: block;
+  font-weight: bold;
+
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  background-color: #26e930;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover {
+  background-color: #27b327;
+}
+.inline {
+  display: flex;
+  gap: 20px; /* Space between the form-group divs */
+}
+
+/* ส่วนของ Sidebar */
+aside {
+
+  background-color: #fbf8f8;
+  color: rgb(4, 4, 4);
+  height: auto;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+aside.mini {
+  width: 4rem;
+}
+
+/* ปุ่ม Toggle */
+#toggle {
+  background-color: transparent;
+  border: none;
+  color: rgb(4, 4, 4);
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+#toggle i {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Link ใน Sidebar */
+.link ul {
+  list-style: none;
+  padding: 0.70rem;
+  margin: 0;
+}
+
+.link ul li {
+  display: flex;
+  align-items: center;
+  padding: 0.70rem;
+  cursor: pointer;
+}
+
+.link ul li:hover {
+  background-color: #a1b5d8;
+  border-radius: 15px;
+  
+}
+
+.link ul li.active {
+  background-color: #a1b5d8;
+  border-radius: 15px;
+
+}
+
+.link ul li i {
+  margin-right: 1rem;
+}
+
+.link ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: rgb(4, 4, 4);
+  width: 100%;
+
+}
+
+.link ul li a label {
+  font-size: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Main content */
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #b8d4f0;
+  min-height: 100vh;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+main h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.personal-info {
+  display: flex;
+  background-color: #f9f9f9;
+  padding: 15rem;
+  border-radius: 0;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+.profile-block {
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end; /* Aligns the content to the right */
+}
+
+.profile-title {
+  display: flex;
+  align-items: center;
+}
+
+.profile-title h6 {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-options {
+  display: flex;
+  align-items: center;
+}
+
+.profile-options .icon {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.profile-flag {
+  margin-right: 15px;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+}
+
+.profile-details img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  position: relative;
+}
+
+.profile-details img::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  border: 2px solid white;
+}
+
+.profile-picture {
+  margin-right: 2rem;
+  text-align: center;
+}
+
+.image-preview {
+  width: 350px;
+  height: 350px;
+  border: 3px solid #444242;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  position: relative;
+}
+
+.image-preview img {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview #imagePlaceholder {
+  font-size: 0.9rem;
+  color: #777;
+  text-align: center;
+}
+
+input[type="file"] {
+  margin-top: 1rem;
+}
+.container {
+  display: flex;
+}
+.info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item {
+  display: flex;
+  align-items: center; /* จัดให้อยู่กึ่งกลางในแนวตั้ง */
+  justify-content: flex-start; /* จัดเนื้อหาให้อยู่ชิดซ้าย */
+  margin-bottom: 1rem;
+}
+
+.info-item label {
+  font-weight: bold;
+  width: 150px; /* กำหนดขนาดให้ label เท่ากัน */
+  color: #e91e63;
+}
+
+.info-item p {
+  margin-left: 0.5rem;
+  color: #333;
+  display: inline-block; /* แก้ไข p ให้แสดงเป็น inline */
+  margin: 0; /* ลบ margin ของ p เพื่อให้จัดเรียงดีขึ้น */
+}
+
+
+/* ปรับแต่งการแสดงผลของการ์ด */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* ปรับสีฟอนต์ของหัวข้อให้ดูเป็นมืออาชีพ */
+.card h6 {
+  font-weight: bold;
+  color: #6c757d;
+}
+
+/* ปรับการ์ดให้ดูโดดเด่นเมื่อ hover */
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+.profile-block {
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end; /* Aligns the content to the right */
+}
+
+.profile-title {
+  display: flex;
+  align-items: center;
+}
+
+.profile-title h6 {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-options {
+  display: flex;
+  align-items: center;
+}
+
+.profile-options .icon {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.profile-flag {
+  margin-right: 15px;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+}
+
+.profile-details img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  position: relative;
+}
+
+.profile-details img::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  border: 2px solid white;
+}
+.profile-picture {
+  margin-right: 2rem;
+  text-align: center;
+}
+
+.image-preview {
+  width: 190px;
+  height: 220px;
+  border: 3px solid #f2e3d0;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  position: relative;
+}
+
+.image-preview img {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview #imagePlaceholder {
+  font-size: 0.9rem;
+  color: #777;
+  text-align: center;
+}
+.information {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+ 
+  width: 100%; /* คงขนาดเต็มตามที่ต้องการ */
+}
+
+/* ปรับสีฟอนต์ของหัวข้อให้ดูเป็นมืออาชีพ */
+.information h6 {
+  font-weight: bold;
+  color: #6c757d;
+}
+
+/* ปรับการ์ดให้ดูโดดเด่นเมื่อ hover */
+.information:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+.info-container {
+  display: flex;
+  flex-direction: column;
+  
+  font-family: 'TH SarabunPSK's Arial, sans-serif;
+}
+
+
