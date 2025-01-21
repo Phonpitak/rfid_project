@@ -110,7 +110,70 @@ function ShowStatusData() {
         alert('ไม่พบข้อมูล UserID ใน sessionStorage');
     }
 }
+async function fetchSubjects() {
+    try {
+      // เรียก API ที่สร้างไว้
+      const response = await fetch('/api/subjects'); // หรือ '/subjects' ถ้าไม่มี prefix
+      const subjects = await response.json();
+  
+      // อ้างอิงถึง Dropdown
+      const subjectDropdown = document.getElementById("t_subjects");
+  
+      // ล้างข้อมูลเก่าใน Dropdown
+      subjectDropdown.innerHTML = '<option value="" disabled selected>เลือกวิชา</option>';
+  
+      // เติมข้อมูลวิชาจาก API
+      subjects.forEach(subject => {
+        const option = document.createElement("option");
+        option.value = subject.id; // ใช้ ID เป็นค่า
+        option.textContent = subject.subject_name; // ใช้ชื่อวิชาเป็นข้อความ
+        subjectDropdown.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error fetching subjects:", error);
+    }
+  }
+  
+  // เรียกใช้งานฟังก์ชันเมื่อโหลดหน้า
+  document.addEventListener("DOMContentLoaded", fetchSubjects);
+  
 
+  // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
+  window.onload = function () {
+    fetchSubjects();
+
+    // เติมข้อมูลวันที่
+    const daySelect = document.getElementById("day-select");
+    for (let i = 1; i <= 31; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = i;
+      daySelect.appendChild(option);
+    }
+
+    // เติมข้อมูลเดือน
+    const monthSelect = document.getElementById("month-select");
+    const monthNames = [
+      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+    ];
+    monthNames.forEach((month, index) => {
+      const option = document.createElement("option");
+      option.value = index + 1;
+      option.textContent = month;
+      monthSelect.appendChild(option);
+    });
+
+    // เติมข้อมูลปี
+    const yearSelect = document.getElementById("year-select");
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear - 10; year <= currentYear + 10; year++) {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      yearSelect.appendChild(option);
+    }
+  };
 
 $(document).ready(function () {
     ShowStatusData();  // ดึงข้อมูลเฉพาะผู้ใช้

@@ -47,7 +47,7 @@ app.use(year2Router);
 app.use(year3Router);
 app.use(year4Router);
 app.use(rfidRouter);
-// app.use(subject);
+app.use(subject);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
