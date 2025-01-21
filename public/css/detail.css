@@ -222,7 +222,7 @@ input[type="file"] {
 .info-item label {
   font-weight: bold;
   width: 150px; /* กำหนดขนาดให้ label เท่ากัน */
-  color: #0f0f0f;
+  color: #e91e63;
 }
 
 .info-item p {

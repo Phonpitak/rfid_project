@@ -23,6 +23,21 @@ router.get('/recode/:user_id', (req, res) => {
   });
 });
 
+//ดึงวิชา
+router.get('/subjects', (req, res) => {
+  const query = 'SELECT id, subject_name FROM t_subject';
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching subjects: ', err);
+      res.status(500).send('Error fetching subjects');
+    } else {
+      res.json(results); // ส่งข้อมูลกลับเป็น JSON
+    }
+  });
+});
+
+
+module.exports = router;
 
 
 
