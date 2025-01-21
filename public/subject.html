@@ -91,9 +91,9 @@
                     <div class="form-group">
                         <label for="academic-year">ปีการศึกษา:</label>
                         <select id="academic-year">
-                            <option value="2025">2568</option>
-                            <option value="2024">2567</option>
-                            <option value="2023">2566</option>
+                            <option value="2568">2568</option>
+                            <option value="2567">2567</option>
+                            <option value="2566">2566</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -104,10 +104,20 @@
                             <option value="3">เทอม 3</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="year">ปีการศึกษา (ชั้นปี):</label>
+                        <select id="year">
+                            <option value="">ทั้งหมด</option>
+                            <option value="1">ปี 1</option>
+                            <option value="2">ปี 2</option>
+                            <option value="3">ปี 3</option>
+                            <option value="4">ปี 4</option>
+                        </select>
+                    </div>
                     <button id="filter-button">ค้นหา</button>
                 </div>
                 
-                <div class="table">
+                <div id="timetable" class="table">
                     <div class="header3">
                         <div class="cellhead">วัน/เวลา</div>
                         <div class="cellhead">8.00-9.00</div>
@@ -120,35 +130,65 @@
                         <div class="cellhead">15.00-16.00</div>
                         <div class="cellhead">16.00-17.00</div>
                     </div>
-                    <div class="row">
+                    <div class="row" data-day="จันทร์">
                         <div class="cell">จันทร์</div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                    </div>
-                    <div class="row">
+                        <div class="cell" data-time="8:00-9:00"></div>
+                        <div class="cell" data-time="9:00-10:00"></div>
+                        <div class="cell" data-time="10:00-11:00"></div>
+                        <div class="cell" data-time="11:00-12:00"></div>
+                        <div class="cell" data-time="12:00-13:00"></div>
+                        <div class="cell" data-time="13:00-14:00"></div>
+                        <div class="cell" data-time="14:00-15:00"></div>
+                        <div class="cell" data-time="15:00-16:00"></div>
+                        <div class="cell" data-time="16:00-17:00"></div>
+                      </div>
+                    <div class="row" data-day="อังคาร">
                         <div class="cell">อังคาร</div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                        <div class="cell" data-time="8.00-9.00"></div>
+                        <div class="cell" data-time="9.00-10.00"></div>
+                        <div class="cell" data-time="10.00-11.00"></div>
+                        <div class="cell" data-time="11.00-12.00"></div>
+                        <div class="cell" data-time="12.00-13.00"></div>
+                        <div class="cell" data-time="13.00-14.00"></div>
+                        <div class="cell" data-time="14.00-15.00"></div>
+                        <div class="cell" data-time="15.00-16.00"></div>
+                        <div class="cell" data-time="16.00-17.00"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" data-day="พุธ">
                         <div class="cell">พุธ</div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                        <div class="cell" data-time="8.00-9.00"></div>
+                        <div class="cell" data-time="9.00-10.00"></div>
+                        <div class="cell" data-time="10.00-11.00"></div>
+                        <div class="cell" data-time="11.00-12.00"></div>
+                        <div class="cell" data-time="12.00-13.00"></div>
+                        <div class="cell" data-time="13.00-14.00"></div>
+                        <div class="cell" data-time="14.00-15.00"></div>
+                        <div class="cell" data-time="15.00-16.00"></div>
+                        <div class="cell" data-time="16.00-17.00"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" data-day="พฤหัสบดี">
                         <div class="cell">พฤหัสบดี</div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                        <div class="cell" data-time="8.00-9.00"></div>
+                        <div class="cell" data-time="9.00-10.00"></div>
+                        <div class="cell" data-time="10.00-11.00"></div>
+                        <div class="cell" data-time="11.00-12.00"></div>
+                        <div class="cell" data-time="12.00-13.00"></div>
+                        <div class="cell" data-time="13.00-14.00"></div>
+                        <div class="cell" data-time="14.00-15.00"></div>
+                        <div class="cell" data-time="15.00-16.00"></div>
+                        <div class="cell" data-time="16.00-17.00"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" data-day="ศุกร์">
                         <div class="cell">ศุกร์</div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                        <div class="cell" data-time="8.00-9.00"></div>
+                        <div class="cell" data-time="9.00-10.00"></div>
+                        <div class="cell" data-time="10.00-11.00"></div>
+                        <div class="cell" data-time="11.00-12.00"></div>
+                        <div class="cell" data-time="12.00-13.00"></div>
+                        <div class="cell" data-time="13.00-14.00"></div>
+                        <div class="cell" data-time="14.00-15.00"></div>
+                        <div class="cell" data-time="15.00-16.00"></div>
+                        <div class="cell" data-time="16.00-17.00"></div>
                     </div>
                 </div>
             </main>

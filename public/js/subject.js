@@ -29,66 +29,69 @@ $(document).ready(function () {
 
       TB_Open(); 
   }
-});
+});// เพิ่ม event listener เมื่อโหลดหน้าเว็บ
+// Frontend JavaScript
 document.getElementById('filter-button').addEventListener('click', () => {
-  const academicYear = document.getElementById('academic-year').value;
+  let academicYear = parseInt(document.getElementById('academic-year').value, 10);
   const term = document.getElementById('term').value;
+  const year = document.getElementById('year').value; // ดึงค่าปีการศึกษา (ชั้นปี)
 
-  fetch(`/api/timetable?academic_year=${academicYear}&term=${term}`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data); // ตรวจสอบข้อมูลจาก API
-      const days = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์'];
+  academicYear -= 543; // แปลง พ.ศ. -> ค.ศ.
 
-      // เคลียร์ตารางเดิม
-      document.querySelectorAll('.row').forEach(row => {
-        row.querySelectorAll('.cell:not(:first-child)').forEach(cell => {
-          cell.innerHTML = '';
-        });
+  console.log('Sending request with:', { academicYear, term, year });
+
+  fetch(`/api/timetable?academic_year=${academicYear}&term=${term}&year=${year}`)
+      .then(response => response.json())
+      .then(data => {
+          console.log('Received data:', data);
+
+          // เคลียร์ตารางเดิม
+          const cells = document.querySelectorAll('.row .cell:not(:first-child)');
+          cells.forEach(cell => {
+              cell.innerHTML = '';
+          });
+
+          const dayRows = {
+              'จันทร์': 0,
+              'อังคาร': 1,
+              'พุธ': 2,
+              'พฤหัส': 3,
+              'พฤหัสบดี': 3,
+              'ศุกร์': 4
+          };
+
+          const allSubjects = [...(data.morning || []), ...(data.afternoon || [])];
+
+          allSubjects.forEach(subject => {
+              const rowIndex = dayRows[subject.day_of_week];
+              if (rowIndex === undefined) {
+                  console.warn('Invalid day:', subject.day_of_week);
+                  return;
+              }
+
+              const rows = document.querySelectorAll('.row');
+              const targetRow = rows[rowIndex];
+              if (!targetRow) {
+                  console.warn('Row not found for:', subject.day_of_week);
+                  return;
+              }
+
+              const startHour = parseInt(subject.start_time.split(':')[0]);
+              const columnIndex = startHour - 8 + 1;
+
+              const cells = targetRow.querySelectorAll('.cell');
+              if (cells[columnIndex]) {
+                  cells[columnIndex].innerHTML += `
+                      ${subject.subject_name}<br>
+                      (${subject.room_number})
+                  `;
+              }
+          });
+      })
+      .catch(err => {
+          console.error('Error:', err);
       });
-
-      // ใส่วิชาภาคเช้า
-      if (data.morning && Array.isArray(data.morning)) {
-        data.morning.forEach(subject => {
-          const dayIndex = days.indexOf(subject.day_of_week); // หาวันในสัปดาห์
-          if (dayIndex !== -1) {
-            const row = document.querySelector(`.row:nth-child(${dayIndex + 2})`);
-            if (row) {
-              const startHour = parseInt(subject.start_time.split(':')[0], 10);
-              const cellIndex = startHour - 8; // คำนวณตำแหน่งคอลัมน์
-              const cell = row.querySelector(`.cell:nth-child(${cellIndex + 2})`);
-              if (cell) {
-                cell.innerHTML += `
-                  ${subject.subject_name}<br>(${subject.room_number})
-                `;
-              }
-            }
-          }
-        });
-      }
-
-      // ใส่วิชาภาคบ่าย
-      if (data.afternoon && Array.isArray(data.afternoon)) {
-        data.afternoon.forEach(subject => {
-          const dayIndex = days.indexOf(subject.day_of_week); // หาวันในสัปดาห์
-          if (dayIndex !== -1) {
-            const row = document.querySelector(`.row:nth-child(${dayIndex + 2})`);
-            if (row) {
-              const startHour = parseInt(subject.start_time.split(':')[0], 10);
-              const cellIndex = startHour - 8; // คำนวณตำแหน่งคอลัมน์
-              const cell = row.querySelector(`.cell:nth-child(${cellIndex + 2})`);
-              if (cell) {
-                cell.innerHTML += `
-                  ${subject.subject_name}<br>(${subject.room_number})
-                `;
-              }
-            }
-          }
-        });
-      }
-    })
-    .catch(err => console.error('Error fetching timetable:', err));
-  });
+});
 function Logout() {
   sessionStorage.clear();
 }

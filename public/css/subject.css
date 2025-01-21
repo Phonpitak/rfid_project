@@ -225,7 +225,6 @@ select:focus {
   border-color: #88a4fb; /* เปลี่ยนสีขอบเมื่อ focus */
   outline: none; /* เอาเส้นขอบออกเมื่อ focus */
 }
-
 .table {
   border-radius: 8px;
   background-color: #4a6c9b;
@@ -235,45 +234,59 @@ select:focus {
 .header3, .row {
   display: flex;
   font-family: 'Sarabun', Arial, sans-serif;
-  
 }
 
-.cellhead{
+.cellhead {
   border: 1px solid #ccc;
   padding: 15px;
   text-align: center;
   flex: 1;
   font-family: 'Sarabun', Arial, sans-serif;
 }
+
 .cell {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
   flex: 1;
   font-family: 'Sarabun', Arial, sans-serif;
+  position: relative; /* สำหรับจัดการ child elements */
 }
+
 .header .cell {
   background-color: #e20074;
   color: white;
   font-weight: bold;
-
 }
 
 .row:nth-child(even) .cell {
   background-color: #f0f0f0;
-  font-family: 'Sarabun', Arial, sans-serif;
 }
 
 .row:nth-child(odd) .cell {
   background-color: #fff;
-  font-family: 'Sarabun', Arial, sans-serif;
 }
 
 .cell[colspan="2"] {
   flex: 2; /* Span two columns by occupying twice the space */
   background-color: #f9f9f9;
-  font-family: 'Sarabun', Arial, sans-serif;
 }
+
+.subject {
+  background-color: rgba(100, 150, 255, 0.5); /* สีฟ้าโปร่งใส */
+  color: #000; /* สีตัวหนังสือ */
+  border-radius: 4px;
+  text-align: center;
+  line-height: 1.5;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  height: 100%; /* เต็ม cell */
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+
 
 .gard {
   margin: 0 0 20px;
