@@ -98,7 +98,7 @@ aside.mini {
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #003F7D;
+  background-color: #2e6ba7;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
 }
@@ -355,7 +355,7 @@ button {
   padding: 10px 20px;
   font-size: 1em;
   color: #fff;
-  background-color: #4682B4;
+  background-color: #2e6ba7;
   border: none;
   border-radius: 20px;
   cursor: pointer;
