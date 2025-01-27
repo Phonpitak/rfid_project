@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เพิ่มสมาชิก</title>
+    <title>เพิ่มรายวิชา</title>
     <!-- <link rel="stylesheet" href="css/subject.css"> -->
     <!-- <link rel="stylesheet" href="css/register.css"> -->
     <link rel="stylesheet" href="css/attendance_recode.css">
@@ -12,6 +12,7 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="js/add_subject.js">
 
 
     <!-- เพิ่มลิงก์สำหรับโหลด jQuery -->
@@ -105,11 +106,6 @@
                 <div class="container mt-5">
                     <h3 class="mb-4">เพิ่มรายวิชา</h3>
                     <form action="add_subject.php" method="POST">
-                        <div class="mb-3">
-                            <label for="subject_id" class="form-label">Subject ID</label>
-                            <input type="text" class="form-control" id="subject_id" name="subject_id" required>
-                        </div>
-
                         <div class="mb-3">
                             <label for="subject_code" class="form-label">Subject Code</label>
                             <input type="text" class="form-control" id="subject_code" name="subject_code" required>

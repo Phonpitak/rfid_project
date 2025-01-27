@@ -34,6 +34,7 @@ const year2Router = require('./routes/year_2');
 const year3Router = require('./routes/year_3');
 const year4Router = require('./routes/year_4');
 const rfidRouter = require('./routes/rfid');
+const add_subject = require('./routes/add_subject');
 
 
 app.use(detailRouter);
@@ -48,6 +49,7 @@ app.use(year3Router);
 app.use(year4Router);
 app.use(rfidRouter);
 app.use(subject);
+app.use(add_subject);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));

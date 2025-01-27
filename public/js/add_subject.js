@@ -31,6 +31,50 @@ $(document).ready(function () {
     }
 });
 
+ // ฟังก์ชันสำหรับส่งข้อมูลฟอร์มเพิ่มรายวิชา
+ async function submitSubjectForm(event) {
+    event.preventDefault();
+
+    // เลือกฟอร์มจาก DOM
+    const form = event.target;
+
+    // เก็บข้อมูลจากฟอร์มลงในออบเจกต์
+    const formData = new FormData(form);
+    const subjectData = {};
+    formData.forEach((value, key) => {
+        subjectData[key] = value;
+    });
+
+    try {
+        // ส่งข้อมูลไปยังเซิร์ฟเวอร์ผ่าน Fetch API
+        const response = await fetch("/add_subject", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(subjectData),
+        });
+
+        // ตรวจสอบผลลัพธ์
+        if (response.ok) {
+            const result = await response.text();
+            alert(result); // แสดงข้อความสำเร็จ
+            form.reset();  // ล้างฟอร์มหลังส่งสำเร็จ
+        } else {
+            alert("เกิดข้อผิดพลาดในการเพิ่มรายวิชา");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+    }
+}
+
+// เพิ่ม event listener ให้กับฟอร์มเมื่อ DOM โหลดเสร็จ
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", submitSubjectForm);
+});
+
 function Logout() {
     sessionStorage.clear();
   }
