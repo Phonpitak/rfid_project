@@ -30,7 +30,6 @@ $(document).ready(function () {
         TB_Open(); 
     }
 });
-
 document.addEventListener("DOMContentLoaded", () => {
     // เรียกฟังก์ชันโหลดรายวิชาเมื่อหน้าโหลดเสร็จ
     loadSubjects();
@@ -75,21 +74,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (response.ok) {
                     const message = await response.text();
-                    alert(message); // แสดงข้อความสำเร็จ
-                    document.getElementById("bulkRegistrationForm").reset(); // ล้างฟอร์ม
+                    swal({
+                        title: "เพิ่มรายวิชา!",
+                        text: "ข้อมูลบันทึกสำเร็จ!",
+                        icon: "success",
+                        button: "ตกลง",
+                    }).then(() => {
+                        document.getElementById("bulkRegistrationForm").reset(); // ล้างฟอร์ม
+                        window.location.reload(); // รีเฟรชหน้า
+                    });
                 } else {
                     const error = await response.text();
-                    alert(`เกิดข้อผิดพลาด: ${error}`);
+                    swal({
+                        title: "เกิดข้อผิดพลาด!",
+                        text: `ไม่สามารถบันทึกข้อมูลได้: ${error}`,
+                        icon: "error",
+                        button: "ลองอีกครั้ง",
+                    });
                 }
             } catch (error) {
                 console.error("Error during bulk registration:", error);
-                alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+                swal({
+                    title: "เกิดข้อผิดพลาด!",
+                    text: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้",
+                    icon: "error",
+                    button: "ลองอีกครั้ง",
+                });
             }
         } else {
-            alert("กรุณาเลือกปีการศึกษาและรายวิชา");
+            swal({
+                title: "ข้อมูลไม่ครบถ้วน!",
+                text: "กรุณาเลือกปีการศึกษาและรายวิชา",
+                icon: "warning",
+                button: "ตกลง",
+            });
         }
     });
 });
+
 
 function Logout() {
     sessionStorage.clear();
