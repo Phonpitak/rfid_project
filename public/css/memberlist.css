@@ -283,14 +283,3 @@ body.modal-open {
     margin-left: 60px !important; /* ปรับตามขนาด collapsed sidebar */
     width: calc(100% - 60px) !important;
 }
-/* ให้ modal ทำงานปกติ */
-.modal {
-  padding: 0 !important;
-}
-
-.modal-dialog {
-  margin: 1.75rem auto !important;
-}
-.modal-body {
-  font-family: 'Sarabun', Arial, sans-serif !important;
-}
