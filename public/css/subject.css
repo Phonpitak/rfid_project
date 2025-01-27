@@ -20,7 +20,7 @@ body {
 /* ส่วนของ Sidebar */
 aside {
   background-color: #fbf8f8;
-  color: rgb(4, 4, 4);
+  color: rgb(0, 0, 0);
   height: auto;
   transition: width 0.3s ease;
   position: relative;
@@ -28,14 +28,14 @@ aside {
 }
 
 aside.mini {
-  width: 4rem;
+  width: 2rem;
 }
 
 /* ปุ่ม Toggle */
 #toggle {
   background-color: transparent;
   border: none;
-  color: rgb(4, 4, 4);
+  color: rgb(0, 0, 0);
   cursor: pointer;
   padding: 1rem;
   font-size: 1.5rem;
@@ -59,16 +59,17 @@ aside.mini {
   align-items: center;
   padding: 0.70rem;
   cursor: pointer;
+  
 }
 
 .link ul li:hover {
-  background-color: #a1b5d8;
+  background-color:  #F7B8CD;
   border-radius: 15px;
   
 }
 
 .link ul li.active {
-  background-color: #a1b5d8;
+  background-color:  #F7B8CD;
   border-radius: 15px;
 
 }
@@ -81,7 +82,8 @@ aside.mini {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: rgb(4, 4, 4);
+  color: inherit;
+  font-weight: inherit;
   width: 100%;
 
 }
@@ -96,7 +98,7 @@ aside.mini {
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #b8d4f0;
+  background-color: #003F7D;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
 }
@@ -227,17 +229,18 @@ select:focus {
 }
 .table {
   border-radius: 8px;
-  background-color: #4a6c9b;
+  background-color: #F7B8CD;
   overflow: hidden;
 }
 
 .header3, .row {
   display: flex;
   font-family: 'Sarabun', Arial, sans-serif;
+  font-weight: bold;
 }
 
 .cellhead {
-  border: 1px solid #ccc;
+  border: 0.5px solid #fffdfd;
   padding: 15px;
   text-align: center;
   flex: 1;
@@ -245,7 +248,7 @@ select:focus {
 }
 
 .cell {
-  border: 1px solid #ccc;
+  border: 0.5px solid #ffffff;
   padding: 10px;
   text-align: center;
   flex: 1;
@@ -260,16 +263,16 @@ select:focus {
 }
 
 .row:nth-child(even) .cell {
-  background-color: #f0f0f0;
+  background-color: #FFF8E7;
 }
 
 .row:nth-child(odd) .cell {
-  background-color: #fff;
+  background-color: #FFF8E7;
 }
 
 .cell[colspan="2"] {
   flex: 2; /* Span two columns by occupying twice the space */
-  background-color: #f9f9f9;
+  background-color: #FFF8E7;
 }
 
 .subject {
@@ -287,27 +290,82 @@ select:focus {
 }
 
 
-
 .gard {
-  margin: 0 0 20px;
+  margin: 0 ;
   padding: 20px;
   border-radius: 15px;
-  background-color: #FFFAF0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #FFF8E7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column; /* Align content vertically */
-  gap: 15px; /* Add space between elements */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: auto;
+  margin-bottom: 20px;
 }
 
-.gard .title {
-  font-size: 1.2em;
+.gard h3 {
+  font-size: 1.4em;
   color: #333;
+  text-align: center;
+  width: 100%;
+  margin: 0 0 10px;
+}
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  gap: 20px; /* เพิ่มช่องว่างระหว่างองค์ประกอบ */
 }
 
 .form-group {
   display: flex;
+  flex-direction: row; /* จัดให้ label และ select อยู่ในบรรทัดเดียวกัน */
   align-items: center;
-  gap: 10px;
+  gap: 15px; /* เพิ่มระยะห่างระหว่าง label และ select */
+  flex: 1;
+  font-weight: bold; /* เพิ่มส่วนนี้เพื่อทำให้ฟอนต์เป็นตัวหนา */
+}
+
+label {
+  font-size: 1em;
+  color: #333;
+}
+
+select {
+  width: auto;
+  padding: 5px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+.button-row {
+  display: flex;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  width: auto;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #4682B4;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+button:hover {
+  background-color: #040404;
+  color: #fff;
 }
 
 label {
@@ -326,7 +384,30 @@ input[type="radio"] + label {
 }
 
 select {
-  min-width: 150px; /* Ensure select has a consistent width */
+  min-width: 50px; /* Ensure select has a consistent width */
+}
+
+.term-buttons {
+  display: flex;
+  gap: 15px; /* Add space between radio buttons */
+}
+label {
+  font-size: 1em;
+  color: #000000;
+}
+
+select,
+input[type="radio"] + label {
+  font-size: 15px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+select {
+  min-width: 50px; /* Ensure select has a consistent width */
 }
 
 .term-buttons {
