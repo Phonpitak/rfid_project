@@ -137,13 +137,13 @@ aside.mini {
 }
 
 .link ul li:hover {
-  background-color: #a1b5d8;
+  background-color: #F7B8CD;
   border-radius: 15px;
   
 }
 
 .link ul li.active {
-  background-color: #a1b5d8;
+  background-color: #F7B8CD;
   border-radius: 15px;
 
 }
@@ -172,7 +172,7 @@ aside.mini {
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #b8d4f0;
+  background-color: #2e6ba7;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
 }
