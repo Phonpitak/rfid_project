@@ -30,9 +30,8 @@ $(document).ready(function () {
         TB_Open(); 
     }
 });
-
- // ฟังก์ชันสำหรับส่งข้อมูลฟอร์มเพิ่มรายวิชา
- async function submitSubjectForm(event) {
+// ฟังก์ชันสำหรับส่งข้อมูลฟอร์มเพิ่มรายวิชา
+async function submitSubjectForm(event) {
     event.preventDefault();
 
     // เลือกฟอร์มจาก DOM
@@ -58,14 +57,31 @@ $(document).ready(function () {
         // ตรวจสอบผลลัพธ์
         if (response.ok) {
             const result = await response.text();
-            alert(result); // แสดงข้อความสำเร็จ
-            form.reset();  // ล้างฟอร์มหลังส่งสำเร็จ
+            swal({
+                title: "เพิ่มรายวิชา!",
+                text: result,
+                icon: "success",
+                button: "ตกลง",
+            }).then(() => {
+                form.reset(); // ล้างฟอร์มหลังส่งสำเร็จ
+            });
         } else {
-            alert("เกิดข้อผิดพลาดในการเพิ่มรายวิชา");
+            const errorMessage = await response.text();
+            swal({
+                title: "เกิดข้อผิดพลาด!",
+                text: errorMessage || "ไม่สามารถเพิ่มรายวิชาได้",
+                icon: "error",
+                button: "ลองอีกครั้ง",
+            });
         }
     } catch (error) {
         console.error("Error:", error);
-        alert("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+        swal({
+            title: "เกิดข้อผิดพลาด!",
+            text: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้",
+            icon: "error",
+            button: "ลองอีกครั้ง",
+        });
     }
 }
 

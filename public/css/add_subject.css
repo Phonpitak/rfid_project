@@ -1,0 +1,4 @@
+.swal-button {
+    margin: 0 auto; /* ทำให้ปุ่มอยู่ตรงกลาง */
+    display: block; /* ให้ปุ่มแสดงแบบบล็อก */
+}

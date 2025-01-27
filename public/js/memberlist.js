@@ -31,38 +31,97 @@ $(document).ready(function () {
     }
 });
 
-// ฟังก์ชันเพื่อดึงข้อมูลและแสดงผลในตาราง
+// ในไฟล์ memberlist.js
+$(document).ready(function() {
+    // โหลดข้อมูลเมื่อหน้าเว็บโหลดเสร็จ
+    ShowUserData();
+
+    // จัดการกับฟอร์มแก้ไข
+    $('#editUserForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const userData = {
+            user_id: $('#edit_user_id').val(),
+            std_firstname: $('#edit_std_firstname').val(),
+            std_lastname: $('#edit_std_lastname').val(),
+            b_branch: $('#edit_b_branch').val(),
+            f_facully: $('#edit_f_facully').val()
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/member/update",
+            contentType: "application/json",
+            data: JSON.stringify(userData),
+            success: function(response) {
+                $('#editUserModal').modal('hide');
+                alert('อัพเดทข้อมูลสำเร็จ');
+                ShowUserData();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('เกิดข้อผิดพลาดในการอัพเดทข้อมูล');
+            }
+        });
+    });
+});
+
+// ฟังก์ชันแสดงข้อมูลในตาราง
 function ShowUserData() {
     $.ajax({
         type: "GET",
-        url: "/user/memberlist", // URL สำหรับดึงข้อมูล
+        url: "/user/memberlist",
         success: function (data) {
-            $('#memberlist').empty(); // ล้างข้อมูลในตารางก่อนแสดงข้อมูลใหม่
-            var tr;
-            for (var i = 0; i < data.length; i++) {
-                tr = $('<tr/>');
-                tr.append("<td class='text-center'>" + data[i].user_id + "</td>");
-                tr.append("<td class='text-center'>" + data[i].std_firstname + " " + data[i].std_lastname + "</td>");
-                tr.append("<td class='text-center'>" + data[i].b_branch + "</td>");
-                tr.append("<td class='text-center'>" + data[i].f_facully + "</td>");
-                tr.append("<td class='text-center'><button class='btn btn-edit' onclick='editUser(" + data[i].user_id + ")'>Edit</button></td>");
-                tr.append("<td class='text-center'><button class='btn btn-delete' onclick='deleteUser(" + data[i].user_id + ")'>Delete</button></td>");
-                $('#memberlist').append(tr); // เพิ่มแถวลงในตาราง
-            }
+            $('#memberlist').empty();
+            data.forEach(function(user) {
+                const row = `
+                    <tr>
+                        <td class="text-center">${user.user_id}</td>
+                        <td class="text-center">${user.std_firstname} ${user.std_lastname}</td>
+                        <td class="text-center">${user.b_branch}</td>
+                        <td class="text-center">${user.f_facully}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="editUser('${user.user_id}')">
+                                <i class="bi bi-pencil-square"></i> แก้ไข
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${user.user_id}')">
+                                <i class="bi bi-trash"></i> ลบ
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                $('#memberlist').append(row);
+            });
         },
         error: function (xhr, status, error) {
-            console.error('Error:', status, error);
-            alert('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + status + ' ' + error);
+            console.error('Error:', error);
+            alert('เกิดข้อผิดพลาดในการดึงข้อมูล');
         }
     });
 }
 
-// ฟังก์ชันสำหรับแก้ไขและลบ
+// ฟังก์ชันแก้ไขข้อมูล
 function editUser(userId) {
-    alert('คุณต้องการแก้ไขข้อมูลของผู้ใช้ที่มี ID: ' + userId);
-    // ใส่ลอจิกแก้ไขที่นี่
+    $.ajax({
+        type: "GET",
+        url: "/member/" + userId,
+        success: function(data) {
+            $('#edit_user_id').val(data.user_id);
+            $('#edit_std_firstname').val(data.std_firstname);
+            $('#edit_std_lastname').val(data.std_lastname);
+            $('#edit_b_branch').val(data.b_branch);
+            $('#edit_f_facully').val(data.f_facully);
+            
+            $('#editUserModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้');
+        }
+    });
 }
-
 function deleteUser(userId) {
     if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้ที่มี ID: ' + userId + '?')) {
         // ใส่ลอจิกลบที่นี่

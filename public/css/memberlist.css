@@ -82,6 +82,10 @@
 }
 .container {
   display: flex;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 .info-container {
   display: flex;
@@ -97,9 +101,11 @@
 aside {
   background-color: #fbf8f8;
   color: rgb(4, 4, 4);
-  height: auto;
+  height: auto !important;
   transition: width 0.3s ease;
-  position: relative;
+  position: fixed !important;
+  z-index: 1000 !important;
+  
 }
 
 aside.mini {
@@ -114,12 +120,17 @@ aside.mini {
   cursor: pointer;
   padding: 1rem;
   font-size: 1.5rem;
+  width: 40px;
+    height: 40px;
+    position: relative;
+    z-index: 1000;
 }
 
 #toggle i {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  font-size: 24px;
 }
 
 /* Link ใน Sidebar */
@@ -173,8 +184,12 @@ main {
   flex-grow: 1;
   padding: 2rem;
   background-color: #2e6ba7;
+  padding: 2rem !important;
+  background-color: #b8d4f0;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
+  margin-left: 250px !important; /* ปรับตามขนาด sidebar ของคุณ */
+  width: calc(100% - 250px) !important;
 }
 
 main h1 {
@@ -257,4 +272,27 @@ main h1 {
 }
   
 
+.swal-button {
+  margin: 0 auto; /* ทำให้ปุ่มอยู่ตรงกลาง */
+  display: block; /* ให้ปุ่มแสดงแบบบล็อก */
+}
 
+body.modal-open {
+  padding-right: 0 !important;
+}
+/* เมื่อ sidebar หุบ */
+.container.collapsed main {
+    margin-left: 60px !important; /* ปรับตามขนาด collapsed sidebar */
+    width: calc(100% - 60px) !important;
+}
+/* ให้ modal ทำงานปกติ */
+.modal {
+  padding: 0 !important;
+}
+
+.modal-dialog {
+  margin: 1.75rem auto !important;
+}
+.modal-body {
+  font-family: 'Sarabun', Arial, sans-serif !important;
+}
