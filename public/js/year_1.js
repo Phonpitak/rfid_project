@@ -49,7 +49,7 @@ if (firstName && lastName) {
 // ดึงข้อมูลจาก API
 function fetchAttendanceData(teacherId) {
     $.ajax({
-        url: `/attendance2?teacher_id=${teacherId}&year=2`,
+        url: `/attendance1?teacher_id=${teacherId}&year=1`,
         method: 'GET',
         success: function (data) {
             if (data && Object.keys(data).length > 0) {
