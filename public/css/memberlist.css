@@ -60,7 +60,8 @@ body {
     margin: 0 0 10px;
     padding: 20px 15px 1px;
     background-color: #ffffff;
-    border: 1px solid #dbe1e8;
+    border : 1px solid #dbe1e8;
+    border-radius: 25px; /* เพิ่มขอบมน */
 }
 .block-options {
     margin: 0 6px;
@@ -117,6 +118,7 @@ aside {
   position: fixed !important;
   z-index: 1000 !important;
   all: unset; /* ปิดค่าดีฟอลต์ทั้งหมด */
+  font-family: 'Sarabun', Arial, sans-serif;
 }
 
 aside.mini {
@@ -305,4 +307,41 @@ body.modal-open {
 }
 .modal-body {
   font-family: 'Sarabun', Arial, sans-serif !important;
+}
+.gard {
+  margin: 0 ;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #FFF8E7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: auto;
+  margin-bottom: 20px;
+}
+
+.gard h3 {
+  font-size: 1.4em;
+  color: #333;
+  text-align: center;
+  width: 100%;
+  margin: 0 0 10px;
+}
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  gap: 20px; /* เพิ่มช่องว่างระหว่างองค์ประกอบ */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row; /* จัดให้ label และ select อยู่ในบรรทัดเดียวกัน */
+  align-items: center;
+  gap: 15px; /* เพิ่มระยะห่างระหว่าง label และ select */
+  flex: 1;
+  font-weight: bold; /* เพิ่มส่วนนี้เพื่อทำให้ฟอนต์เป็นตัวหนา */
 }
