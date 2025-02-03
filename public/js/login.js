@@ -18,6 +18,7 @@ function click_Login(event) {
 
             // เก็บข้อมูลผู้ใช้ลงใน sessionStorage
             sessionStorage.setItem("TeacherID", response.data.user.u_id);
+            sessionStorage.setItem("student_id", response.data.user.u_id);
             sessionStorage.setItem("U_ID", response.data.user.u_id);
             sessionStorage.setItem("UserID", response.data.user.user_id);
             sessionStorage.setItem("Username", response.data.user.std_username);

@@ -46,6 +46,9 @@ if (firstName && lastName) {
 } else {
     console.log('No profile data found in sessionStorage');
 }
+
+
+
 // ดึงข้อมูลจาก API
 function fetchAttendanceData(teacherId) {
     $.ajax({
@@ -205,4 +208,17 @@ $(document).ready(function() {
 function Logout() {
     sessionStorage.clear();
   }
-  
+
+function TB_Open() {
+    // ตรวจสอบว่ามีเมนูที่ต้องการแสดงอยู่หรือไม่ ถ้ามีจะเปิดแสดง
+    // นี่เป็นตัวอย่างการแสดงเมนู โดยสามารถกำหนดให้เมนูที่ถูกซ่อนไว้ปรากฏอีกครั้ง
+
+    // สมมุติว่าเมนูถูกซ่อนโดยใช้ display:none
+    $('.menu-item').each(function() {
+        if ($(this).css('display') === 'none') {
+            $(this).show(); // แสดงเมนูที่ถูกซ่อน
+        }
+    });
+
+    console.log("Menu opened and displayed.");
+}
