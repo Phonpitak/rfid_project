@@ -1,35 +1,70 @@
 $(document).ready(function () {
-    var group_id = sessionStorage.getItem("Group");
+  // ดึงค่า group_id และ student_id จาก sessionStorage
+  var group_id = sessionStorage.getItem("Group");
+  var student_id = sessionStorage.getItem("student_id"); // ใช้ student_id ที่เก็บใน sessionStorage
 
-    if (!group_id) {
-        location.href = "login.html";
-        return; 
-    }
+  console.log("✅ Group ID:", group_id);
+  console.log("✅ Session Student ID:", student_id);
 
-   
-    if (group_id == 9) {
-        TB_Open();
-    } else if (group_id == 1 || group_id == 2) {
-        $('#registerMenu').remove(); 
-        $('#memberlist').remove();  
-        $('#addsubject').remove();
-        $('#register_all').remove();
-        $('#year_1').remove();
-        $('#year_2').remove();
-        $('#year_3').remove();
-        $('#year_4').remove();
-    } else if (group_id == 5) {
-        $('#registerMenu').remove(); 
-        $('#register_all').remove();
-        $('#memberlist').remove();  
-        $('#addsubject').remove();
-        $('#detailMenu').remove();
-        $('#subjectMenu').remove();
-        $('#attendanceMenu').remove();
+  // ถ้าไม่พบ student_id ให้ redirect ไปหน้า login
+  if (!student_id) {
+      console.error("❌ ไม่พบค่า student_id, Redirecting to login...");
+      alert("กรุณาเข้าสู่ระบบใหม่");
+      location.href = "login.html";
+      return;
+  }
+  $('#studentId').text(student_id); // อัปเดต student_id ลงใน UI
+  // กำหนดสิทธิ์ของแต่ละกลุ่ม
+  if (group_id == 9) {
+      console.log("✅ Admin Group - เปิด TB_Open()");
+      TB_Open();
+  } else if (group_id == 1 || group_id == 2) {
+      removeElements([
+          '#registerMenu', 
+          '#memberlist',  
+          '#addsubject',
+          '#register_all',
+          '#year_1',
+          '#year_2',
+          '#year_3',
+          '#year_4'
+      ]);
+  } else if (group_id == 5) {
+      removeElements([
+          '#registerMenu', 
+          '#register_all',
+          '#memberlist',  
+          '#addsubject',
+          '#detailMenu',
+          '#subjectMenu',
+          '#attendanceMenu'
+      ]);
+      TB_Open();
+  } else {
+      console.warn("⚠️ ไม่พบการตั้งค่าสำหรับ group_id:", group_id);
+  }
 
-        TB_Open(); 
-    }
+  // เรียก API เพื่อนำข้อมูลมาแสดงผล
+  fetchStudentAttendance(student_id);
 });
+
+// ฟังก์ชันลบเมนูที่ไม่เกี่ยวข้อง
+function removeElements(selectors) {
+  selectors.forEach(selector => {
+      if ($(selector).length > 0) {
+          $(selector).remove();
+      }
+  });
+}
+
+// ดึงข้อมูลโปรไฟล์จาก sessionStorage
+const firstName = sessionStorage.getItem('Firstname');
+const lastName = sessionStorage.getItem('Lastname');
+if (firstName && lastName) {
+    document.getElementById('profile-name').innerText = `${firstName} ${lastName}`;
+} else {
+    console.log('No profile data found in sessionStorage');
+}
 
 $("#search_TH").on("keyup", function () {
     var value = $(this).val().toLowerCase();
@@ -37,6 +72,104 @@ $("#search_TH").on("keyup", function () {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
+  $(document).ready(function () {
+    const storedUser = JSON.parse(localStorage.getItem('user_data')); // ดึงข้อมูลจาก Local Storage
+    if (storedUser && storedUser.u_id) {
+        $('#studentId').text(storedUser.u_id); // ✅ ใช้ u_id เป็น student_id
+        console.log('✅ Loaded student ID:', storedUser.u_id);
+    } else {
+        console.error('❌ ไม่พบค่า student_id');
+    }
+    
+    fetchStudentAttendance(); // โหลดข้อมูลเข้าเรียน
+});
+function fetchStudentAttendance() {
+  const studentId = $('#studentId').text().trim(); 
+  const academicYear = $('#academic-year').val();
+  const term = $('#term').val();
+  const year = $('#year').val();
+
+  console.log('📌 Query Parameters:', {
+      student_id: studentId,
+      academic_year: academicYear,
+      term: term,
+      year: year
+  });
+
+  $.ajax({
+      url: `/student_attendance?student_id=${studentId}&academic_year=${academicYear}&term=${term}&year=${year}`,
+      method: 'GET',
+      success: function (data) {
+          console.log('✅ Data received:', data);
+          if (data && Object.keys(data).length > 0) {
+              createAttendanceTable(data);
+          } else {
+              $('#attendance-records').html('<p>ไม่มีข้อมูลการเข้าชั้นเรียน</p>');
+          }
+      },
+      error: function (error) {
+          console.error('❌ Error fetching attendance data:', error);
+          $('#attendance-records').html('<p>เกิดข้อผิดพลาดในการดึงข้อมูล</p>');
+      }
+  });
+}
+
+// **สร้างตารางแสดงข้อมูลเข้าเรียน**
+function createAttendanceTable(data) {
+  $('#attendance-records').empty().addClass('attendance-container');
+
+  Object.keys(data).forEach(day => {
+      const subjects = data[day];
+
+      // แสดงชื่อวัน (เช่น "วันอังคาร")
+      const dayTitle = $('<h2>').addClass('attendance-header').text(`วัน${day}`);
+      $('#attendance-records').append(dayTitle);
+
+      Object.keys(subjects).forEach(subjectId => {
+          const subject = subjects[subjectId];
+          const subjectTitle = $('<h3>').addClass('attendance-header').text(`วิชา: ${subject.subject_name}`);
+          
+          const table = $('<table>').addClass('attendance-table');
+          const thead = $('<thead>');
+          const headerRow = $('<tr>')
+              .append($('<th>').text('วันที่'))
+              .append($('<th>').text('สถานะ'));
+          
+          thead.append(headerRow);
+          table.append(thead);
+
+          const tbody = $('<tbody>');
+
+          Object.keys(subject.attendance).forEach(date => {
+              const row = $('<tr>');
+              row.append($('<td>').text(date));
+              row.append($('<td>').html(getStatusIcon(subject.attendance[date])));
+              tbody.append(row);
+          });
+
+          // สรุปผล (จำนวนที่มาเรียน, สาย, ขาด)
+          const summaryRow = $('<tr>')
+              .append($('<td>').text('รวม'))
+              .append($('<td>').text(`มา: ${subject.summary.present}, สาย: ${subject.summary.late}, ขาด: ${subject.summary.absent}`));
+          
+          tbody.append(summaryRow);
+          table.append(tbody);
+
+          $('#attendance-records').append(subjectTitle).append(table);
+      });
+  });
+}
+
+// ปรับสถานะให้แสดงสี
+function getStatusIcon(status) {
+  switch (status) {
+      case 1: return '<span class="status-present">✔️</span>';  // มาเรียน (เขียว)
+      case 2: return '<span class="status-late">🕒</span>';      // มาสาย (ส้ม)
+      case 3: return '<span class="status-absent">❌</span>';    // ขาดเรียน (แดง)
+      default: return '-';   // ไม่มีข้อมูล
+  }
+}
+
 
 let sideBar = document.querySelector("aside");
 let toggle = document.querySelector("#toggle");
@@ -66,193 +199,9 @@ menuItems.forEach(item => {
     window.location.href = link; 
   });
 });
-
-
-function ShowStatusData() {
-    var userID = sessionStorage.getItem('UserID');
-    var rfid_id = sessionStorage.getItem('RFID_ID');
-
-    if (userID) {
-        $.ajax({
-            type: "GET",
-            url: "/recode/" + userID,  
-            success: function (data) {
-                $('#show_Detail').empty();  
-                var tr;
-                for (var i = 0; i < data.length; i++) {
-                    console.log(data[i].s_status);
-                    tr = $('<tr/>');
-                    tr.append("<td class='text-center'>" + data[i].s_date + "</td>");
-                    tr.append("<td class='text-center'>" + data[i].s_study_period + "</td>");
-                    tr.append("<td class='text-center'>" + data[i].sj_subject_id + "</td>");
-                    tr.append("<td class='text-center'>" + data[i].sj_subject_name + "</td>");
-                    tr.append("<td class='text-center'>" + data[i].t_teacher_id + "</td>");
-                    tr.append("<td class='text-center'>" + data[i].t_teacher_name + "</td>");
-                    tr.append("<td class='text-center'>" + data[i].s_class_id + "</td>");
-
-                    if (data[i].s_status == 1) {
-                        tr.append("<td class='text-center'><span class='label label-normal'>ปกติ</span></td>");
-                    } else if (data[i].s_status == 2) {
-                        tr.append("<td class='text-center'><span class='label label-late'>สาย</span></td>");
-                    } else if (data[i].s_status == 3) {
-                        tr.append("<td class='text-center'><span class='label label-absent'>ขาด</span></td>");
-                    }
-
-                    $('#show_Detail').append(tr);    
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error:', status, error);
-                alert('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + status + ' ' + error);
-            }
-        });
-    } else {
-        alert('ไม่พบข้อมูล UserID ใน sessionStorage');
-    }
-}
-async function fetchSubjects() {
-    try {
-      // เรียก API ที่สร้างไว้
-      const response = await fetch('/api/subjects'); // หรือ '/subjects' ถ้าไม่มี prefix
-      const subjects = await response.json();
-  
-      // อ้างอิงถึง Dropdown
-      const subjectDropdown = document.getElementById("t_subjects");
-  
-      // ล้างข้อมูลเก่าใน Dropdown
-      subjectDropdown.innerHTML = '<option value="" disabled selected>เลือกวิชา</option>';
-  
-      // เติมข้อมูลวิชาจาก API
-      subjects.forEach(subject => {
-        const option = document.createElement("option");
-        option.value = subject.id; // ใช้ ID เป็นค่า
-        option.textContent = subject.subject_name; // ใช้ชื่อวิชาเป็นข้อความ
-        subjectDropdown.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Error fetching subjects:", error);
-    }
-  }
-  
-  // เรียกใช้งานฟังก์ชันเมื่อโหลดหน้า
-  document.addEventListener("DOMContentLoaded", fetchSubjects);
-  
-
-  // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
-  window.onload = function () {
-    fetchSubjects();
-
-    // เติมข้อมูลวันที่
-    const daySelect = document.getElementById("day-select");
-    for (let i = 1; i <= 31; i++) {
-      const option = document.createElement("option");
-      option.value = i;
-      option.textContent = i;
-      daySelect.appendChild(option);
-    }
-
-    // เติมข้อมูลเดือน
-    const monthSelect = document.getElementById("month-select");
-    const monthNames = [
-      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
-      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
-    ];
-    monthNames.forEach((month, index) => {
-      const option = document.createElement("option");
-      option.value = index + 1;
-      option.textContent = month;
-      monthSelect.appendChild(option);
-    });
-
-    // เติมข้อมูลปี
-    const yearSelect = document.getElementById("year-select");
-    const currentYear = new Date().getFullYear();
-    for (let year = currentYear - 10; year <= currentYear + 10; year++) {
-      const option = document.createElement("option");
-      option.value = year;
-      option.textContent = year;
-      yearSelect.appendChild(option);
-    }
-  };
-
-  // ดึงข้อมูลโปรไฟล์จาก sessionStorage
-const firstName = sessionStorage.getItem('Firstname');
-const lastName = sessionStorage.getItem('Lastname');
-if (firstName && lastName) {
-    document.getElementById('profile-name').innerText = `${firstName} ${lastName}`;
-} else {
-    console.log('No profile data found in sessionStorage');
-}
-
-async function fetchSubjects() {
-    try {
-      // เรียก API ที่สร้างไว้
-      const response = await fetch('/api/subjects'); // หรือ '/subjects' ถ้าไม่มี prefix
-      const subjects = await response.json();
-  
-      // อ้างอิงถึง Dropdown
-      const subjectDropdown = document.getElementById("t_subjects");
-  
-      // ล้างข้อมูลเก่าใน Dropdown
-      subjectDropdown.innerHTML = '<option value="" disabled selected>เลือกวิชา</option>';
-  
-      // เติมข้อมูลวิชาจาก API
-      subjects.forEach(subject => {
-        const option = document.createElement("option");
-        option.value = subject.id; // ใช้ ID เป็นค่า
-        option.textContent = subject.subject_name; // ใช้ชื่อวิชาเป็นข้อความ
-        subjectDropdown.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Error fetching subjects:", error);
-    }
-  }
-  
-  // เรียกใช้งานฟังก์ชันเมื่อโหลดหน้า
-  document.addEventListener("DOMContentLoaded", fetchSubjects);
-  
-
-  // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
-  window.onload = function () {
-    fetchSubjects();
-
-    // เติมข้อมูลวันที่
-    const daySelect = document.getElementById("day-select");
-    for (let i = 1; i <= 31; i++) {
-      const option = document.createElement("option");
-      option.value = i;
-      option.textContent = i;
-      daySelect.appendChild(option);
-    }
-
-    // เติมข้อมูลเดือน
-    const monthSelect = document.getElementById("month-select");
-    const monthNames = [
-      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
-      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
-    ];
-    monthNames.forEach((month, index) => {
-      const option = document.createElement("option");
-      option.value = index + 1;
-      option.textContent = month;
-      monthSelect.appendChild(option);
-    });
-
-    // เติมข้อมูลปี
-    const yearSelect = document.getElementById("year-select");
-    const currentYear = new Date().getFullYear();
-    for (let year = currentYear - 10; year <= currentYear + 10; year++) {
-      const option = document.createElement("option");
-      option.value = year;
-      option.textContent = year;
-      yearSelect.appendChild(option);
-    }
-  };
-
 $(document).ready(function () {
-    ShowStatusData();  // ดึงข้อมูลเฉพาะผู้ใช้
+  fetchStudentAttendance(); // โหลดข้อมูลเมื่อหน้าเว็บเปิด
 });
-
 function Logout() {
     sessionStorage.clear();
   }

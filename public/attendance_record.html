@@ -69,69 +69,53 @@
         <main>
             <div class="profile-block">
                 <div class="profile-details">
-                  <div>
-                    <span class="profile-title"></span>
-                    <p id="profile-name"></p>
-                    <pid="studentId"></p>
-                  </div>
-                  <div style="position:relative;">
-                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
-                    <span class="status-indicator"></span> <!-- Green dot -->
-                  </div>
-                </div>
-              </div>
-            <div>
-                <h3>บันทึกการเข้าชั้นเรียน</h3>
-            </div>
-            <div class="inline">
-                <h4>วันที่</h4>
-                <h4>เดือน</h4>
-                <h4>ปีการศึกษา</h4>
-                <h4>วิชา</h4>
-            </div>
-            <div class="col-lg-12 col-sm-12">
-                <div class="block">
-                    <div class="block-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; margin-bottom: 10px;">
-                        <!-- Title section (left aligned) -->
-                        <h5 style="display: flex; align-items: center; margin: 0;">
-                            <i class="bi bi-bar-chart-line-fill" style="margin-right: 5px; margin-left: 15px;"></i>
-                            <strong style="font-size: 15px; margin-left: 5px;">บันทึกเข้าชั้นเรียน</strong>
-                            <strong id="LA_Name" style="color: rgb(109, 178, 224); margin-left: 5px;"></strong>
-                        </h5>
-                    
-                        <!-- Block options (right aligned) -->
-                        <div class="block-options form-inline" style="display: flex; align-items: center;">   
-                            <input type="text" placeholder="Search.." class="form-control input-sm" id="search_TH" name="search_TH" style="margin-right: 10px;">
-                            <button type="button" data-target="#Print" title="Print" style="margin-right: 10px;">
-                                <i class="fas fa-print" style="color: rgb(175, 33, 156);"></i>
-                            </button>
-                            <button type="button" data-target="#setting" title="Setting" style="margin-right: 10px;">
-                                <i class="fas fa-cog"></i>
-                            </button>   
-                        </div>
+                    <div>
+                        <p id="profile-name"></p>
+                        <p id="studentId"></p>
                     </div>
+                    <div style="position:relative;">
+                        <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                        <span class="status-indicator"></span>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Table -->
-                    <table class="table table-bordered table-striped table-vcenter" id="table-request">
-                        <thead>
-                            <tr>
-                                <th hidden class="text-center">id</th>
-                                <th class="text-center" style="width: 120px; font-size: 15px;">วันที่</th>
-                                <th class="text-center" style="width: 120px; font-size: 15px;">เวลา</th>
-                                <th class="text-center" style="width: 120px; font-size: 15px;">รหัสวิชา</th>
-                                <th class="text-center" style="width: 200px; font-size: 15px;">ชื่อวิชา</th>
-                                <th class="text-center" style="width: 120px; font-size: 15px;">รหัสอาจารย์</th> 
-                                <th class="text-center" style="width: 300px; font-size: 15px;">ชื่ออาจารย์</th>  
-                                <th class="text-center" style="width: 120px; font-size: 15px;">ห้องเรียน</th>
-                                <th class="text-center" style="width: 120px; font-size: 15px;">สถานะ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_Detail"></tbody>
-                    </table>
+            <h3>บันทึกการเข้าชั้นเรียน</h3>
+            <div class="filter-section">
+                <label for="academic-year">ปีการศึกษา:</label>
+                <select id="academic-year">
+                    <option value="2568">2568</option>
+                    <option value="2567">2567</option>
+                    <option value="2566">2566</option>
+                </select>
+
+                <label for="term">ภาคเรียน:</label>
+                <select id="term">
+                    <option value="1">เทอม 1</option>
+                    <option value="2">เทอม 2</option>
+                    <option value="3">เทอม 3</option>
+                </select>
+
+                <label for="year">ชั้นปี:</label>
+                <select id="year">
+                    <option value="">ทั้งหมด</option>
+                    <option value="1">ปี 1</option>
+                    <option value="2">ปี 2</option>
+                    <option value="3">ปี 3</option>
+                    <option value="4">ปี 4</option>
+                </select>
+
+                <button onclick="fetchStudentAttendance()">ค้นหา</button>
+            </div>
+
+            <div class="block">
+                <div id="attendance-records">
+                    <!-- ตารางข้อมูลการเข้าชั้นเรียนจะถูกสร้างที่นี่ -->
                 </div>
             </div>
         </main>
     </div>
+
     <script src="js/attendance_record.js"></script>
 </body>
 </html>
