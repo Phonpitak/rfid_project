@@ -69,25 +69,50 @@
         <main>
             <div class="profile-block">
                 <div class="profile-details">
-                  <div>
-                    <span class="profile-title"></span>
-                    <p id="profile-name"></p>
-                    <pid="studentId"></p>
-                  </div>
-                  <div style="position:relative;">
-                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
-                    <span class="status-indicator"></span> <!-- Green dot -->
-                  </div>
+                    <div>
+                        <span class="profile-title"></span>
+                        <p id="profile-name"></p>
+                        <p id="studentId"></p>
+                    </div>
+                    <div style="position:relative;">
+                        <i class="bi bi-person-fill" style="font-size: 50px;"></i>
+                        <span class="status-indicator"></span> <!-- Green dot -->
+                    </div>
                 </div>
-              </div>
+            </div>
             <div>
                 <h3>รายชื่อสมาชิก</h3>
             </div>
             <!-- group สาขากับคณะ -->
             <div class="inline">
-                <h4>ปีการศึกษา</h4>
-                <h4>สาขาวิชา</h4>
-                <h4>คณะ</h4>
+                <div>
+                    <h4>ปีการศึกษา</h4>
+                    <select id="academicYear" class="form-control">
+                        <option value="">-- เลือกปีการศึกษา --</option>
+                        <option value="2568">2568</option>
+                        <option value="2567">2567</option>
+                        <option value="2566">2566</option>
+                    </select>
+                </div>
+                <div>
+                    <h4>สาขาวิชา</h4>
+                    <select id="major" class="form-control">
+                        <option value="">-- เลือกสาขาวิชา --</option>
+                        <option value="เทคโนโลยีวิศวกรรมคอมพิวเตอร์">เทคโนโลยีวิศวกรรมคอมพิวเตอร์</option>
+                        <option value="เทคโนโลยีสารสนเทศ">เทคโนโลยีสารสนเทศ</option>
+                        <option value="เทคโนโลยีสื่อสารมวลชน">เทคโนโลยีสื่อสารมวลชน</option>
+                        <option value="เทคโนโลยีวิศวกรรมไฟฟ้า">เทคโนโลยีวิศวกรรมไฟฟ้า</option>
+                    </select>
+                </div>
+                <div>
+                    <h4>คณะ</h4>
+                    <select id="faculty" class="form-control">
+                        <option value="">-- เลือกคณะ --</option>
+                        <option value="วิทยาศาสตร์">วิทยาศาสตร์</option>
+                        <option value="วิศวกรรมศาสตร์">วิศวกรรมศาสตร์</option>
+                        <option value="เทคโนโลยีสารสนเทศ">เทคโนโลยีสารสนเทศ</option>
+                    </select>
+                </div>
             </div>
             <div class="block">
                 <div class="block-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; margin-bottom: 10px;">
@@ -96,11 +121,11 @@
                         <i class="bi bi-bar-chart-line-fill" style="margin-right: 5px; margin-left: 15px;"></i>
                         <strong style="font-size: 15px; margin-left: 10px;display: inline-block;">รายชื่อนักศึกษาทั้งหมด</strong>
                     </h5>
-                <!-- Block options (right aligned) -->
-                <div class="block-options form-inline" style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">   
-                    <input type="text" placeholder="Search.." class="form-control input-sm search-input" id="search_TH" name="search_TH" style="margin-right: 10px;">
+                    <!-- Block options (right aligned) -->
+                    <div class="block-options form-inline" style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">   
+                        <input type="text" placeholder="Search.." class="form-control input-sm search-input" id="search_TH" name="search_TH" style="margin-right: 10px;">
+                    </div>
                 </div>
-            </div>
                 
                 <!-- ตารางรายชื่อสมาชิก -->
                 <table class="table table-bordered table-striped table-vcenter" id="table-request">
@@ -118,10 +143,5 @@
                 </table>
             </div>
         </main>
-    </div>
-
-    <!-- นำเข้า JavaScript -->
-    <script src="js/detail.js"></script>
-    <script src="js/memberlist.js"></script>
-</body>
-</html>
+<script src="js/detail.js"></script>
+<script src="js/memberlist.js"></script>        

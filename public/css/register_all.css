@@ -1,0 +1,253 @@
+/* ตั้งค่าโครงสร้างเบื้องต้น */
+body {
+  font-family: 'Sarabun', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    display: flex;
+  }
+  .info-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column;
+  }
+/* ส่วนของ Sidebar */
+aside {
+  background-color: #fbf8f8;
+  color: rgb(0, 0, 0);
+  height: auto;
+  transition: width 0.3s ease;
+  position: relative;
+  font-weight: bold;
+}
+
+aside.mini {
+  width: 2rem;
+}
+
+/* ปุ่ม Toggle */
+#toggle {
+  background-color: transparent;
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+#toggle i {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Link ใน Sidebar */
+.link ul {
+  list-style: none;
+  padding: 0.70rem;
+  margin: 0;
+}
+
+.link ul li {
+  display: flex;
+  align-items: center;
+  padding: 0.70rem;
+  cursor: pointer;
+  
+}
+
+.link ul li:hover {
+  background-color:  #F7B8CD;
+  border-radius: 15px;
+  
+}
+
+.link ul li.active {
+  background-color:  #F7B8CD;
+  border-radius: 15px;
+
+}
+
+.link ul li i {
+  margin-right: 1rem;
+}
+
+.link ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+  width: 100%;
+
+}
+
+.link ul li a label {
+  font-size: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ปรับแต่ง Container หลัก */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Main content */
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #003F7D;
+  min-height: 100vh;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+main h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.profile-block {
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end; /* Aligns the content to the right */
+}
+
+.profile-title {
+  display: flex;
+  align-items: center;
+}
+
+.profile-title h6 {
+  margin: 0;
+  padding-left: 10px;
+  font-size: 14px;
+  color: black;
+}
+
+.profile-options {
+  display: flex;
+  align-items: center;
+}
+
+.profile-options .icon {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.profile-flag {
+  margin-right: 15px;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+}
+
+.profile-details img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  position: relative;
+}
+
+.profile-details img::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  border: 2px solid white;
+}
+
+.profile-picture {
+  margin-right: 2rem;
+  text-align: center;
+}
+
+/* Block ส่วนกลาง */
+.block {
+  width: 1550px;
+  height: 250px;
+  background: #FFF8E7;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ฟอร์มลงทะเบียน */
+form {
+  font-weight: bold;
+  margin-top: 70px;
+  margin-left: -150px;
+  max-width: 150px;
+}
+
+.mb-3 {
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: black;
+}
+/* ปรับแต่ง Dropdown (Select) */
+select {
+  width: 150px;
+  height: 30px;
+  padding: 4px; /* ระยะห่างภายใน */
+  border: 1px solid #88a4fb; /* สีขอบ */
+  border-radius: 4px; /* ขอบโค้งมน */
+  background-color: white; /* สีพื้นหลัง */
+  font-size: 15px; /* ขนาดตัวอักษร */
+  color: #333; /* สีตัวอักษร */
+}
+
+/* เปลี่ยนสีขอบเมื่อโฟกัส */
+select:focus {
+  border-color: #b396ed; /* เปลี่ยนสีขอบเมื่อ focus */
+  outline: none; /* เอาเส้นขอบออกเมื่อ focus */
+}
+
+/* ปรับแต่งปุ่มลงทะเบียน */
+.btn-primary {
+  width: 80%;
+  padding: 12px;
+  border-radius: 50px;
+  font-size: 16px;
+  background-color: #003F7D;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: none; /* เอากรอบออก */
+}
+
+
+/* เปลี่ยนสีปุ่มเมื่อโฮเวอร์ */
+.btn-primary:hover {
+  background-color: black;
+}
+
