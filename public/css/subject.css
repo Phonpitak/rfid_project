@@ -98,7 +98,7 @@ aside.mini {
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #2e6ba7;
+  background-color: #003F7D;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
 }
@@ -288,7 +288,10 @@ select:focus {
   box-sizing: border-box;
   font-size: 12px;
 }
-
+.swal-button {
+  margin: 0 auto; /* ทำให้ปุ่มอยู่ตรงกลาง */
+  display: block; /* ให้ปุ่มแสดงแบบบล็อก */
+}
 
 .gard {
   margin: 0 ;
@@ -355,7 +358,7 @@ button {
   padding: 10px 20px;
   font-size: 1em;
   color: #fff;
-  background-color: #2e6ba7;
+  background-color: #4682B4;
   border: none;
   border-radius: 20px;
   cursor: pointer;
