@@ -73,103 +73,153 @@ toggle.addEventListener("click", function (e) {
     }
 });
 
-// ในไฟล์ memberlist.js
+// Modal
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("editModal").style.display = "none";
+});
+
+// Search
 $(document).ready(function() {
-    // โหลดข้อมูลเมื่อหน้าเว็บโหลดเสร็จ
-    ShowUserData();
-
-    // จัดการกับฟอร์มแก้ไข
-    $('#editUserForm').on('submit', function(e) {
-        e.preventDefault();
+    $("#search_custom").on("keyup", function() {
+        var searchText = $(this).val().toLowerCase();
         
-        const userData = {
-            user_id: $('#edit_user_id').val(),
-            std_firstname: $('#edit_std_firstname').val(),
-            std_lastname: $('#edit_std_lastname').val(),
-            b_branch: $('#edit_b_branch').val(),
-            f_facully: $('#edit_f_facully').val()
-        };
-
-        $.ajax({
-            type: "PUT",
-            url: "/member/update",
-            contentType: "application/json",
-            data: JSON.stringify(userData),
-            success: function(response) {
-                $('#editUserModal').modal('hide');
-                alert('อัพเดทข้อมูลสำเร็จ');
-                ShowUserData();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('เกิดข้อผิดพลาดในการอัพเดทข้อมูล');
+        $("#memberlist tr").each(function() {
+            var rowText = $(this).text().toLowerCase(); // รวมทุกคอลัมน์ในแถวเดียว
+            if (rowText.indexOf(searchText) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
             }
         });
     });
 });
 
-// ฟังก์ชันแสดงข้อมูลในตาราง
+$(document).ready(function () {
+    ShowUserData();
+});
+
+// เมื่อกด "บันทึก" ในฟอร์มแก้ไข
+$('#editUserForm').on('submit', async function (e) {
+    e.preventDefault();
+    let userData = {
+        user_id: $('#edit_user_id').val(),
+        std_firstname: $('#edit_std_firstname').val(),
+        std_lastname: $('#edit_std_lastname').val(),
+        b_branch: $('#edit_b_branch').val(),
+        f_facully: $('#edit_f_facully').val()
+    };
+
+    try {
+        const response = await fetch("/member/update", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+            Swal.fire({
+                title: "อัปเดตข้อมูลสำเร็จ!",
+                text: "ข้อมูลสมาชิกถูกอัปเดตเรียบร้อยแล้ว",
+                icon: "success",
+                confirmButtonText: "ตกลง"
+            }).then(() => {
+                closeModal();
+                ShowUserData();
+            });
+        } else {
+            Swal.fire("เกิดข้อผิดพลาด!", "ไม่สามารถอัปเดตข้อมูลได้", "error");
+        }
+    } catch (error) {
+        console.error("Error during update:", error);
+        Swal.fire("เกิดข้อผิดพลาด!", "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้", "error");
+    }
+});
+
+// โหลดข้อมูลสมาชิก
 function ShowUserData() {
     $.ajax({
         type: "GET",
         url: "/user/memberlist",
         success: function (data) {
             $('#memberlist').empty();
-            data.forEach(function(user) {
+            data.forEach(function (user) {
                 const row = `
                     <tr>
-                        <td class="text-center">${user.user_id}</td>
-                        <td class="text-center">${user.std_firstname} ${user.std_lastname}</td>
-                        <td class="text-center">${user.b_branch}</td>
-                        <td class="text-center">${user.f_facully}</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="editUser('${user.user_id}')">
-                                <i class="bi bi-pencil-square"></i> แก้ไข
-                            </button>
-                        </td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${user.user_id}')">
-                                <i class="bi bi-trash"></i> ลบ
-                            </button>
-                        </td>
-                    </tr>
-                `;
+                        <td>${user.user_id}</td>
+                        <td>${user.std_firstname} ${user.std_lastname}</td>
+                        <td>${user.b_branch}</td>
+                        <td>${user.f_facully}</td>
+                        <td><button class="edit-btn" onclick="editUser('${user.user_id}')">✏️</button></td>
+                        <td><button class="delete-btn" onclick="deleteUser('${user.user_id}')">🗑️</button></td>
+                    </tr>`;
                 $('#memberlist').append(row);
             });
         },
-        error: function (xhr, status, error) {
-            console.error('Error:', error);
-            alert('เกิดข้อผิดพลาดในการดึงข้อมูล');
+        error: function () {
+            Swal.fire("เกิดข้อผิดพลาด!", "ไม่สามารถโหลดข้อมูลได้", "error");
         }
     });
 }
 
-// ฟังก์ชันแก้ไขข้อมูล
+// ดึงข้อมูลสมาชิกมาแสดงใน Modal
 function editUser(userId) {
     $.ajax({
         type: "GET",
         url: "/member/" + userId,
-        success: function(data) {
+        success: function (data) {
             $('#edit_user_id').val(data.user_id);
             $('#edit_std_firstname').val(data.std_firstname);
             $('#edit_std_lastname').val(data.std_lastname);
             $('#edit_b_branch').val(data.b_branch);
             $('#edit_f_facully').val(data.f_facully);
-            
-            $('#editUserModal').modal('show');
+            $('#editModal').show();
         },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            alert('เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้');
+        error: function () {
+            Swal.fire("เกิดข้อผิดพลาด!", "ไม่สามารถดึงข้อมูลผู้ใช้ได้", "error");
         }
     });
 }
+
+// ลบผู้ใช้
 function deleteUser(userId) {
-    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้ที่มี ID: ' + userId + '?')) {
-        // ใส่ลอจิกลบที่นี่
-        alert('ผู้ใช้ที่มี ID: ' + userId + ' ถูกลบแล้ว');
-    }
+    Swal.fire({
+        title: "คุณแน่ใจหรือไม่?",
+        text: "คุณต้องการลบผู้ใช้ที่มี ID: " + userId + " หรือไม่?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch("/member/delete/" + userId, { method: "DELETE" })
+                .then(response => {
+                    if (response.ok) {
+                        Swal.fire({
+                            title: "ลบสำเร็จ!",
+                            text: "ผู้ใช้ถูกลบเรียบร้อยแล้ว",
+                            icon: "success",
+                            confirmButtonText: "ตกลง"
+                        }).then(() => {
+                            ShowUserData();
+                        });
+                    } else {
+                        Swal.fire("เกิดข้อผิดพลาด!", "ไม่สามารถลบผู้ใช้ได้", "error");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during delete:", error);
+                    Swal.fire("เกิดข้อผิดพลาด!", "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้", "error");
+                });
+        }
+    });
 }
+
+// ปิด Modal
+function closeModal() {
+    $('#editModal').hide();
+}
+
 
 // เรียกใช้ฟังก์ชันเพื่อแสดงข้อมูลเมื่อโหลดหน้าเว็บ
 $(document).ready(function () {
@@ -182,21 +232,7 @@ function Logout() {
     console.log("TB_Open function called!");
     // เพิ่มโค้ดอื่นๆ ที่คุณต้องการให้ทำงานเมื่อฟังก์ชันนี้ถูกเรียก
 }
-// เพิ่มโค้ดนี้ในไฟล์ memberlist.js
-$(document).ready(function() {
-    $('#editUserModal').on('show.bs.modal', function () {
-        $('body').addClass('modal-open-fix');
-    });
 
-    $('#editUserModal').on('hidden.bs.modal', function () {
-        $('body').removeClass('modal-open-fix');
-        $('.modal-backdrop').remove();
-        $('body').css({
-            'padding-right': '0',
-            'overflow': 'visible'
-        });
-    });
-});
 
 // ดึงข้อมูลโปรไฟล์จาก sessionStorage
 const firstName = sessionStorage.getItem('Firstname');
