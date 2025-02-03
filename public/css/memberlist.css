@@ -108,89 +108,55 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-/* ส่วนของ Sidebar */
+/* กำหนดค่าเริ่มต้นของ Sidebar */
 aside {
   background-color: #fbf8f8;
   color: rgb(4, 4, 4);
-  height: auto !important;
+  height: 100vh; /* กำหนดให้เต็มจอ */
+  width: 14rem; /* ขนาดปกติ */
   transition: width 0.3s ease;
-  position: fixed !important;
-  z-index: 1000 !important;
-  all: unset; /* ปิดค่าดีฟอลต์ทั้งหมด */
+  position: fixed;
+  z-index: 1000;
   font-family: 'Sarabun', Arial, sans-serif;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
 }
 
+/* เมื่อ Sidebar อยู่ในโหมด mini */
 aside.mini {
   width: 4rem;
+}
+
+/* ปรับสไตล์ Link */
+.link {
+  flex-grow: 1; /* ทำให้เนื้อหาเต็ม Sidebar */
+  overflow: hidden; /* ป้องกันเนื้อหาล้น */
+}
+
+/* ปิดข้อความเมนูเมื่อ Sidebar mini */
+aside.mini .link ul li a label {
+  display: none;
+}
+
+/* ปรับขนาดไอคอนให้อยู่ตรงกลางเมื่อ Sidebar mini */
+aside.mini .link ul li {
+  justify-content: center;
 }
 
 /* ปุ่ม Toggle */
 #toggle {
   background-color: transparent;
   border: none;
-  color: rgb(4, 4, 4);
   cursor: pointer;
   padding: 1rem;
   font-size: 1.5rem;
   width: 40px;
-    height: 40px;
-    position: relative;
-    z-index: 1000;
+  height: 40px;
+  position: relative;
+  z-index: 1000;
 }
 
-#toggle i {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 24px;
-}
-
-/* Link ใน Sidebar */
-.link ul {
-  list-style: none;
-  padding: 0.70rem;
-  margin: 0;
-}
-
-.link ul li {
-  display: flex;
-  align-items: center;
-  padding: 0.70rem;
-  cursor: pointer;
-}
-
-.link ul li:hover {
-  background-color: #F7B8CD;
-  border-radius: 15px;
-  
-}
-
-.link ul li.active {
-  background-color: #F7B8CD;
-  border-radius: 15px;
-
-}
-
-.link ul li i {
-  margin-right: 1rem;
-}
-
-.link ul li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: rgb(4, 4, 4);
-  width: 100%;
-
-}
-
-.link ul li a label {
-  font-size: 1rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 
 /* Main content */
 main {

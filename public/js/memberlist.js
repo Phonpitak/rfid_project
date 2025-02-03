@@ -1,4 +1,46 @@
-$(document).ready(function () {
+// ฟังก์ชันสำหรับการสลับขนาด Sidebar
+const sideBar = document.querySelector("aside"); // ดึง Sidebar
+const toggle = document.getElementById("toggle"); // ดึงปุ่ม Toggle
+const logo = document.querySelector(".logo"); // ตรวจสอบว่ามีหรือไม่
+
+
+toggle.addEventListener("click", function (e) {
+    if (sideBar.classList.contains("mini")) {
+      sideBar.classList.remove("mini");
+      sideBar.style.width = "14rem"; // ขยาย Sidebar
+      
+    } else {
+      sideBar.classList.add("mini");
+      sideBar.style.width = "4rem";  // ย่อ Sidebar
+      
+    }
+  });
+  
+  // ฟังก์ชันสำหรับการสลับเมนูที่ถูกเลือก
+  let menuItems = document.querySelectorAll(".link ul li");
+  
+  menuItems.forEach(item => {
+    item.addEventListener("click", function() {
+      // ลบคลาส 'active' ออกจากเมนูทั้งหมด
+      menuItems.forEach(menu => menu.classList.remove("active"));
+      
+      // เพิ่มคลาส 'active' ให้กับเมนูที่ถูกคลิก
+      this.classList.add("active");
+  
+      // เปลี่ยนเส้นทางไปยังหน้าที่เลือก
+      const link = this.querySelector("a").getAttribute("href");
+      window.location.href = link; // ไปที่ลิงก์ของเมนูที่เลือก
+    });
+  });
+  $(document).ready(function () {
+    if (typeof TB_Open === "function") {
+      TB_Open();
+    } else {
+      console.error("Error: TB_Open() ไม่ถูกโหลด กรุณาตรวจสอบว่า thickbox.js ถูกโหลดหรือไม่");
+    }
+  });
+
+  $(document).ready(function () {
     var group_id = sessionStorage.getItem("Group");
 
     if (!group_id) {
