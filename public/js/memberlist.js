@@ -198,6 +198,15 @@ $(document).ready(function() {
     });
 });
 
+// ดึงข้อมูลโปรไฟล์จาก sessionStorage
+const firstName = sessionStorage.getItem('Firstname');
+const lastName = sessionStorage.getItem('Lastname');
+if (firstName && lastName) {
+    document.getElementById('profile-name').innerText = `${firstName} ${lastName}`;
+} else {
+    console.log('No profile data found in sessionStorage');
+}
+
 $(document).ready(function() {
     $("#search_TH").on("keyup", function() {
         var searchText = $(this).val().toLowerCase();
