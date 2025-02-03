@@ -178,3 +178,44 @@ $(document).ready(function () {
 function Logout() {
     sessionStorage.clear();
   }
+  function TB_Open() {
+    console.log("TB_Open function called!");
+    // เพิ่มโค้ดอื่นๆ ที่คุณต้องการให้ทำงานเมื่อฟังก์ชันนี้ถูกเรียก
+}
+// เพิ่มโค้ดนี้ในไฟล์ memberlist.js
+$(document).ready(function() {
+    $('#editUserModal').on('show.bs.modal', function () {
+        $('body').addClass('modal-open-fix');
+    });
+
+    $('#editUserModal').on('hidden.bs.modal', function () {
+        $('body').removeClass('modal-open-fix');
+        $('.modal-backdrop').remove();
+        $('body').css({
+            'padding-right': '0',
+            'overflow': 'visible'
+        });
+    });
+});
+
+$(document).ready(function() {
+    $("#search_TH").on("keyup", function() {
+        var searchText = $(this).val().toLowerCase();
+        
+        $("#memberlist tr").each(function() {
+            var id = $(this).find("td:eq(0)").text().toLowerCase();
+            var name = $(this).find("td:eq(1)").text().toLowerCase();
+            var branch = $(this).find("td:eq(2)").text().toLowerCase();
+            var faculty = $(this).find("td:eq(3)").text().toLowerCase();
+            
+            if (id.indexOf(searchText) > -1 || 
+                name.indexOf(searchText) > -1 || 
+                branch.indexOf(searchText) > -1 || 
+                faculty.indexOf(searchText) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});

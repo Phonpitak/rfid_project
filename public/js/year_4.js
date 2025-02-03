@@ -209,4 +209,7 @@ function Logout() {
     sessionStorage.clear();
   }
   
-// github
+function TB_Open() {
+    console.log("TB_Open function called!");
+    // เพิ่มโค้ดอื่นๆ ที่คุณต้องการให้ทำงานเมื่อฟังก์ชันนี้ถูกเรียก
+}
