@@ -1,4 +1,280 @@
 .swal-button {
-    margin: 0 auto; /* ทำให้ปุ่มอยู่ตรงกลาง */
-    display: block; /* ให้ปุ่มแสดงแบบบล็อก */
+    margin: 0 auto;
+    /* ทำให้ปุ่มอยู่ตรงกลาง */
+    display: block;
+    /* ให้ปุ่มแสดงแบบบล็อก */
+}
+
+/* ตั้งค่าโครงสร้างเบื้องต้น */
+body {
+    font-family: 'Sarabun', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+}
+
+aside {
+
+    background-color: #fbf8f8;
+    color: rgb(4, 4, 4);
+    height: auto;
+    transition: width 0.3s ease;
+    position: relative;
+    font-weight: bold;
+}
+
+aside.mini {
+    width: 4rem;
+}
+
+/* ปุ่ม Toggle */
+#toggle {
+    background-color: transparent;
+    border: none;
+    color: rgb(4, 4, 4);
+    cursor: pointer;
+    padding: 1rem;
+    font-size: 1.5rem;
+}
+
+#toggle i {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Link ใน Sidebar */
+.link ul {
+    list-style: none;
+    padding: 0.70rem;
+    margin: 0;
+}
+
+.link ul li {
+    display: flex;
+    align-items: center;
+    padding: 0.70rem;
+    cursor: pointer;
+}
+
+.link ul li:hover {
+    background-color: #F7B8CD;
+    border-radius: 15px;
+
+}
+
+.link ul li.active {
+    background-color: #F7B8CD;
+    border-radius: 15px;
+
+}
+
+.link ul li i {
+    margin-right: 1rem;
+}
+
+.link ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(4, 4, 4);
+    width: 100%;
+
+}
+
+.link ul li a label {
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Main content */
+main {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: #2e6ba7;
+    min-height: 100vh;
+    font-family: 'Sarabun', Arial, sans-serif;
+}
+
+main h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.personal-info {
+    display: flex;
+    background-color: #f9f9f9;
+    padding: 15rem;
+    border-radius: 0;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-block {
+    margin: 0 0 10px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    /* Aligns the content to the right */
+}
+
+.profile-title {
+    display: flex;
+    align-items: center;
+}
+
+.profile-title h6 {
+    margin: 0;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.profile-options {
+    display: flex;
+    align-items: center;
+}
+
+.profile-options .icon {
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.profile-flag {
+    margin-right: 15px;
+}
+
+.profile-details {
+    display: flex;
+    align-items: center;
+}
+
+.profile-details img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    position: relative;
+}
+
+.profile-details img::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #00ff00;
+    border-radius: 50%;
+    bottom: 0;
+    right: 0;
+    border: 2px solid white;
+}
+
+.profile-picture {
+    margin-right: 2rem;
+    text-align: center;
+}
+
+.block {
+    margin: 0 0 10px;
+    padding: 20px 15px 1px;
+    background-color: #ffffff;
+    border: 1px solid #dbe1e8;
+    border-radius: 20px;
+}
+
+.block-title {
+    margin: -20px -15px 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+.block-options {
+    margin: 0 6px;
+    line-height: 37px;
+}
+
+.block-options .label {
+    display: inline-block;
+    padding: 6px;
+    vertical-align: middle;
+    font-size: 13px;
+}
+h3 {
+    font-size: 24px; /* ปรับขนาดให้เหมาะสม */
+    font-weight: bold; 
+    margin-bottom: 20px; /* เพิ่มระยะห่าง */
+}
+/* สไตล์ฟอร์ม */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mb-3 {
+    margin-bottom: 15px;
+    width: 100%; /* ให้ input และ select กว้างตาม container */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* จัดให้อยู่ตรงกลาง */
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+    text-align: center; /* จัดข้อความ label ให้อยู่ตรงกลาง */
+}
+
+input,
+select {
+    width: 40%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 20%;
+   
+    font-family: 'Sarabun', Arial, sans-serif;
+}
+
+button:hover {
+    background: #0056b3;
 }
