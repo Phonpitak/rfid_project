@@ -7,6 +7,13 @@ body {
   
   .container {
     display: flex;
+  
+  }
+  /* ปรับขนาด container */
+  .container1 {
+    width: 100%;
+    max-width: 1300px;  /* ขยายให้เต็มหน้าจอ */
+    margin: auto;
   }
   .info-container {
     display: flex;
@@ -17,6 +24,27 @@ body {
     display: flex;
     flex-direction: column;
   }
+  
+  .info-item {
+    display: flex;
+    align-items: center; /* จัดให้อยู่กึ่งกลางในแนวตั้ง */
+    justify-content: flex-start; /* จัดเนื้อหาให้อยู่ชิดซ้าย */
+    margin-bottom: 1rem;
+  }
+  
+  .info-item label {
+    font-weight: bold;
+    width: 150px; /* กำหนดขนาดให้ label เท่ากัน */
+    color: #e91e63;
+  }
+  
+  .info-item p {
+    margin-left: 0.5rem;
+    color: #333;
+    display: inline-block; /* แก้ไข p ให้แสดงเป็น inline */
+    margin: 0; /* ลบ margin ของ p เพื่อให้จัดเรียงดีขึ้น */
+  }
+  
 /* ส่วนของ Sidebar */
 aside {
   background-color: #fbf8f8;
@@ -105,7 +133,7 @@ aside.mini {
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #003F7D;
+  background-color: #2e6ba7;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
 }
@@ -183,14 +211,26 @@ main h1 {
 
 /* Block ส่วนกลาง */
 .block {
-  width: 1550px;
-  height: 250px;
-  background: #FFF8E7;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: block;
+  background-color: #FFF8E7;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  margin: 0 0 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  height: 35%;
 }
 
+.block-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.block-title h5 {
+  font-size: 18px;
+  font-weight: bold;
+}
 /* ฟอร์มลงทะเบียน */
 form {
   font-weight: bold;

@@ -56,9 +56,16 @@ document.getElementById('filter-button').addEventListener('click', () => {
 
         // ใช้สีที่สดใสและมองเห็นชัดขึ้น
         const colorPalette = [
-          '#FF5733', '#33B5E5', '#33FF57', '#FF33A8', 
-          '#FFC233', '#A833FF', '#FF8633', '#3383FF'
+          '#AEC6CF', // พาสเทลฟ้า
+          '#FFD1DC', // พาสเทลชมพู
+          '#FFDBAC', // พาสเทลส้ม
+          '#C5E1A5', // พาสเทลเขียว
+          '#B39DDB', // พาสเทลม่วง
+          '#FADADD', // พาสเทลชมพูอ่อน
+          '#FFDAC1', // พาสเทลพีช
+          '#E6E6FA'  // พาสเทลลาเวนเดอร์
         ];
+        
 
         const usedColors = {};
 
@@ -96,7 +103,7 @@ document.getElementById('filter-button').addEventListener('click', () => {
 
           const cells = targetRow.querySelectorAll('.cell');
           const subjectColor = getSubjectColor(subject.subject_name);
-          const textColor = '#fff'; // ใช้สีขาวเพื่อตัดกับพื้นหลัง
+          const textColor = '#000'; // ใช้สีขาวเพื่อตัดกับพื้นหลัง
 
           for (let i = startColumnIndex; i < endColumnIndex; i++) {
             if (cells[i]) {

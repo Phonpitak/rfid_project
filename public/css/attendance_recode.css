@@ -463,3 +463,86 @@ main h1 {
 .status-present { color: green; }
 .status-late { color: orange; }
 .status-absent { color: red; }
+.gard {
+  margin: 0 ;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #FFF8E7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: auto;
+  margin-bottom: 20px;
+}
+
+.gard h3 {
+  font-size: 1.4em;
+  color: #333;
+  text-align: center;
+  width: 100%;
+  margin: 0 0 10px;
+}
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  gap: 20px; /* เพิ่มช่องว่างระหว่างองค์ประกอบ */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row; /* จัดให้ label และ select อยู่ในบรรทัดเดียวกัน */
+  align-items: center;
+  gap: 15px; /* เพิ่มระยะห่างระหว่าง label และ select */
+  flex: 1;
+  font-weight: bold; /* เพิ่มส่วนนี้เพื่อทำให้ฟอนต์เป็นตัวหนา */
+}
+
+label {
+  font-size: 1em;
+  color: #333;
+}
+
+select {
+  width: auto;
+  padding: 5px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+.button-row {
+  display: flex;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  width: auto;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #4682B4;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+button:hover {
+  background-color: #040404;
+  color: #fff;
+}
+
+label {
+  font-size: 1em;
+  color: #555;
+}
+
