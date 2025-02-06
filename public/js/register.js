@@ -85,7 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 });
-public/js/detail.js
 function Logout() {
     sessionStorage.clear();
   }
+function TB_Open() {
+    console.log("TB_Open called");
+    // Add logic for opening modal or similar actions
+}

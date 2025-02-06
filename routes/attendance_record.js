@@ -2,60 +2,62 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 router.get('/student_attendance', (req, res) => {
-  let { student_id, academic_year, term, year } = req.query;
+    let { student_id, academic_year, term, year } = req.query;
 
-  console.log('📌 ค่าที่รับมา:', { student_id, academic_year, term, year });
+    console.log('📌 ตรวจสอบค่าที่รับมาใน Backend:', { student_id, academic_year, term, year });
 
-  // แปลงปี พ.ศ. → ค.ศ.
-  if (academic_year) {
-      academic_year = parseInt(academic_year);
-      if (academic_year > 2500) {
-          academic_year -= 543;
-      }
-  }
+    if (!student_id || student_id === 'undefined' || student_id.trim() === '') {
+        console.error("❌ student_id ไม่ถูกต้อง! ปฏิเสธการเข้าถึง API");
+        return res.status(400).json({ error: 'student_id is required' });
+    }
 
-  let sql = `
-      SELECT 
-          t_subjects.subject_id,
-          t_subjects.subject_name,
-          t_subjects.subject_code,
-          t_subjects.day_of_week,
-          t_subjects.start_time,
-          t_subjects.end_time,
-          t_attendance.attendance_date,
-          COALESCE(t_attendance.attendance_status, 0) AS attendance_status,
-          t_user.std_year,
-          t_user.user_id AS student_id,
-          CONCAT(t_user.std_firstname, ' ', t_user.std_lastname) AS student_name
-      FROM t_enrollments
-      INNER JOIN t_subjects ON t_enrollments.subject_id = t_subjects.subject_id
-      INNER JOIN t_user ON t_enrollments.student_id = t_user.u_id
-      LEFT JOIN t_attendance ON t_enrollments.student_id = t_attendance.student_id 
-          AND t_subjects.subject_id = t_attendance.subject_id
-      WHERE t_enrollments.student_id = ? 
-          AND t_subjects.academic_year = ? 
-          AND t_subjects.term = ? 
-          AND t_user.std_year = ?
-      ORDER BY t_subjects.day_of_week, t_subjects.subject_id, t_attendance.attendance_date;
-  `;
+    if (academic_year) {
+        academic_year = parseInt(academic_year);
+        if (academic_year > 2500) {
+            academic_year -= 543;
+        }
+    }
 
-  console.log('📌 SQL Query:', sql);
-  console.log('📌 Parameters:', [student_id, academic_year, term, year]);
+    let sql = `
+        SELECT 
+            t_subjects.subject_id,
+            t_subjects.subject_name,
+            t_subjects.subject_code,
+            t_subjects.day_of_week,
+            t_subjects.start_time,
+            t_subjects.end_time,
+            t_attendance.attendance_date,
+            COALESCE(t_attendance.attendance_status, 0) AS attendance_status,
+            t_user.std_year,
+            t_user.user_id AS student_id,
+            CONCAT(t_user.std_firstname, ' ', t_user.std_lastname) AS student_name
+        FROM t_enrollments
+        INNER JOIN t_subjects ON t_enrollments.subject_id = t_subjects.subject_id
+        INNER JOIN t_user ON t_enrollments.student_id = t_user.u_id
+        LEFT JOIN t_attendance ON t_enrollments.student_id = t_attendance.student_id 
+            AND t_subjects.subject_id = t_attendance.subject_id
+        WHERE t_enrollments.student_id = ? 
+            AND t_subjects.academic_year = ? 
+            AND t_subjects.term = ? 
+            AND t_user.std_year = ?
+        ORDER BY t_subjects.day_of_week, t_subjects.subject_id, t_attendance.attendance_date;
+    `;
 
-  db.query(sql, [student_id, academic_year, term, year], (err, results) => {
-      if (err) {
-          console.error('❌ Database Error:', err);
-          return res.status(500).json({ error: 'Database error' });
-      }
+    console.log('📌 SQL Query:', sql);
+    console.log('📌 Parameters:', [student_id, academic_year, term, year]);
 
-      console.log('✅ Data Fetched:', results.length, 'rows');
+    db.query(sql, [student_id, academic_year, term, year], (err, results) => {
+        if (err) {
+            console.error('❌ Database Error:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
 
-      // **เรียกฟังก์ชัน Format ให้เป็นโครงสร้างตาราง**
-      const formattedData = formatAttendanceData(results);
-
-      res.json(formattedData);
-  });
+        console.log('✅ Data Fetched:', results.length, 'rows');
+        const formattedData = formatAttendanceData(results);
+        res.json(formattedData);
+    });
 });
+
 
 // **ฟังก์ชันจัดกลุ่มข้อมูลการเข้าเรียน**
 function formatAttendanceData(rows) {

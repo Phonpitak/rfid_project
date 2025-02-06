@@ -44,7 +44,18 @@ app.options('*', cors(corsOptions));
 
 
 app.set('trust proxy', 1); // ให้ Express รองรับ Proxy เช่น ngrok
-
+// app.use(session({
+//     secret: 'your_secret_key',
+//     store: sessionStore,
+//     resave: false,
+//     saveUninitialized: false,
+//     proxy: process.env.NODE_ENV === 'production', // ใช้ proxy ถ้าเป็น production
+//     cookie: { 
+//         secure: process.env.NODE_ENV === 'production', // true ถ้าใช้ HTTPS (ngrok)
+//         httpOnly: true,
+//         sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax' // ป้องกัน session หาย
+//     }
+// }));
 // เปิดเมื่อใช้ localhost
 app.use(session({
     secret: 'your_secret_key',
@@ -58,6 +69,11 @@ app.use(session({
         sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
     }
 }));
+// ตรวจสอบ session ว่าถูกต้องไหม
+app.use((req, res, next) => {
+    console.log('📌 Session Data:', req.session);
+    next();
+});
 // เปิดเมื่อใช้ Ngrok
 // // **ตั้งค่า SESSION**
 // app.use(session({
