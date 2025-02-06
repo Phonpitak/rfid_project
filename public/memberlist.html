@@ -3,25 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
     <title>รายชื่อสมาชิก</title>
+
+
+    <link rel="stylesheet" href="css/memberlist.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- นำเข้า SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <!-- นำเข้า CSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/thickbox/3.1/thickbox.min.js"></script>
     <script src="assets/js/memberlist.js"></script>
-   
-    <link rel="stylesheet" href="css/detail.css">
-    <link rel="stylesheet" href="css/memberlist.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <!-- นำเข้า jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -73,7 +73,8 @@
                         <a href="year_4.html"><i class="bi bi-database-add"></i><label>ปี 4</label></a>
                     </li>
                     <li>
-                        <a href="login.html" onclick="Logout()"><i class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
+                        <a href="login.html" onclick="Logout()"><i
+                                class="bi bi-box-arrow-in-left"></i><label>ออกจากระบบ</label></a>
                     </li>
                 </ul>
             </div>
@@ -86,7 +87,6 @@
                     <div>
                         <span class="profile-title"></span>
                         <p id="profile-name"></p>
-                        <p id="studentId"></p>
                     </div>
                     <div style="position:relative;">
                         <i class="bi bi-person-fill" style="font-size: 50px;"></i>
@@ -103,79 +103,66 @@
                 <h4>สาขาวิชา</h4>
                 <h4>คณะ</h4>
             </div> -->
-            <div class="block">
-                <div class="block-title"
-                    style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; margin-bottom: 10px;">
-                    <!-- Title section (left aligned) -->
-                    <h5 style="display: flex; align-items: center; margin: 0;">
-                        <i class="bi bi-bar-chart-line-fill" style="margin-right: 5px; margin-left: 15px;"></i>
-                        <strong
-                            style="font-size: 15px; margin-left: 10px;display: inline-block;">รายชื่อนักศึกษาทั้งหมด</strong>
-                    </h5>
-                    <!-- Block options (right aligned) -->
-                    <div class="block-options form-inline"
-                        style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">
-                        <input type="text" placeholder="Search.." class="form-control input-sm search-input"
-                            id="search_TH" name="search_TH" style="margin-right: 10px;">
+            <div class="container1">
+                <div class="block">
+                    <div class="block-title">
+                        <h5><i class="bi bi-star-fill"></i> รายชื่อสมาชิก</h5>
+                        <input type="text" id="search_custom" placeholder="🔍 ค้นหา..." onkeyup="searchTable()">
                     </div>
-                </div>
 
-                <!-- ตารางรายชื่อสมาชิก -->
-                <table class="table table-bordered table-striped table-vcenter" id="table-request">
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 150px; font-size: 15px;">รหัส</th>
-                            <th class="text-center" style="width: 350px; font-size: 15px;">ชื่อ-นามสกุล</th>
-                            <th class="text-center" style="width: 200px; font-size: 15px;">สาขาวิชา</th>
-                            <th class="text-center" style="width: 200px; font-size: 15px;">คณะ</th>
-                            <th class="text-center" style="width: 100px; font-size: 15px;">แก้ไข</th>
-                            <th class="text-center" style="width: 100px; font-size: 15px;">ลบ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="memberlist"></tbody>
-                </table>
-            </div>
-
-            <!-- Modal สำหรับแก้ไขข้อมูล -->
-            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editUserModalLabel">แก้ไขข้อมูลสมาชิก</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editUserForm">
-                                <input type="hidden" id="edit_user_id" name="user_id">
-                                <div class="mb-3">
-                                    <label for="edit_std_firstname" class="form-label">ชื่อ</label>
-                                    <input type="text" class="form-control" id="edit_std_firstname" name="std_firstname"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_std_lastname" class="form-label">นามสกุล</label>
-                                    <input type="text" class="form-control" id="edit_std_lastname" name="std_lastname"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_b_branch" class="form-label">สาขา</label>
-                                    <input type="text" class="form-control" id="edit_b_branch" name="b_branch" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_f_facully" class="form-label">คณะ</label>
-                                    <input type="text" class="form-control" id="edit_f_facully" name="f_facully"
-                                        required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">บันทึก</button>
-                            </form>
-                        </div>
-                    </div>
+                    <table class="styled-table" id="table-request">
+                        <thead>
+                            <tr>
+                                <th>รหัส</th>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>สาขาวิชา</th>
+                                <th>คณะ</th>
+                                <th>แก้ไข</th>
+                                <th>ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="memberlist">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
     </div>
-
+    <!-- Modal แก้ไขข้อมูล -->
+    <div class="modal" id="editModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">แก้ไขข้อมูลสมาชิก</h5>
+                    <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="edit_user_id" name="user_id">
+                        <div class="mb-3">
+                            <label for="edit_std_firstname" class="form-label">ชื่อ</label>
+                            <input type="text" class="form-control" id="edit_std_firstname" name="std_firstname"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_std_lastname" class="form-label">นามสกุล</label>
+                            <input type="text" class="form-control" id="edit_std_lastname" name="std_lastname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_b_branch" class="form-label">สาขา</label>
+                            <input type="text" class="form-control" id="edit_b_branch" name="b_branch" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_f_facully" class="form-label">คณะ</label>
+                            <input type="text" class="form-control" id="edit_f_facully" name="f_facully" required>
+                        </div>
+                        <button class="btn btn-primary">บันทึก</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">ปิด</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- นำเข้า JavaScript -->
     <script src="js/memberlist.js"></script>
 </body>

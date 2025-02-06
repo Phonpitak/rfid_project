@@ -5,23 +5,58 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const db = require('./config/db');
-// การกำหนดค่า express-session
+const MySQLStore = require('express-mysql-session')(session);
+const sessionStore = new MySQLStore({}, db);
+
+
+
+// **Middleware แก้ปัญหา Preflight Request (OPTIONS)**
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(204); // ตอบ 204 ให้ Preflight Request ผ่าน
+    }
+
+    next();
+});
+
+// ตั้งค่า CORS
+const corsOptions = {
+    origin: true, // อนุญาตทุก origin ที่ร้องขอเข้ามา
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+
+app.set('trust proxy', 1); // ให้ Express รองรับ Proxy เช่น ngrok
+
+// **ตั้งค่า SESSION**
 app.use(session({
-    secret: 'your_secret_key', // เปลี่ยนเป็นคีย์ที่ปลอดภัยของคุณเอง
+    secret: 'your_secret_key',
+    store: sessionStore,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // ตั้งค่าเป็น true หากคุณใช้ HTTPS
+    saveUninitialized: false,
+    proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
+    cookie: { 
+        secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
+        httpOnly: true,
+        sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
+    }
 }));
 
+
 app.use(express.json());
-app.use(cors({
-    credentials: true,
-    origin: ['http://localhost:5555']
-}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Import routers
+// **Import routes**
 const detailRouter = require('./routes/detail');
 const subject = require('./routes/subject');
 const registerRouter = require('./routes/register');
@@ -35,8 +70,6 @@ const year4Router = require('./routes/year_4');
 const rfidRouter = require('./routes/rfid');
 const add_subject = require('./routes/add_subject');
 const registerAllRouter = require('./routes/register_all');
-
-
 
 app.use(detailRouter);
 app.use(attendanceRouter);
@@ -52,26 +85,17 @@ app.use(subject);
 app.use(add_subject);
 app.use(registerAllRouter);
 
+// **Route สำหรับหน้า Login**
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
+
+// **Route RFID**
 app.post('/rfid', (req, res) => {
     console.log('Received RFID data:', req.body);
     res.status(200).send('Data received');
 });
 
-
-const os = require('os');
-const interfaces = os.networkInterfaces();
-
-for (let interface in interfaces) {
-    for (let i = 0; i < interfaces[interface].length; i++) {
-        const address = interfaces[interface][i];
-        if (address.family === 'IPv4' && !address.internal) {
-            console.log(`Server IP Address: ${address.address}`);
-        }
-    }
-}
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
