@@ -463,3 +463,17 @@ main h1 {
 .status-present { color: green; }
 .status-late { color: orange; }
 .status-absent { color: red; }
+
+aside.mini .logo-container {
+  display: none;  /* ซ่อนโลโก้เมื่อ Sidebar ถูกย่อ */
+}
+.logo-container {
+  text-align: center;  /* จัดโลโก้ให้อยู่ตรงกลาง */
+  margin-top: 10px;    /* เว้นระยะห่างจากปุ่ม Toggle */
+}
+
+.logo-container img {
+  width: 120px;   /* ปรับขนาดโลโก้ */
+  height: auto;   /* ให้ความสูงเป็นอัตโนมัติ */
+  max-width: 100%;
+}

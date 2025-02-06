@@ -1,3 +1,11 @@
+// ดึงข้อมูลโปรไฟล์จาก sessionStorage
+const firstName = sessionStorage.getItem('Firstname');
+const lastName = sessionStorage.getItem('Lastname');
+if (firstName && lastName) {
+    document.getElementById('profile-name').innerText = `${firstName} ${lastName}`;
+} else {
+    console.log('No profile data found in sessionStorage');
+}
 $(document).ready(async function () {
   // ✅ ดึงค่า group_id และ student_id จาก sessionStorage
   var group_id = sessionStorage.getItem("Group");
@@ -36,17 +44,7 @@ $(document).ready(async function () {
       console.warn("⚠️ ไม่พบการตั้งค่าสำหรับ group_id:", group_id);
   }
 
-  // ✅ ดึงข้อมูลโปรไฟล์จาก sessionStorage
-  const firstName = sessionStorage.getItem('Firstname');
-  const lastName = sessionStorage.getItem('Lastname');
-  if (firstName && lastName) {
-      document.getElementById('profile-name').innerText = `${firstName} ${lastName}`;
-  } else {
-      console.log('No profile data found in sessionStorage');
-  }
-
-  // ✅ โหลดข้อมูลเข้าเรียน
-  await fetchStudentAttendance(student_id);
+ 
 });
 
 // ✅ ฟังก์ชันลบเมนูที่ไม่เกี่ยวข้อง
@@ -213,4 +211,8 @@ menuItems.forEach(item => {
 function Logout() {
   sessionStorage.clear();
   location.href = "login.html";
+}
+function TB_Open() {
+  console.log("TB_Open called");
+  // Add logic for opening modal or similar actions
 }
