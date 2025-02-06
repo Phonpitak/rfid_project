@@ -1,3 +1,5 @@
+
+
 function click_Login(event) { 
     event.preventDefault(); // หยุดการทำงานปกติของปุ่ม submit
 
@@ -5,13 +7,13 @@ function click_Login(event) {
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
 
-    // ส่งข้อมูลเข้าสู่ระบบไปยัง API
-    axios.post('http://localhost:5002/user/login', {
+    // ใช้ ngrok URL จริง
+    axios.post(' https://6ff0-182-53-138-4.ngrok-free.app/user/login', {
         std_username: username,
         std_password: password
-    })
+    }, { withCredentials: true }) // สำคัญ! เพื่อให้ cookies ส่งไปด้วย
     .then(response => {
-        console.log('Response from login API:', response.data); // ตรวจสอบข้อมูลที่ได้รับจาก API
+        console.log('Response from login API:', response.data);
         if (response.data.status === 'SUCCESS') {
             // เก็บ token ลงใน localStorage
             localStorage.setItem('authToken', response.data.token);
@@ -40,12 +42,12 @@ function click_Login(event) {
 
             // ตรวจสอบ Group ของผู้ใช้
             const group = response.data.user.group_id;
-            if (group == 5) { // ถ้าเป็นอาจารย์
+            if (group == 5) { 
                 console.log('Login as teacher, redirecting to year overview.');
-                window.location.href = 'year_1.html'; // หน้าใหม่สำหรับอาจารย์
+                window.location.href = 'year_1.html';
             } else {
                 console.log('Login as student, redirecting to detail.html');
-                window.location.href = 'detail.html'; // หน้าปกติสำหรับนักเรียน
+                window.location.href = 'detail.html';
             }
         } else {
             alert('Login failed: ' + response.data.message);
@@ -55,47 +57,6 @@ function click_Login(event) {
         console.error('Login error:', error);
         alert('An error occurred. Please try again.');
     });
-}
-
-async function Click_reminder(event) {
-    event.preventDefault(); // หยุดการทำงานปกติของฟอร์ม
-
-    var email = document.getElementById("reminder_email").value;
-    var password = document.getElementById("reminder_password").value;
-    var password1 = document.getElementById("reminder_password_verify").value;
-    var card = document.getElementById("reminder_card").value;
-
-    // ตรวจสอบข้อมูลผู้ใช้และรหัสผ่าน
-    var CheckUser = await reminder_CheckUser();
-    var CheckPassword = reminder_CheckPassword();
-    var CheckPasswordVerify = reminder_CheckPasswordVerify();
-    var card_number = reminder_card1();
-
-    // ตรวจสอบว่าทุกอย่างถูกต้อง
-    if (CheckUser === 1 && CheckPassword === 1 && password === password1 && card.length === 13) {
-        var data_Register = { "email": email, "password": password, "card": card };
-        
-        $.ajax({
-            type: "POST",
-            url: "/user/reminder",
-            data: data_Register,
-            success: function (data) {
-                console.log(data); // ตรวจสอบผลลัพธ์จากเซิร์ฟเวอร์
-                if (data === "success") {
-                    swal("Success!", "Reminder account success!", "success").then((value) => {
-                        window.location = 'login.html'; // ใช้ window.location
-                    });
-                } else {
-                    swal("False!", "Reminder account error!", "error").then((value) => {});
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error occurred: " + textStatus, errorThrown); // ตรวจสอบข้อผิดพลาด
-            }
-        });
-    } else {
-        // จัดการข้อผิดพลาดที่เกิดขึ้น
-    }
 }
 
 
@@ -158,4 +119,7 @@ document.getElementById('link-reminder-login').addEventListener('click', functio
 });
 function Logout() {
     sessionStorage.clear();
-  }
+    localStorage.removeItem('authToken');
+    document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = 'login.html';
+}
