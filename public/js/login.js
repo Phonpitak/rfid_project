@@ -6,9 +6,10 @@ function click_Login(event) {
     // ดึงข้อมูลจากฟอร์ม
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
-
+    // ใช้ localhost
+    axios.post('http://localhost:5002/user/login', {
     // ใช้ ngrok URL จริง
-    axios.post(' https://6ff0-182-53-138-4.ngrok-free.app/user/login', {
+    // axios.post(' https://6ff0-182-53-138-4.ngrok-free.app/user/login', {
         std_username: username,
         std_password: password
     }, { withCredentials: true }) // สำคัญ! เพื่อให้ cookies ส่งไปด้วย

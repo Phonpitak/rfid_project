@@ -12,18 +12,26 @@ const sessionStore = new MySQLStore({}, db);
 
 // **Middleware แก้ปัญหา Preflight Request (OPTIONS)**
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+    const allowedOrigins = [
+        'http://localhost:5555', 
+        'http://127.0.0.1:5555'
+    ];
+    
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.header("Access-Control-Allow-Credentials", "true");
 
     if (req.method === "OPTIONS") {
-        return res.sendStatus(204); // ตอบ 204 ให้ Preflight Request ผ่าน
+        return res.sendStatus(204);
     }
 
     next();
 });
-
 // ตั้งค่า CORS
 const corsOptions = {
     origin: true, // อนุญาตทุก origin ที่ร้องขอเข้ามา
@@ -37,19 +45,33 @@ app.options('*', cors(corsOptions));
 
 app.set('trust proxy', 1); // ให้ Express รองรับ Proxy เช่น ngrok
 
-// **ตั้งค่า SESSION**
+// เปิดเมื่อใช้ localhost
 app.use(session({
     secret: 'your_secret_key',
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
+    proxy: false,  // ปิด proxy เมื่อไม่ได้ใช้ ngrok
     cookie: { 
-        secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
+        secure: false,  // ต้องเป็น false เมื่อใช้ HTTP (localhost)
         httpOnly: true,
-        sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
+        sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
     }
 }));
+// เปิดเมื่อใช้ Ngrok
+// // **ตั้งค่า SESSION**
+// app.use(session({
+//     secret: 'your_secret_key',
+//     store: sessionStore,
+//     resave: false,
+//     saveUninitialized: false,
+//     proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
+//     cookie: { 
+//         secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
+//         httpOnly: true,
+//         sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
+//     }
+// }));
 
 
 app.use(express.json());
