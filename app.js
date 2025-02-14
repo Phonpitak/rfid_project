@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const app = express();
+const os = require('os');
+const interfaces = os.networkInterfaces();
 const db = require('./config/db');
 const MySQLStore = require('express-mysql-session')(session);
 const sessionStore = new MySQLStore({}, db);
@@ -57,37 +59,37 @@ app.set('trust proxy', 1); // ให้ Express รองรับ Proxy เช�
 //     }
 // }));
 // เปิดเมื่อใช้ localhost
-app.use(session({
-    secret: 'your_secret_key',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
-    proxy: false,  // ปิด proxy เมื่อไม่ได้ใช้ ngrok
-    cookie: { 
-        secure: false,  // ต้องเป็น false เมื่อใช้ HTTP (localhost)
-        httpOnly: true,
-        sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
-    }
-}));
+// app.use(session({
+//     secret: 'your_secret_key',
+//     store: sessionStore,
+//     resave: false,
+//     saveUninitialized: false,
+//     proxy: false,  // ปิด proxy เมื่อไม่ได้ใช้ ngrok
+//     cookie: { 
+//         secure: false,  // ต้องเป็น false เมื่อใช้ HTTP (localhost)
+//         httpOnly: true,
+//         sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
+//     }
+// }));
 // ตรวจสอบ session ว่าถูกต้องไหม
 app.use((req, res, next) => {
     console.log('📌 Session Data:', req.session);
     next();
 });
 // เปิดเมื่อใช้ Ngrok
-// // **ตั้งค่า SESSION**
-// app.use(session({
-//     secret: 'your_secret_key',
-//     store: sessionStore,
-//     resave: false,
-//     saveUninitialized: false,
-//     proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
-//     cookie: { 
-//         secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
-//         httpOnly: true,
-//         sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
-//     }
-// }));
+// **ตั้งค่า SESSION**
+app.use(session({
+    secret: 'your_secret_key',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
+    cookie: { 
+        secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
+        httpOnly: true,
+        sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
+    }
+}));
 
 
 app.use(express.json());
@@ -118,10 +120,11 @@ app.use(year1Router);
 app.use(year2Router);
 app.use(year3Router);
 app.use(year4Router);
-app.use(rfidRouter);
 app.use(subject);
 app.use(add_subject);
 app.use(registerAllRouter);
+
+app.use('/api', rfidRouter);
 
 // **Route สำหรับหน้า Login**
 app.get('/', (req, res) => {
@@ -129,11 +132,19 @@ app.get('/', (req, res) => {
 });
 
 // **Route RFID**
-app.post('/rfid', (req, res) => {
-    console.log('Received RFID data:', req.body);
-    res.status(200).send('Data received');
+app.post('/rfid', async (req, res) => {
+    console.log("Received data:", req.body); // 📌 Debug ตรงนี้
+    res.json({ status: "success", received: req.body });
 });
 
+for (let interface in interfaces) {
+    for (let i = 0; i < interfaces[interface].length; i++) {
+        const address = interfaces[interface][i];
+        if (address.family === 'IPv4' && !address.internal) {
+            console.log(`Server IP Address: ${address.address}`);
+        }
+    }
+}
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

@@ -9,7 +9,7 @@ function click_Login(event) {
     // ใช้ localhost
     axios.post('http://localhost:5002/user/login', {
     // ใช้ ngrok URL จริง
-    // axios.post(' https://6ff0-182-53-138-4.ngrok-free.app/user/login', {
+    // axios.post(' https://25f3-203-158-222-50.ngrok-free.app/user/login', {
         std_username: username,
         std_password: password
     }, { withCredentials: true }) // สำคัญ! เพื่อให้ cookies ส่งไปด้วย

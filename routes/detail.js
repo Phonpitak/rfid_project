@@ -111,22 +111,25 @@ router.get('/detail/infos', (req, res) => {
 // });
 
 
-router.get('/detail/All/:userId', (req, res) => {
-    const sql = 'SELECT user_id, std_firstname, std_lastname, b_branch, f_facully, group_id, std_year, term FROM t_user WHERE user_id = ?';
-    const userId = req.params.userId; // ใช้ params แทน query
+router.get('/detail/All/:userId', async (req, res) => {
+    try {
+        const sql = `
+            SELECT user_id, std_firstname, std_lastname, b_branch, f_facully, group_id, std_year, term 
+            FROM t_user WHERE user_id = ?
+        `;
+        const userId = req.params.userId;
+        const result = await db.query(sql, [userId]); // ✅ ใช้ await
 
-    db.query(sql, [userId], (err, result) => {
-        if (err) {
-            console.error('Database error:', err);
-            res.status(500).json({ error: err.message });
-        } else if (result.length === 0) {
-            res.status(404).json({ message: 'ไม่พบข้อมูลนักศึกษา' });
-        } else {
-            res.status(200).json(result); // ส่งข้อมูลในรูปแบบ JSON
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'ไม่พบข้อมูลนักศึกษา' });
         }
-    });
-});
 
+        res.status(200).json(result);
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
 
 
   
