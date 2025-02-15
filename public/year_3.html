@@ -14,6 +14,8 @@
     
     <!-- เพิ่มลิงก์สำหรับโหลด jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -86,6 +88,10 @@
                 <h3>บันทึกการเข้าชั้นเรียน (เฉพาะอาจารย์)</h3>
             </div>
             <div class="block">
+                <div id="attendance-header">
+                    <label for="subject-select" class="dropdown-label">เลือกวิชา:</label>
+                    <select id="subject-select" class="dropdown-select"></select>
+                </div>                
                 <div id="attendance-records">
                     <!-- ตารางข้อมูลการเข้าชั้นเรียนจะถูกสร้างที่นี่ -->
                 </div>

@@ -120,11 +120,3 @@ function Logout() {
     console.log("TB_Open called");
     // Add logic for opening modal or similar actions
 }
-// ดึงข้อมูลโปรไฟล์จาก sessionStorage
-const firstName = sessionStorage.getItem('Firstname');
-const lastName = sessionStorage.getItem('Lastname');
-if (firstName && lastName) {
-    document.getElementById('profile-name').innerText = `${firstName} ${lastName}`;
-} else {
-    console.log('No profile data found in sessionStorage');
-}

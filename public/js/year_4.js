@@ -47,52 +47,121 @@ if (firstName && lastName) {
     console.log('No profile data found in sessionStorage');
 }
 // ฟังก์ชันสร้างวันที่
-function fetchAttendanceData(teacherId) {
+
+// ดึงข้อมูลจาก API
+function fetchAttendanceData(teacherId, selectedSubjectId = null) {
     $.ajax({
-        url: `/attendance4?teacher_id=${teacherId}&year=4`,
+        url: `/attendance1?teacher_id=${teacherId}&year=4`,
         method: 'GET',
         success: function (data) {
+            console.log("📌 API Data:", data); // Debug API Response
+
             if (data && Object.keys(data).length > 0) {
-                createTablesByDayAndSubject(data); // ส่งข้อมูลไปสร้างตาราง
+                const subjects = extractSubjects(data);
+
+                // ✅ เช็คว่าค่าที่เลือกอยู่ในลิสต์หรือไม่
+                if (!selectedSubjectId || !subjects.find(s => s.id === selectedSubjectId)) {
+                    selectedSubjectId = subjects[0]?.id;
+                }
+
+                console.log("📌 ใช้วิชา:", selectedSubjectId); // Debug
+
+                // ✅ ถ้ามีหลายวิชา ให้สร้าง Dropdown
+                createSubjectDropdown(subjects);
+
+                // ✅ อัปเดต Session Storage
+                sessionStorage.setItem('selectedSubjectId', selectedSubjectId);
+
+                // ✅ แสดงข้อมูลวิชา
+                createTablesByDayAndSubject(data, selectedSubjectId);
             } else {
+                $('#attendance-header').html('');
                 $('#attendance-records').html('<p>ไม่มีข้อมูลการเข้าชั้นเรียน</p>');
+                sessionStorage.removeItem('selectedSubjectId'); // รีเซ็ตค่าถ้าไม่มีข้อมูล
             }
         },
-        error: function (error) {
-            console.error('Error fetching attendance data:', error);
+        error: function () {
+            $('#attendance-header').html('');
             $('#attendance-records').html('<p>เกิดข้อผิดพลาดในการดึงข้อมูล</p>');
         }
     });
 }
 
+
+
+function extractSubjects(data) {
+    const subjectList = [];
+    Object.keys(data).forEach(dayOfWeek => {
+        Object.keys(data[dayOfWeek]).forEach(subjectId => {
+            const subject = data[dayOfWeek][subjectId];
+            if (!subjectList.find(s => s.id === subjectId)) {
+                subjectList.push({ id: subjectId, name: subject.subject_name });
+            }
+        });
+    });
+    return subjectList;
+}
+function createSubjectDropdown(subjects) {
+    let storedSubjectId = sessionStorage.getItem('selectedSubjectId');
+
+    if (subjects.length <= 1) {
+        $('#attendance-header').html(''); // ซ่อน dropdown ถ้ามีแค่ 1 วิชา
+        return;
+    }
+
+    let dropdownHtml = `
+        <div class="dropdown-container">
+            <label for="subject-select" class="dropdown-label">เลือกวิชา:</label>
+            <select id="subject-select" class="dropdown-select" onchange="changeSubject()">`;
+
+    subjects.forEach(subject => {
+        const selected = storedSubjectId === subject.id ? 'selected' : '';
+        dropdownHtml += `<option value="${subject.id}" ${selected}>${subject.name}</option>`;
+    });
+
+    dropdownHtml += `</select></div>`;
+    $('#attendance-header').html(dropdownHtml);
+}
+
+
+function changeSubject() {
+    const selectedSubject = $('#subject-select').val();
+    
+    console.log("🔄 เปลี่ยนวิชาเป็น:", selectedSubject);
+
+    sessionStorage.setItem('selectedSubjectId', selectedSubject);
+
+    // ✅ โหลดข้อมูลใหม่ (แต่ต้องให้ส่ง subject ID ใหม่ไปด้วย)
+    fetchAttendanceData(sessionStorage.getItem('TeacherID'), selectedSubject);
+}
+
 // สร้างตารางตามวันและวิชา
-function createTablesByDayAndSubject(data) {
-    console.log('Data received for table generation:', data); // Debug ข้อมูลที่ส่งมาจาก API
+function createTablesByDayAndSubject(data, selectedSubjectId) {
     $('#attendance-records').empty();
 
     Object.keys(data).sort().forEach(dayOfWeek => {
         const dayData = data[dayOfWeek];
-        const dayTitle = $('<h2>').text(`วัน${dayOfWeekToText(dayOfWeek)}`);
-        $('#attendance-records').append(dayTitle);
-
-        Object.keys(dayData).forEach(subjectId => {
-            const subjectData = dayData[subjectId];
-            const subjectCodeText = subjectData.subject_code ? ` (${subjectData.subject_code})` : ''; // ใช้ fallback
-            const subjectTitle = $('<h3>').text(`วิชา: ${subjectData.subject_name}${subjectCodeText}`);
+        if (dayData[selectedSubjectId]) {
+            const subjectData = dayData[selectedSubjectId];
+            const dayTitle = $('<h2>').text(`วัน${dayOfWeekToText(dayOfWeek)}`);
+            const subjectTitle = $('<h3>').text(`วิชา: ${subjectData.subject_name}`);
             const table = createAttendanceTable(subjectData.students, parseInt(dayOfWeek));
 
             $('#attendance-records')
+                .append(dayTitle)
                 .append(subjectTitle)
                 .append(table);
-        });
+        }
     });
 }
+
+
 
 // สร้างตารางข้อมูลการเข้าเรียน
 function createAttendanceTable(students, dayOfWeek) {
     const table = $('<table>').addClass('attendance-table');
     const thead = $('<thead>');
-    const dates = generateDates('2024-11-19', dayOfWeek);
+    const dates = generateDates('2024-11-18', dayOfWeek);
 
     // Create header
     const headerRow = $('<tr>')
@@ -181,6 +250,67 @@ function dayOfWeekToText(dayOfWeek) {
     };
     return days[dayOfWeek] || 'ไม่ระบุ';
 }
+// เพิ่มปุ่ม Export PDF
+const exportButton = $('<button>')
+    .text('Export เป็น PDF')
+    .addClass('export-btn')
+    .on('click', function() {
+        captureTableAsPDF();
+    });
+
+$('#attendance-records').before(exportButton);
+
+// ฟังก์ชันแปลงตารางเป็นภาพและบันทึก PDF
+function captureTableAsPDF() {
+    const { jsPDF } = window.jspdf;
+
+    // 📌 ดึงชื่อวิชาจากหน้าเว็บ
+    let subjectName = document.querySelector("#attendance-records h3")?.innerText || "attendance_report";
+    
+    // 🔹 ตัดคำว่า "วิชา: " ออกไป
+    subjectName = subjectName.replace(/^วิชา:\s*/, "");
+
+    // 🔹 ลบอักขระพิเศษที่ไม่สามารถใช้เป็นชื่อไฟล์ได้
+    subjectName = subjectName.replace(/[<>:"\/\\|?*]+/g, "").trim(); 
+    subjectName = subjectName.replace(/\s+/g, "_"); // แทนที่ช่องว่างด้วย "_"
+
+    html2canvas(document.querySelector("#attendance-records"), {
+        scale: 2, // เพิ่มความคมชัด
+        scrollX: 0,
+        scrollY: 0,
+        useCORS: true
+    }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        // ขนาดกระดาษ PDF
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        // 🔹 ปรับระยะขอบ
+        const marginX = 10;
+        const marginY = 10;
+
+        // 🔹 ลดขนาดรูปลงเล็กน้อย
+        const imgWidth = pageWidth - marginX * 2;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        // ใส่รูปลงใน PDF พร้อมระยะขอบ
+        doc.addImage(imgData, "PNG", marginX, marginY, imgWidth, imgHeight);
+
+        // 📌 ตั้งชื่อไฟล์เป็นชื่อวิชาอัตโนมัติ
+        doc.save(`${subjectName}.pdf`);
+    });
+}
+
+
+
+
 // ส่วนของ Sidebar toggle
 $(document).ready(function() {
     let sideBar = $("aside");

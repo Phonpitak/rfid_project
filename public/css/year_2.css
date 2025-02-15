@@ -273,3 +273,84 @@ aside.mini .logo-container {
   max-width: 100%;
 }
 
+/* 📌 CSS ปรับตำแหน่งและตกแต่งปุ่ม */
+.export-btn {
+  position: absolute;
+  top: 220px; /* ปรับให้ปุ่มขยับขึ้น */
+  right: 90px; /* ชิดขวา */
+  background-color: #007bff; /* สีฟ้า Bootstrap */
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px; /* ปุ่มขอบโค้ง */
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* เอฟเฟกต์เมื่อเอาเมาส์ไปวาง */
+.export-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* 🎨 ปรับสไตล์กล่อง dropdown ให้ดูเรียบหรู */
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease-in-out;
+}
+
+/* 🎨 ปรับ Label ให้ดูชัดขึ้น */
+.dropdown-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 🎨 ปรับ Select ให้มีขอบโค้งนุ่มขึ้น */
+.dropdown-select {
+  flex: 1;
+  font-size: 16px;
+  padding: 10px 14px;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  background: #f8f9fa;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s ease-in-out;
+  appearance: none;
+  position: relative;
+}
+
+/* 🎨 เพิ่มไอคอน Custom */
+.dropdown-container::after {
+  content: "▼";
+  font-size: 14px;
+  color: #007bff;
+  position: absolute;
+  right: 16px;
+  pointer-events: none;
+}
+
+/* 🎨 Hover Effect */
+.dropdown-select:hover {
+  border-color: #0056b3;
+  background: #e9ecef;
+}
+
+/* 🎨 ป้องกัน Dropdown ซ้อนกัน */
+#attendance-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}

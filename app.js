@@ -59,18 +59,18 @@ app.set('trust proxy', 1); // ให้ Express รองรับ Proxy เช�
 //     }
 // }));
 // เปิดเมื่อใช้ localhost
-// app.use(session({
-//     secret: 'your_secret_key',
-//     store: sessionStore,
-//     resave: false,
-//     saveUninitialized: false,
-//     proxy: false,  // ปิด proxy เมื่อไม่ได้ใช้ ngrok
-//     cookie: { 
-//         secure: false,  // ต้องเป็น false เมื่อใช้ HTTP (localhost)
-//         httpOnly: true,
-//         sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
-//     }
-// }));
+app.use(session({
+    secret: 'your_secret_key',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    proxy: false,  // ปิด proxy เมื่อไม่ได้ใช้ ngrok
+    cookie: { 
+        secure: false,  // ต้องเป็น false เมื่อใช้ HTTP (localhost)
+        httpOnly: true,
+        sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
+    }
+}));
 // ตรวจสอบ session ว่าถูกต้องไหม
 app.use((req, res, next) => {
     console.log('📌 Session Data:', req.session);
@@ -78,18 +78,18 @@ app.use((req, res, next) => {
 });
 // เปิดเมื่อใช้ Ngrok
 // **ตั้งค่า SESSION**
-app.use(session({
-    secret: 'your_secret_key',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
-    proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
-    cookie: { 
-        secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
-        httpOnly: true,
-        sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
-    }
-}));
+// app.use(session({
+//     secret: 'your_secret_key',
+//     store: sessionStore,
+//     resave: false,
+//     saveUninitialized: false,
+//     proxy: true,  // สำคัญ! เพื่อให้ Express รองรับ Proxy (ngrok)
+//     cookie: { 
+//         secure: true,  // ต้องเป็น true เมื่อใช้ HTTPS (ngrok)
+//         httpOnly: true,
+//         sameSite: 'None'  // ป้องกันปัญหา session cookies ข้าม origin
+//     }
+// }));
 
 
 app.use(express.json());
