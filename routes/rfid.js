@@ -26,13 +26,49 @@ router.post('/rfid', async (req, res) => {
 
         const studentId = student[0].u_id;
         const studentYear = student[0].std_year;
-        const currentDay = moment().tz("Asia/Bangkok").locale("th").format("dddd");
+        
+        // 🔄 กำหนดค่า currentDay ก่อน
+let fullDay = moment().tz("Asia/Bangkok").locale("th").format("dddd");
+let currentDay;
+
+switch (fullDay) {
+    case "จันทร์":
+        currentDay = "จันทร์";
+        break;
+    case "อังคาร":
+        currentDay = "อังคาร";
+        break;
+    case "พุธ":
+        currentDay = "พุธ";
+        break;
+    case "พฤหัสบดี":
+        currentDay = "พฤหัส";
+        break;
+    case "ศุกร์":
+        currentDay = "ศุกร์";
+        break;
+    case "เสาร์":
+        currentDay = "เสาร์";
+        break;
+    case "อาทิตย์":
+        currentDay = "อาทิตย์";
+        break;
+    default:
+        currentDay = fullDay;
+}
+
+// ✅ ย้าย console.log มาหลังจากที่กำหนดค่าแล้ว
+console.log("วันเต็ม:", fullDay);
+console.log("วันที่ใช้ค้นหา:", currentDay);
+
 
         // ✅ ดึงข้อมูลวิชาที่สอนวันนี้ พร้อมเวลา start_time, end_time และ room_number
         const schedule = await db.query(
             "SELECT subject_id, start_time, end_time, room_number FROM t_subjects WHERE day_of_week = ? AND year = ?",
             [currentDay, studentYear]
         );
+
+        console.log("ผลลัพธ์การค้นหาตารางเรียน:", schedule);
 
         if (!schedule.length) {
             return res.status(400).json({ error: "No class scheduled for today." });
@@ -84,8 +120,8 @@ router.post('/rfid', async (req, res) => {
 
         // ✅ บันทึกข้อมูลการเข้าเรียน
         await db.query(
-            "INSERT INTO t_attendance (student_id, subject_id, attendance_date, attendance_status, scan_time, room_number) VALUES (?, ?, ?, ?, ?, ?)",
-            [studentId, subjectId, currentDate, attendanceStatus, currentTime, room_number]
+            "INSERT INTO t_attendance (student_id, subject_id, attendance_date, attendance_status, scan_time) VALUES (?, ?, ?, ?, ?)",
+            [studentId, subjectId, currentDate, attendanceStatus, currentTime]
         );
 
         return res.json({
@@ -100,9 +136,5 @@ router.post('/rfid', async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
-
-
-
 
 module.exports = router;

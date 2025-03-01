@@ -125,7 +125,8 @@ function createSubjectDropdown(subjects) {
 
 
 
-// สร้างตารางตามวันและวิชา
+
+// สร้างตารางตามวันและวิชา (ปรับปรุงฟังก์ชัน)
 function createTablesByDayAndSubject(data, selectedSubjectId) {
     $('#attendance-records').empty();
 
@@ -135,17 +136,47 @@ function createTablesByDayAndSubject(data, selectedSubjectId) {
             const subjectData = dayData[selectedSubjectId];
             const dayTitle = $('<h2>').text(`วัน${dayOfWeekToText(dayOfWeek)}`);
             const subjectTitle = $('<h3>').text(`วิชา: ${subjectData.subject_name}`);
+            
+            // เพิ่มคำอธิบายสัญลักษณ์
+            const legendContainer = $('<div>').addClass('status-legend');
+            const legendText = $('<p>').html(
+                '<strong>คำอธิบายสัญลักษณ์:</strong> ' +
+                '✔️ = มา, ' +
+                '🕒 = สาย, ' +
+                '❌ = ขาด'
+            );
+            legendContainer.append(legendText);
+            
             const table = createAttendanceTable(subjectData.students, parseInt(dayOfWeek));
 
             $('#attendance-records')
                 .append(dayTitle)
                 .append(subjectTitle)
+                .append(legendContainer)
                 .append(table);
         }
     });
 }
 
-
+// เพิ่ม CSS สำหรับคำอธิบายสัญลักษณ์
+$(document).ready(function() {
+    // เพิ่ม style สำหรับคำอธิบายสัญลักษณ์
+    $('<style>')
+        .text(`
+            .status-legend {
+                margin-bottom: 15px;
+                background-color: #f9f9f9;
+                padding: 8px 12px;
+                border-radius: 4px;
+                border-left: 3px solid #4a90e2;
+            }
+            .status-legend p {
+                margin: 0;
+                font-size: 0.9rem;
+            }
+        `)
+        .appendTo('head');
+});
 
 // สร้างตารางข้อมูลการเข้าเรียน
 function createAttendanceTable(students, dayOfWeek) {
@@ -172,15 +203,29 @@ function createAttendanceTable(students, dayOfWeek) {
         const row = $('<tr>');
         row.append($('<td>').text(student.student_id));
         row.append($('<td>').text(student.fullname));
+        
+        // เพิ่มตัวแปรสำหรับคำนวณสรุปในตารางเท่านั้น
+        let presentCount = 0;
+        let lateCount = 0;
+        let absentCount = 0;
     
         dates.forEach(date => {
             const attendance = student.attendance[date.fullDate]; // ค้นหา attendance ด้วย fullDate
             const status = attendance ? getStatusIcon(attendance.status) : '-'; // ถ้าไม่มีข้อมูลแสดงเป็น "-"
+            
+            // นับสถานะจากข้อมูลในตารางเท่านั้น
+            if (attendance) {
+                if (attendance.status === '1') presentCount++;
+                else if (attendance.status === '2') lateCount++;
+                else if (attendance.status === '3') absentCount++;
+            }
+            
             row.append($('<td>').html(status)); // ใช้ .html() เพื่อแสดงไอคอน
         });
     
-        const summary = `มา: ${student.summary.present}, สาย: ${student.summary.late}, ขาด: ${student.summary.absent}`;
-        row.append($('<td>').text(summary));
+        // ใช้ข้อมูลสรุปที่คำนวณจากตารางเท่านั้น
+        const tableSummary = `มา: ${presentCount}, สาย: ${lateCount}, ขาด: ${absentCount}`;
+        row.append($('<td>').text(tableSummary));
     
         tbody.append(row);
     });
@@ -188,6 +233,7 @@ function createAttendanceTable(students, dayOfWeek) {
     table.append(tbody);
     return table;
 }
+
 
 // ฟังก์ชันสร้างวันที่
 function generateDates(startDate, dayOfWeek) {
@@ -202,7 +248,7 @@ function generateDates(startDate, dayOfWeek) {
         startDateObj.setDate(startDateObj.getDate() + 1);
     }
 
-    for (let i = 0; i < 16; i++) { // 16 สัปดาห์
+    for (let i = 0; i < 19; i++) { // 16 สัปดาห์
         const currentDate = new Date(startDateObj);
         currentDate.setDate(startDateObj.getDate() + i * 7); // เพิ่มทีละ 7 วัน
         dates.push({
@@ -254,51 +300,303 @@ $('#attendance-records').before(exportButton);
 // ฟังก์ชันแปลงตารางเป็นภาพและบันทึก PDF
 function captureTableAsPDF() {
     const { jsPDF } = window.jspdf;
-
-    // 📌 ดึงชื่อวิชาจากหน้าเว็บ
-    let subjectName = document.querySelector("#attendance-records h3")?.innerText || "attendance_report";
     
-    // 🔹 ตัดคำว่า "วิชา: " ออกไป
-    subjectName = subjectName.replace(/^วิชา:\s*/, "");
-
-    // 🔹 ลบอักขระพิเศษที่ไม่สามารถใช้เป็นชื่อไฟล์ได้
-    subjectName = subjectName.replace(/[<>:"\/\\|?*]+/g, "").trim(); 
-    subjectName = subjectName.replace(/\s+/g, "_"); // แทนที่ช่องว่างด้วย "_"
-
-    html2canvas(document.querySelector("#attendance-records"), {
-        scale: 2, // เพิ่มความคมชัด
-        scrollX: 0,
-        scrollY: 0,
-        useCORS: true
-    }).then(canvas => {
-        const imgData = canvas.toDataURL("image/png");
-
-        const doc = new jsPDF({
-            orientation: 'landscape',
-            unit: 'mm',
-            format: 'a4'
-        });
-
-        // ขนาดกระดาษ PDF
+    // สร้าง PDF แบบ landscape
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+    });
+    
+    // ดึงข้อมูลจากหน้าเว็บ
+    let subjectName = document.querySelector("#attendance-records h3")?.innerText || "attendance_report";
+    subjectName = subjectName.replace(/^วิชา:\s*/, "").trim();
+    const filename = subjectName.replace(/[<>:"\/\\|?*]+/g, "").replace(/\s+/g, "_");
+    
+    // ดึงข้อมูลจากตารางเดิม
+    const originalTable = document.querySelector("#attendance-records table");
+    if (!originalTable) {
+        console.error("ไม่พบตารางข้อมูล");
+        return;
+    }
+    
+    // ดึงข้อมูลส่วนหัวของหน้า
+    const headerTitle = document.querySelector("#attendance-records h2")?.innerHTML || "";
+    const headerSubtitle = document.querySelector("#attendance-records h3")?.innerHTML || "";
+    
+    // ดึงข้อมูลส่วนคำอธิบายสัญลักษณ์
+    const legendContent = document.querySelector("#attendance-records .status-legend")?.innerHTML || "";
+    
+    // สร้างตารางข้อมูล
+    const rows = Array.from(originalTable.rows);
+    
+    // ถ้าไม่มีข้อมูล ให้จบการทำงาน
+    if (rows.length <= 1) {
+        console.error("ตารางไม่มีข้อมูล");
+        return;
+    }
+    
+    // แยกหัวตารางกับข้อมูล
+    const headerRow = rows[0];
+    const dataRows = rows.slice(1);
+    
+    // กำหนดจำนวนแถวต่อหน้า - อาจต้องปรับตามความเหมาะสม
+    const rowsPerPage = 20;
+    
+    // แบ่งข้อมูลเป็นหน้า
+    const pageGroups = [];
+    for (let i = 0; i < dataRows.length; i += rowsPerPage) {
+        pageGroups.push(dataRows.slice(i, i + rowsPerPage));
+    }
+    
+    // สร้างฟังก์ชันสำหรับสร้างแต่ละหน้า
+    async function generatePages() {
+        // เตรียม promises เพื่อจัดการกับรูปภาพทั้งหมด
+        const pagePromises = [];
+        
+        for (let pageIndex = 0; pageIndex < pageGroups.length; pageIndex++) {
+            // สร้าง container สำหรับหน้านี้
+            const pageContainer = document.createElement('div');
+            pageContainer.style.position = 'absolute';
+            pageContainer.style.left = '-9999px';
+            pageContainer.style.width = '297mm'; // A4 landscape
+            pageContainer.style.padding = '5mm'; // ลดขอบกระดาษจาก 10mm เป็น 5mm
+            pageContainer.style.background = 'white';
+            pageContainer.style.fontFamily = 'Arial, sans-serif';
+            
+            // สร้างหัวรายงานเฉพาะหน้าแรก
+            if (pageIndex === 0) {
+                if (headerTitle) {
+                    const titleDiv = document.createElement('h2');
+                    titleDiv.innerHTML = headerTitle;
+                    titleDiv.style.textAlign = 'center';
+                    titleDiv.style.margin = '0 0 3mm 0'; // ลดระยะห่าง
+                    pageContainer.appendChild(titleDiv);
+                }
+                
+                if (headerSubtitle) {
+                    const subtitleDiv = document.createElement('h3');
+                    subtitleDiv.innerHTML = headerSubtitle;
+                    subtitleDiv.style.textAlign = 'center';
+                    subtitleDiv.style.margin = '0 0 3mm 0'; // ลดระยะห่าง
+                    pageContainer.appendChild(subtitleDiv);
+                }
+                
+                // เพิ่มคำอธิบายสัญลักษณ์เฉพาะหน้าแรก
+                if (legendContent) {
+                    const legendDiv = document.createElement('div');
+                    legendDiv.className = 'status-legend';
+                    legendDiv.innerHTML = legendContent;
+                    legendDiv.style.margin = '0 0 3mm 0'; // ลดระยะห่าง
+                    pageContainer.appendChild(legendDiv);
+                }
+            }
+            
+            // สร้างหมายเลขหน้า
+            const pageInfo = document.createElement('div');
+            pageInfo.textContent = `หน้า ${pageIndex + 1}/${pageGroups.length}`;
+            pageInfo.style.textAlign = 'right';
+            pageInfo.style.margin = '0 0 2mm 0'; // ลดระยะห่าง
+            pageInfo.style.fontSize = '9pt';
+            pageContainer.appendChild(pageInfo);
+            
+            // สร้างตารางใหม่
+            const table = document.createElement('table');
+            table.style.width = '100%';
+            table.style.borderCollapse = 'collapse';
+            table.style.fontSize = '10pt';
+            
+            // สร้างส่วนหัวตาราง (ทุกหน้ามีหัวตาราง)
+            const thead = document.createElement('thead');
+            const newHeaderRow = headerRow.cloneNode(true);
+            thead.appendChild(newHeaderRow);
+            table.appendChild(thead);
+            
+            // สร้างส่วนเนื้อหาตาราง
+            const tbody = document.createElement('tbody');
+            const pageRows = pageGroups[pageIndex];
+            
+            for (const row of pageRows) {
+                const newRow = row.cloneNode(true);
+                tbody.appendChild(newRow);
+            }
+            
+            table.appendChild(tbody);
+            pageContainer.appendChild(table);
+            
+            // เพิ่ม container ลงในเอกสาร
+            document.body.appendChild(pageContainer);
+            
+            // จัดรูปแบบตาราง
+            styleElements(pageContainer, pageIndex > 0);
+            
+            // ใช้ Promise เพื่อจัดการกับการสร้างภาพแต่ละหน้า
+            const pagePromise = new Promise((resolve) => {
+                html2canvas(pageContainer, {
+                    scale: 2, // ลดลงจาก 3 เพื่อป้องกันรูปยืด
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#FFFFFF',
+                    allowTaint: true,
+                    letterRendering: true,
+                    imageTimeout: 0
+                }).then(canvas => {
+                    // ลบ container หลังจากสร้างภาพเสร็จ
+                    document.body.removeChild(pageContainer);
+                    
+                    // เตรียมข้อมูลสำหรับเพิ่มในหน้า PDF
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    resolve({ imgData, pageIndex, width: canvas.width, height: canvas.height });
+                });
+            });
+            
+            pagePromises.push(pagePromise);
+        }
+        
+        // รอให้ทุกหน้าสร้างเสร็จ
+        const pageResults = await Promise.all(pagePromises);
+        
+        // เรียงหน้าตามลำดับ
+        pageResults.sort((a, b) => a.pageIndex - b.pageIndex);
+        
+        // เพิ่มทุกหน้าลงใน PDF
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
+        const margin = 5; // ลดขอบกระดาษจาก 10 เป็น 5
+        
+        pageResults.forEach((result, index) => {
+            if (index > 0) {
+                doc.addPage();
+            }
+            
+            // คำนวณความสูงเพื่อรักษาอัตราส่วน
+            const imgWidth = pageWidth - (margin * 2);
+            const imgHeight = imgWidth * (result.height / result.width);
 
-        // 🔹 ปรับระยะขอบ
-        const marginX = 10;
-        const marginY = 10;
-
-        // 🔹 ลดขนาดรูปลงเล็กน้อย
-        const imgWidth = pageWidth - marginX * 2;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        // ใส่รูปลงใน PDF พร้อมระยะขอบ
-        doc.addImage(imgData, "PNG", marginX, marginY, imgWidth, imgHeight);
-
-        // 📌 ตั้งชื่อไฟล์เป็นชื่อวิชาอัตโนมัติ
-        doc.save(`${subjectName}.pdf`);
-    });
+            if (!isFinite(imgHeight) || imgHeight <= 0) {
+                console.error("ขนาดของรูปภาพไม่ถูกต้อง:", imgWidth, imgHeight);
+                return;
+            }
+            
+            doc.addImage(result.imgData, 'JPEG', margin, margin, imgWidth, imgHeight, null, 'FAST');
+        });
+        
+        // บันทึก PDF
+        doc.save(`${filename}.pdf`);
+    }
+    
+    // เริ่มการสร้างหน้า
+    generatePages();
 }
 
+// ฟังก์ชันจัดรูปแบบองค์ประกอบต่างๆ
+function styleElements(container, isSecondaryPage = false) {
+    // จัดรูปแบบส่วนหัว
+    const headings = container.querySelectorAll('h2, h3');
+    headings.forEach(heading => {
+        heading.style.fontFamily = 'Arial, sans-serif';
+        heading.style.color = '#333';
+        heading.style.margin = '2mm 0'; // ลดระยะห่าง
+        heading.style.padding = '0';
+        heading.style.textAlign = 'center';
+        
+        // ลดขนาดตัวอักษรหัวเรื่อง
+        if (heading.tagName === 'H2') {
+            heading.style.fontSize = '14pt';
+        } else {
+            heading.style.fontSize = '12pt';
+        }
+    });
+    
+    // จัดรูปแบบคำอธิบายสัญลักษณ์
+    const legend = container.querySelector('.status-legend');
+    if (legend) {
+        legend.style.background = '#f8f8f8';
+        legend.style.border = '1px solid #ddd';
+        legend.style.borderLeft = '3px solid #4a90e2';
+        legend.style.padding = '3mm'; // ลดระยะห่าง
+        legend.style.margin = '2mm 0'; // ลดระยะห่าง
+        legend.style.borderRadius = '2mm';
+        legend.style.fontSize = '9pt'; // ลดขนาดตัวอักษร
+    }
+    
+    // จัดรูปแบบตาราง
+    const table = container.querySelector('table');
+    if (table) {
+        table.style.width = '100%';
+        table.style.borderCollapse = 'collapse';
+        table.style.fontSize = '10pt';
+        table.style.marginBottom = '5mm'; // ลดระยะห่าง
+        
+        // ปรับความกว้างคอลัมน์
+        const headerRow = table.rows[0];
+        if (headerRow) {
+            const columnCount = headerRow.cells.length;
+            
+            // คอลัมน์รหัสนักศึกษา
+            if (headerRow.cells[0]) headerRow.cells[0].style.width = '15%';
+            // คอลัมน์ชื่อ-นามสกุล
+            if (headerRow.cells[1]) headerRow.cells[1].style.width = '20%';
+            // คอลัมน์สรุป
+            if (headerRow.cells[columnCount-1]) headerRow.cells[columnCount-1].style.width = '15%';
+            
+            // คอลัมน์วันที่
+            const dateColumnWidth = 50 / (columnCount - 3);
+            for (let i = 2; i < columnCount - 1; i++) {
+                if (headerRow.cells[i]) headerRow.cells[i].style.width = dateColumnWidth + '%';
+            }
+            
+            // หากเป็นหน้าที่ 2 เป็นต้นไป ปรับหัวตารางให้เรียบง่าย
+            if (isSecondaryPage) {
+                for (let i = 0; i < columnCount; i++) {
+                    const cell = headerRow.cells[i];
+                    
+                    // ถ้าเป็นคอลัมน์วันที่ ให้ตัดข้อความเหลือแค่วันที่
+                    if (i >= 2 && i < columnCount - 1) {
+                        const text = cell.textContent;
+                        // เก็บเฉพาะวันที่ (ถ้ามี)
+                        const dateMatch = text.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
+                        if (dateMatch) {
+                            cell.textContent = dateMatch[0];
+                        }
+                    }
+                }
+            }
+        }
+        
+        // จัดรูปแบบเซลล์
+        const cells = table.querySelectorAll('th, td');
+        cells.forEach(cell => {
+            cell.style.border = '1px solid #bbb';
+            cell.style.padding = '1.5mm'; // ลดระยะห่าง
+            
+            // หัวตาราง
+            if (cell.tagName === 'TH') {
+                cell.style.backgroundColor = '#f2f2f2';
+                cell.style.fontWeight = 'bold';
+                cell.style.textAlign = 'center';
+                cell.style.color = '#333';
+            } else {
+                // เซลล์ข้อมูล
+                const content = cell.textContent.trim();
+                if (content === '✔️' || content === '🕒' || content === '❌' || content === '-') {
+                    cell.style.textAlign = 'center';
+                    cell.style.fontSize = '12pt';
+                    
+                    // สีพื้นหลังตามสถานะ
+                    if (content === '✔️') cell.style.backgroundColor = '#e8f5e9';
+                    else if (content === '🕒') cell.style.backgroundColor = '#fff8e1';
+                    else if (content === '❌') cell.style.backgroundColor = '#ffebee';
+                } else if (/^\d+$/.test(content) || content.includes('/')) {
+                    cell.style.textAlign = 'center';
+                } else if (content.includes('มา:') || content.includes('สาย:') || content.includes('ขาด:')) {
+                    cell.style.textAlign = 'left';
+                    cell.style.fontSize = '9pt';
+                }
+            }
+        });
+    }
+}
 // ส่วนของ Sidebar toggle
 $(document).ready(function() {
     let sideBar = $("aside");

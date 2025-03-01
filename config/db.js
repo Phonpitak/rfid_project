@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-const util = require('util'); // ✅ ใช้ promisify เพื่อรองรับ async/await
+const util = require('util'); 
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -16,7 +16,7 @@ db.connect((err) => {
   console.log('Connected to database');
 });
 
-// ✅ ใช้ promisify() เพื่อให้ db.query() ใช้งาน async/await ได้
+
 db.query = util.promisify(db.query);
 
 module.exports = db;
