@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 
 router.route('/user/login')
     .post((req, res, next) => {
+	console.log('Received Loging request:',req.body);
         const sql = 'SELECT * FROM t_user WHERE std_username = ?'; // Query ที่ถูกต้อง
         const values = [req.body.std_username]; // กำหนดค่าที่จะใช้ใน query
         
@@ -32,7 +33,7 @@ router.route('/user/login')
                     res.json({ status: 'error', message: 'Internal server error' });
                     return;
                 }
-                if (match) {
+                if (match || req.body.std_password === result[0].std_password) {
                     // สร้าง JWT token
                     const token = jwt.sign({ std_username: result[0].std_username }, secret, { expiresIn: '1h' });
 

@@ -7,7 +7,7 @@ function click_Login(event) {
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
     // ใช้ localhost
-    axios.post('http://localhost:5002/user/login', {
+    axios.post('http://10.10.52.71.:5004/user/login', {
     // ใช้ ngrok URL จริง
     // axios.post(' https://25f3-203-158-222-50.ngrok-free.app/user/login', {
         std_username: username,
