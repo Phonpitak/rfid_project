@@ -257,7 +257,7 @@ function generateDates(startDate, dayOfWeek) {
         startDateObj.setDate(startDateObj.getDate() + 1);
     }
 
-    for (let i = 0; i < 19; i++) { // 16 สัปดาห์
+    for (let i = 0; i < 21; i++) { // 16 สัปดาห์
         const currentDate = new Date(startDateObj);
         currentDate.setDate(startDateObj.getDate() + i * 7); // เพิ่มทีละ 7 วัน
         dates.push({
@@ -304,6 +304,7 @@ const exportButton = $('<button>')
     });
 
 $('#attendance-records').before(exportButton);
+
 
 function captureTableAsPDF() {
     const { jsPDF } = window.jspdf;

@@ -5,41 +5,128 @@ const multer = require('multer');
 const path = require('path');
 const mysql = require('mysql2');
 
-
-// กำหนดเส้นทางสำหรับจัดเก็บไฟล์ที่อัปโหลด
+// More secure and flexible file storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, 'public/img/uploaduser'); // โฟลเดอร์สำหรับอัปโหลด
+    cb(null, 'public/img/uploaduser'); // Ensure this directory exists
   },
   filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, uniqueSuffix + path.extname(file.originalname));
+    // Use original filename with timestamp to prevent overwrites
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const sanitizedFilename = file.originalname.replace(/[^a-zA-Z0-9.]/g, '_');
+    cb(null, uniqueSuffix + '-' + sanitizedFilename);
   }
 });
 
-const upload = multer({ storage: storage });
+// File filter for image validation
+const imageFilter = (req, file, cb) => {
+  // Accept image files only
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+    return cb(new Error('Only image files are allowed!'), false);
+  }
+  cb(null, true);
+};
 
+const upload = multer({ 
+  storage: storage,
+  fileFilter: imageFilter,
+  limits: { 
+    fileSize: 5 * 1024 * 1024 // 5MB file size limit
+  }
+});
 router.post('/upload', upload.single('image'), (req, res) => {
-  if (!req.file) {
-      return res.status(400).json({ success: false, message: 'No file uploaded' });
-  }
-
-  const imgPath = '/img/uploaduser/' + req.file.filename; // เส้นทางไฟล์ที่บันทึก
-  const userId = req.body.userId || 1; // รับ userId เพื่ออัปเดตข้อมูล ถ้าไม่มี ให้ใช้ค่า default เป็น 1
-
-  // บันทึกเส้นทางรูปภาพลงฐานข้อมูล
-  db.query(
-      'UPDATE t_user SET std_img = ? WHERE id = ?',
-      [imgPath, userId],
-      (error, results) => {
-          if (error) {
-              console.error('Database error: ', error); // เพิ่มการ log ข้อผิดพลาด
-              return res.status(500).json({ success: false, message: 'Database error' });
-          }
-          res.json({ success: true, message: 'File uploaded successfully' });
+    try {
+      console.log('Full request body:', req.body);
+      console.log('File details:', req.file);
+   
+      if (!req.file) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'ไม่พบไฟล์อัปโหลด' 
+        });
       }
-  );
-});
+   
+      // ใช้ path สัมบูรณ์สำหรับการบันทึก
+      const imgPath = '/img/uploaduser/' + req.file.filename;
+      const userId = req.body.userId;
+   
+      if (!userId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'ต้องระบุรหัสผู้ใช้' 
+        });
+      }
+   
+      // อัปเดตโดยตรง พร้อมตรวจสอบการอัปเดต
+      db.query(
+        'UPDATE t_user SET std_img = ? WHERE u_id = ?',
+        [imgPath, userId],
+        (error, results) => {
+          if (error) {
+            console.error('Database update error:', error);
+            return res.status(500).json({ 
+              success: false, 
+              message: 'ไม่สามารถบันทึกรูปภาพได้' 
+            });
+          }
+   
+          // ตรวจสอบว่ามีการอัปเดตจริง
+          if (results.affectedRows === 0) {
+            return res.status(404).json({ 
+              success: false, 
+              message: 'ไม่พบผู้ใช้' 
+            });
+          }
+   
+          res.json({ 
+            success: true, 
+            message: 'อัปโหลดรูปภาพสำเร็จ',
+            imagePath: imgPath 
+          });
+        }
+      );
+    } catch (err) {
+      console.error('Upload error:', err);
+      res.status(500).json({ 
+        success: false, 
+        message: 'เกิดข้อผิดพลาดภายใน' 
+      });
+    }
+   });
+
+
+   router.get('/user/profile/:userId', (req, res) => {
+    const userId = req.params.userId;
+  
+    db.query(
+      'SELECT std_img FROM t_user WHERE u_id = ?', 
+      [userId], 
+      (error, results) => {
+        if (error) {
+          console.error('Database error:', error);
+          return res.status(500).json({ 
+            success: false, 
+            message: 'เกิดข้อผิดพลาดในการดึงข้อมูล' 
+          });
+        }
+  
+        if (results.length === 0) {
+          return res.status(404).json({ 
+            success: false, 
+            message: 'ไม่พบข้อมูลผู้ใช้' 
+          });
+        }
+  
+        console.log('Database image path:', results[0].std_img);
+  
+        res.json({
+          success: true,
+          std_img: results[0].std_img || 'img/profile-placeholder.png'
+        });
+      }
+    );
+  });
+
 router.get('/infoname/:id', (req, res) => {
     const userId = req.params.id; // ดึงค่า ID จาก URL
     const sql = 'SELECT std_firstname, std_lastname FROM t_user WHERE u_id = ?'; // ใช้ ? เพื่อ placeholder ของ parameter
@@ -131,6 +218,147 @@ router.get('/detail/All/:userId', async (req, res) => {
     }
 });
 
+// API Route สำหรับดึงสถิติการเข้าเรียนรายบุคคล
+router.get('/student-attendance-statistics', (req, res) => {
+    const studentId = req.query.student_id;
+    const year = req.query.year || 2567; // ค่าเริ่มต้นเป็นปีปัจจุบัน
+    
+    // SQL สำหรับดึงข้อมูลสถิติการเข้าเรียนของนักศึกษา
+    const sql = `
+        SELECT 
+            t_subjects.subject_id,
+            t_subjects.subject_name,
+            t_subjects.subject_code,
+            COUNT(CASE WHEN t_attendance.attendance_status = 1 THEN 1 END) AS present_count,
+            COUNT(CASE WHEN t_attendance.attendance_status = 2 THEN 1 END) AS late_count,
+            COUNT(CASE WHEN t_attendance.attendance_status = 3 THEN 1 END) AS absent_count,
+            COUNT(t_attendance.attendance_id) AS total_classes
+        FROM t_enrollments
+        INNER JOIN t_subjects ON t_enrollments.subject_id = t_subjects.subject_id
+        LEFT JOIN t_attendance ON t_enrollments.subject_id = t_attendance.subject_id 
+            AND t_enrollments.student_id = t_attendance.student_id
+        WHERE t_enrollments.student_id = ?
+            AND t_subjects.academic_year = ?
+        GROUP BY t_subjects.subject_id, t_subjects.subject_name, t_subjects.subject_code
+        ORDER BY t_subjects.subject_name;
+    `;
+    
+    db.query(sql, [studentId, year], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Database error', details: err.message });
+        }
+        
+        // สรุปข้อมูลทั้งหมด
+        const summary = {
+            total_present: 0,
+            total_late: 0,
+            total_absent: 0,
+            total_classes: 0,
+            subject_statistics: results.map(item => {
+                // เพิ่มข้อมูลสรุปรวม
+                summary.total_present += item.present_count;
+                summary.total_late += item.late_count;
+                summary.total_absent += item.absent_count;
+                summary.total_classes += item.total_classes;
+                
+                // คำนวณเปอร์เซ็นต์
+                const attendance_rate = item.total_classes > 0 
+                    ? ((item.present_count + item.late_count) / item.total_classes * 100).toFixed(2) 
+                    : 0;
+                
+                return {
+                    subject_id: item.subject_id,
+                    subject_name: item.subject_name,
+                    subject_code: item.subject_code,
+                    present: item.present_count,
+                    late: item.late_count,
+                    absent: item.absent_count,
+                    total_classes: item.total_classes,
+                    attendance_rate: parseFloat(attendance_rate)
+                };
+            })
+        };
+        
+        // คำนวณอัตราการเข้าเรียนรวม
+        summary.overall_attendance_rate = summary.total_classes > 0
+            ? ((summary.total_present + summary.total_late) / summary.total_classes * 100).toFixed(2)
+            : 0;
+        
+        res.json(summary);
+    });
+});
 
+// API Route สำหรับดึงข้อมูลแนวโน้มการเข้าเรียนตามเวลา (รายเดือนหรือรายสัปดาห์)
+router.get('/student-attendance-trend', (req, res) => {
+    const studentId = req.query.student_id;
+    const year = req.query.year || 2567;
+    const period = req.query.period || 'monthly'; // 'monthly' หรือ 'weekly'
+    
+    let timeGrouping;
+    if (period === 'monthly') {
+        timeGrouping = "DATE_FORMAT(t_attendance.attendance_date, '%Y-%m')";
+    } else {
+        timeGrouping = "YEARWEEK(t_attendance.attendance_date, 1)";
+    }
+    
+    const sql = `
+        SELECT 
+            ${timeGrouping} AS time_period,
+            COUNT(CASE WHEN t_attendance.attendance_status = 1 THEN 1 END) AS present_count,
+            COUNT(CASE WHEN t_attendance.attendance_status = 2 THEN 1 END) AS late_count,
+            COUNT(CASE WHEN t_attendance.attendance_status = 3 THEN 1 END) AS absent_count,
+            COUNT(t_attendance.attendance_id) AS total_classes
+        FROM t_enrollments
+        INNER JOIN t_subjects ON t_enrollments.subject_id = t_subjects.subject_id
+        INNER JOIN t_attendance ON t_enrollments.subject_id = t_attendance.subject_id 
+            AND t_enrollments.student_id = t_attendance.student_id
+        WHERE t_enrollments.student_id = ?
+            AND t_subjects.academic_year = ?
+        GROUP BY time_period
+        ORDER BY time_period;
+    `;
+    
+    db.query(sql, [studentId, year], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Database error', details: err.message });
+        }
+        
+        // แปลงข้อมูลให้เหมาะสำหรับการแสดงกราฟ
+        const formattedResults = results.map(item => {
+            let periodLabel;
+            if (period === 'monthly') {
+                // แปลงรูปแบบ YYYY-MM เป็นชื่อเดือน
+                const [year, month] = item.time_period.split('-');
+                const monthNames = [
+                    'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                    'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                ];
+                periodLabel = `${monthNames[parseInt(month) - 1]} ${parseInt(year) + 543}`;
+            } else {
+                // แปลง YYYYWW เป็นรูปแบบ "สัปดาห์ที่ W เดือน M ปี Y"
+                const yearWeek = item.time_period.toString();
+                const year = yearWeek.substring(0, 4);
+                const week = yearWeek.substring(4);
+                periodLabel = `สัปดาห์ที่ ${week} ปี ${parseInt(year) + 543}`;
+            }
+            
+            // คำนวณอัตราการเข้าเรียน
+            const attendance_rate = item.total_classes > 0 
+                ? ((item.present_count + item.late_count) / item.total_classes * 100).toFixed(2) 
+                : 0;
+            
+            return {
+                period: periodLabel,
+                present: item.present_count,
+                late: item.late_count,
+                absent: item.absent_count,
+                total: item.total_classes,
+                attendance_rate: parseFloat(attendance_rate)
+            };
+        });
+        
+        res.json(formattedResults);
+    });
+});
   
 module.exports = router;

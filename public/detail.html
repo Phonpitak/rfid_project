@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">  
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300&display=swap" rel="stylesheet"> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
 </head>
 <body>
@@ -67,76 +69,127 @@
             </div>
         </aside>
 
-        <main >
+         <!-- Redesigned main content -->
+         <main>
+            <!-- Top profile block -->
             <div class="profile-block">
                 <div class="profile-details">
-                  <div>
-                    <span class="profile-title"></span>
-                    <p id="profile-name"></p>
-                  </div>
-                  <div style="position:relative;">
-                    <i class="bi bi-person-fill" style="font-size: 50px;"></i>
-                    <span class="status-indicator"></span> <!-- Green dot -->
-                  </div>
+                    <div>
+                        <p id="profile-name">ยินดีต้อนรับ, <span id="welcome-name">ชื่อนักศึกษา</span></p>
+                    </div>
+                    <div style="position:relative;">
+                        <i class="bi bi-person-circle" style="font-size: 40px;"></i>
+                        <span class="status-indicator"></span>
+                    </div>
                 </div>
-              </div>
-             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="text-primary">ข้อมูลนักศึกษา</h3>
             </div>
-            <div class="container" style="display: flex;">
-                <div class="card" style="background-color: #f2e3d0;width: 200px;height: 250px; position: relative;">
-                  <div class="image-preview" id="imagePreview" style="background-color: #ffff; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">
-                    <img src="img/profile-placeholder.png" alt="Profile Picture" id="imageDisplay" />
-                    <span id="imagePlaceholder">รูปภาพจะปรากฏที่นี่</span>
-                  </div>
-              
-                  <!-- ย้าย input type="file" ออกมาเพื่อให้แสดงด้านล่างกล่อง -->
-                  <br>
-                  <label for="imageUpload" style="position: absolute; top: calc(40% + 100px); left: 20%; transform: translateX(-50%); margin-left: 70px;margin-top: 20px;cursor: pointer; background-color: #2e6ba7; color: white; padding: 10px 20px; border-radius: 20px;">Upload</label>
-                  <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+
+            <!-- Page title -->
+            <div class="page-header">
+                <h3>ข้อมูลนักศึกษา</h3>
+            </div>
+
+            <!-- Profile content container -->
+            <div class="profile-container">
+                <!-- Profile picture card -->
+                <div class="profile-image-card">
+                    <div class="image-container" id="imagePreview">
+                        <img src="img/profile-placeholder.png" alt="Profile Picture" id="imageDisplay">
+                    </div>
+                    <label for="imageUpload" class="upload-btn">
+                        <i class="bi bi-cloud-arrow-up"></i> อัพโหลดรูปภาพ
+                    </label>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
                 </div>
-              
-                <!-- The second card next to the first one -->
-                <div class="information" style="background-color: #fefefe;width: 870px;height: 250px;margin-left: 50px;">
+
+                <!-- Information card -->
+                <div class="information-card">
+                    <h4 class="card-title">
+                        <i class="bi bi-person-badge"></i> ข้อมูลส่วนตัว
+                    </h4>
                     <div class="info-container">
                         <div class="info-item">
-                        <label>ชื่อ-นามสกุล:</label>
-                        <p  id="studentName"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>รหัสนักศึกษา:</label>
-                        <p  id="studentId"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>สาขาวิชา:</label>
-                        <p  id="studentBranch"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>คณะ:</label>
-                        <p  id="studentFaculty"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>กลุ่ม/ห้อง:</label>
-                        <p  id="studentGroup"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>ปีการศึกษา:</label>
-                        <p  id="studentyear"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>เทอม:</label>
-                        <p  id="studenterm"></p>
+                            <label>ชื่อ-นามสกุล:</label>
+                            <p id="studentName">นายตัวอย่าง นามสกุลตัวอย่าง</p>
+                        </div>
+                        <div class="info-item">
+                            <label>รหัสนักศึกษา:</label>
+                            <p id="studentId">644230001</p>
+                        </div>
+                        <div class="info-item">
+                            <label>สาขาวิชา:</label>
+                            <p id="studentBranch">วิทยาการคอมพิวเตอร์</p>
+                        </div>
+                        <div class="info-item">
+                            <label>คณะ:</label>
+                            <p id="studentFaculty">วิทยาศาสตร์และเทคโนโลยี</p>
+                        </div>
+                        <div class="info-item">
+                            <label>กลุ่ม/ห้อง:</label>
+                            <p id="studentGroup">44K</p>
+                        </div>
+                        <div class="info-item">
+                            <label>ปีการศึกษา:</label>
+                            <p id="studentyear">2567</p>
+                        </div>
+                        <div class="info-item">
+                            <label>เทอม:</label>
+                            <p id="studenterm">1</p>
+                        </div>
+                        <div class="info-item">
+                            <label>สถานะ:</label>
+                            <p>กำลังศึกษา</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- เพิ่มลูกเล่นด้านล่างข้อมูลส่วนตัว -->
+            <div class="widgets-container">
+                <!-- นาฬิกาดิจิตอล -->
+                <div class="widget-card clock-widget">
+                    <h4 class="widget-title">
+                        <i class="bi bi-clock"></i> เวลาปัจจุบัน
+                    </h4>
+                    <div class="digital-clock" id="digitalClock">00:00:00</div>
+                    <div class="date-display" id="dateDisplay">วันจันทร์ที่ 22 มีนาคม 2568</div>
                 </div>
-              </div>
-              
-              
-              
-        
-        
+
+                <!-- ปฎิทิน -->
+                <div class="widget-card">
+                    <h4 class="widget-title">
+                        <i class="bi bi-calendar3"></i> ปฏิทินการศึกษา
+                    </h4>
+                    <div class="calendar-widget">
+                        <div class="calendar-header">
+                            <button class="calendar-btn" id="prevMonth"><i class="bi bi-chevron-left"></i></button>
+                            <div class="calendar-month" id="currentMonth">มีนาคม 2568</div>
+                            <button class="calendar-btn" id="nextMonth"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-days">
+                            <div class="day-name">อา</div>
+                            <div class="day-name">จ</div>
+                            <div class="day-name">อ</div>
+                            <div class="day-name">พ</div>
+                            <div class="day-name">พฤ</div>
+                            <div class="day-name">ศ</div>
+                            <div class="day-name">ส</div>
+                        </div>
+                        <div class="calendar-dates" id="calendarDates">
+                            <!-- จะถูกเติมด้วย JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- กราฟแนวโน้ม
+<div class="widget-card chart-widget">
+    <h4 class="widget-title">
+        <i class="bi bi-line-chart"></i> แนวโน้มการเข้าเรียน
+    </h4>
+    <canvas id="attendanceTrendChart"></canvas>
+</div> -->
+            </div> 
         </main>
-        
     </div>
 
     <script src="js/detail.js"></script>

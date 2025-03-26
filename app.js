@@ -12,38 +12,41 @@ const sessionStore = new MySQLStore({}, db);
 
 
 
-// **Middleware แก้ปัญหา Preflight Request (OPTIONS)**
 app.use((req, res, next) => {
     const allowedOrigins = [
-        'http://localhost:5555', 
-        'http://127.0.0.1:5555',
-	'http://localhost:5004',
-	'http://127.0.0.1:5004',
-	'http://127.0.0.1:5002',
-	'http://localhost:5002',
-	'http://192.168.0.166:5004',
-	'http://192.168.0.166:5555',
-	'http://10.10.52.71:5004',
-	'http://10.10.52.71:5555'
+        'http://localhost:5555',
+        'http://localhost:5002',
+        'http://127.0.0.1:5004',
+        'http://127.0.0.1:5002',
+        'http://192.168.0.166:5004',
+        'http://192.168.0.166:5555',
+        'http://10.10.52.71:5004',
+        'http://10.10.52.71:5555'
     ];
-    
-    const origin = req.headers.origin;
-    console.log('Request Origin:',origin);
-    if (!origin || allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin || 'http://localhost:5004');
-    } else {
-	console.log('Origin not allowd:',origin);
-}
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
 
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(204);
+    const origin = req.headers.origin;
+    console.log('📌 Request Origin:', origin);
+
+    if (!origin || allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin || 'http://localhost:5002');
+    } else {
+        console.log('🚫 Origin not allowed:', origin);
+    }
+
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        console.log('📌 Handling OPTIONS request');
+        res.sendStatus(204);
+        return;
     }
 
     next();
 });
+
+
 app.set('trust proxy', 1); // ให้ Express รองรับ Proxy เช่น ngrok
 // app.use(session({
 //     secret: 'your_secret_key',
@@ -63,12 +66,11 @@ app.use(session({
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    store: sessionStore,
     proxy: false,  // ปิด proxy เมื่อไม่ได้ใช้ ngrok
     cookie: { 
         secure: false,  // ต้องเป็น false เมื่อใช้ HTTP (localhost)
         httpOnly: true,
-        sameSite: 'Lax'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
+        sameSite: 'None'  // ปรับ sameSite เป็น Lax เมื่อไม่ได้ใช้ CORS ข้ามโดเมน
     }
 }));
 // ตรวจสอบ session ว่าถูกต้องไหม
@@ -145,7 +147,7 @@ for (let interface in interfaces) {
         }
     }
 }
-const PORT = process.env.PORT || 5004;
+const PORT = process.env.PORT || 5002;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
 });

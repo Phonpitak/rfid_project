@@ -57,8 +57,11 @@ function thaiDayToNumber(thaiDay) {
 }
 
 // ฟังก์ชันจัดรูปแบบข้อมูล
+// ฟังก์ชันจัดรูปแบบข้อมูล (ปรับปรุงแล้ว)
 function formatAttendanceData(rows) {
     const formattedData = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // ตั้งเวลาเป็น 00:00:00
 
     // จัดกลุ่มตามวันและวิชา
     rows.forEach(row => {
@@ -73,9 +76,11 @@ function formatAttendanceData(rows) {
         // สร้างโครงสร้างข้อมูลตามวิชา
         if (!formattedData[dayOfWeek][subjectId]) {
             formattedData[dayOfWeek][subjectId] = {
-                subject_name: `${row.subject_name} (${row.subject_code})`, // เพิ่มรหัสวิชาต่อท้ายชื่อวิชา
+                subject_name: `${row.subject_name} (${row.subject_code})`,
                 day_of_week: dayOfWeek,
-                students: {}
+                students: {},
+                // เพิ่มข้อมูลวันเริ่มต้นของวิชา
+                start_date: '2024-11-18' // วันที่เริ่มต้นของเทอม
             };
         }
 

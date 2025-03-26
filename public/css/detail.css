@@ -52,9 +52,9 @@ aside.mini {
 }
 
 .link ul li:hover {
-  background-color:#F7B8CD;
+  background-color: #F7B8CD;
   border-radius: 15px;
-  
+
 }
 
 .link ul li.active {
@@ -83,238 +83,188 @@ aside.mini {
   text-overflow: ellipsis;
 }
 
-/* Main content */
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Main content styles */
 main {
   flex-grow: 1;
   padding: 2rem;
-  background-color: #2e6ba7;
+  background-color: #f5f7fa;
   min-height: 100vh;
   font-family: 'Sarabun', Arial, sans-serif;
 }
 
-main h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-.personal-info {
-  display: flex;
-  background-color: #f9f9f9;
-  padding: 15rem;
-  border-radius: 0;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-}
+/* Header profile block */
 .profile-block {
-  margin: 0 0 10px;
-  padding: 10px 20px;
-  border-radius: 15px;
+  margin: 0 0 20px;
+  padding: 15px 25px;
+  border-radius: 12px;
   background-color: #ffffff;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   display: flex;
-  justify-content: flex-end; /* Aligns the content to the right */
-}
-
-.profile-title {
-  display: flex;
+  justify-content: flex-end;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
-.profile-title h6 {
-  margin: 0;
-  padding-left: 10px;
-  font-size: 14px;
-  color: #333;
-}
-
-.profile-options {
-  display: flex;
-  align-items: center;
-}
-
-.profile-options .icon {
-  margin-left: 10px;
-  font-size: 18px;
-}
-
-.profile-flag {
-  margin-right: 15px;
+.profile-block:hover {
+  box-shadow: 0 6px 18px rgba(46, 107, 167, 0.15);
 }
 
 .profile-details {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
 
-.profile-details img {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 10px;
+.profile-details p {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.profile-details i {
+  color: #2e6ba7;
   position: relative;
 }
 
-.profile-details img::after {
-  content: '';
+.status-indicator {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #00ff00;
+  bottom: 5px;
+  right: 5px;
+  width: 12px;
+  height: 12px;
+  background-color: #4CAF50;
   border-radius: 50%;
-  bottom: 0;
-  right: 0;
   border: 2px solid white;
 }
 
-.profile-picture {
-  margin-right: 2rem;
-  text-align: center;
-}
-.image-preview {
-  width: 350px;
-  height: 350px;
-  border: 3px solid #444242;
-  border-radius: 0;
+/* Page title */
+.page-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: #f5f5f5;
-  position: relative;
+  margin-bottom: 25px;
 }
 
-.image-preview img {
-  display: none;
+.page-header h3 {
+  color: #2e6ba7;
+  font-weight: 600;
+  margin: 0;
+  font-size: 24px;
+  position: relative;
+  padding-left: 15px;
+}
+
+.page-header h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 24px;
+  background-color: #2e6ba7;
+  border-radius: 2px;
+}
+
+/* Profile container */
+.profile-container {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* Profile picture card */
+.profile-image-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  width: 270px;
+  height: auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.profile-image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(46, 107, 167, 0.1);
+}
+
+.image-container {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 3px solid #e8f0fe;
+  margin-bottom: 20px;
+  position: relative;
+  background-color: #f8f9fa;
+}
+
+.image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: all 0.3s ease;
 }
 
-.image-preview #imagePlaceholder {
-  font-size: 0.9rem;
-  color: #777;
-  text-align: center;
+.image-container img:hover {
+  transform: scale(1.05);
 }
 
-input[type="file"] {
-  margin-top: 1rem;
-}
-.container {
-  display: flex;
-}
-.info-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.info-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.info-item {
-  display: flex;
-  align-items: center; /* จัดให้อยู่กึ่งกลางในแนวตั้ง */
-  justify-content: flex-start; /* จัดเนื้อหาให้อยู่ชิดซ้าย */
-  margin-bottom: 1rem;
-}
-
-.info-item label {
-  font-weight: bold;
-  width: 150px; /* กำหนดขนาดให้ label เท่ากัน */
-  color: #000000;
-}
-
-.info-item p {
-  margin-left: 0.5rem;
-  color: #333;
-  display: inline-block; /* แก้ไข p ให้แสดงเป็น inline */
-  margin: 0; /* ลบ margin ของ p เพื่อให้จัดเรียงดีขึ้น */
-}
-
-
-/* ปรับแต่งการแสดงผลของการ์ด */
-.card {
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
-
-/* ปรับสีฟอนต์ของหัวข้อให้ดูเป็นมืออาชีพ */
-.card h6 {
-  font-weight: bold;
-  color: #6c757d;
-}
-
-/* ปรับการ์ดให้ดูโดดเด่นเมื่อ hover */
-.card:hover {
-  transform: translateY(-5px);
-  transition: 0.3s;
-}
-
-.profile-block {
-  margin: 0 0 10px;
+.upload-btn {
+  background-color: #2e6ba7;
+  color: white;
+  border: none;
   padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(46, 107, 167, 0.2);
+}
+
+.upload-btn:hover {
+  background-color: #245a8f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(46, 107, 167, 0.3);
+}
+
+/* Information card */
+.information-card {
   background-color: #ffffff;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: flex-end; /* Aligns the content to the right */
-}
-
-.profile-title {
-  display: flex;
-  align-items: center;
-}
-
-.profile-title h6 {
-  margin: 0;
-  padding-left: 10px;
-  font-size: 14px;
-  color: #333;
-}
-
-.profile-options {
-  display: flex;
-  align-items: center;
-}
-
-.profile-options .icon {
-  margin-left: 10px;
-  font-size: 18px;
-}
-
-.profile-flag {
-  margin-right: 15px;
-}
-
-.profile-details {
-  display: flex;
-  align-items: center;
-}
-
-.profile-details img {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 10px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  padding: 30px;
+  transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
 }
 
-.profile-details img::after {
+.information-card:hover {
+  box-shadow: 0 12px 25px rgba(46, 107, 167, 0.1);
+}
+
+.information-card::before {
   content: '';
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #00ff00;
-  border-radius: 50%;
-  bottom: 0;
-  right: 0;
-  border: 2px solid white;
-}
-.profile-picture {
-  margin-right: 2rem;
-  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #2e6ba7, #4d94da);
 }
 
 .image-preview {
@@ -327,7 +277,7 @@ input[type="file"] {
   justify-content: center;
   overflow: hidden;
   background-color: #f5f5f5;
-  position: relative; 
+  position: relative;
 }
 
 .image-preview img {
@@ -342,13 +292,15 @@ input[type="file"] {
   color: #777;
   text-align: center;
 }
+
 .information {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   display: flex;
- 
-  width: 100%; /* คงขนาดเต็มตามที่ต้องการ */
+
+  width: 100%;
+  /* คงขนาดเต็มตามที่ต้องการ */
 }
 
 /* ปรับสีฟอนต์ของหัวข้อให้ดูเป็นมืออาชีพ */
@@ -362,25 +314,267 @@ input[type="file"] {
   transform: translateY(-5px);
   transition: 0.3s;
 }
+
 .info-container {
   display: flex;
   flex-direction: column;
-  
-  font-family: 'TH SarabunPSK's Arial, sans-serif;
+
+  font-family: 'TH SarabunPSK' s Arial, sans-serif;
 }
 
 aside.mini .logo-container {
-  display: none;  /* ซ่อนโลโก้เมื่อ Sidebar ถูกย่อ */
+  display: none;
+  /* ซ่อนโลโก้เมื่อ Sidebar ถูกย่อ */
 }
+
 .logo-container {
-  text-align: center;  /* จัดโลโก้ให้อยู่ตรงกลาง */
-  margin-top: 10px;    /* เว้นระยะห่างจากปุ่ม Toggle */
+  text-align: center;
+  /* จัดโลโก้ให้อยู่ตรงกลาง */
+  margin-top: 10px;
+  /* เว้นระยะห่างจากปุ่ม Toggle */
 }
 
 .logo-container img {
-  width: 120px;   /* ปรับขนาดโลโก้ */
-  height: auto;   /* ให้ความสูงเป็นอัตโนมัติ */
+  width: 120px;
+  /* ปรับขนาดโลโก้ */
+  height: auto;
+  /* ให้ความสูงเป็นอัตโนมัติ */
   max-width: 100%;
 }
 
+.card-title {
+  color: #2e6ba7;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.info-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.info-item:hover {
+  background-color: #e8f0fe;
+  transform: translateX(5px);
+}
+
+.info-item label {
+  font-weight: 600;
+  width: 120px;
+  color: #555;
+  font-size: 15px;
+}
+
+.info-item p {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  flex: 1;
+}
+
+/* เพิ่มส่วนลูกเล่นด้านล่างข้อมูลส่วนตัว */
+.widgets-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.widget-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.widget-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(46, 107, 167, 0.1);
+}
+
+.widget-title {
+  color: #2e6ba7;
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* นาฬิกาดิจิตอล */
+.clock-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.digital-clock {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2e6ba7;
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: 'Sarabun', monospace;
+}
+
+.date-display {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+}
+
+/* ปฎิทิน */
+.calendar-widget {
+  padding: 0 10px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar-month {
+  font-weight: 600;
+  color: #2e6ba7;
+}
+
+.calendar-btn {
+  background: none;
+  border: none;
+  color: #2e6ba7;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.day-name {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.calendar-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.date-item {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-item:hover {
+  background-color: #e8f0fe;
+}
+
+.date-today {
+  background-color: #2e6ba7;
+  color: white;
+}
+
+.date-disabled {
+  color: #ccc;
+  cursor: default;
+}
+
+/* กราฟสถิติ */
+.chart-widget {
+  height: 250px;
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .widgets-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .profile-container {
+    flex-direction: column;
+  }
+
+  .profile-image-card {
+    width: 100%;
+  }
+
+  .info-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .widgets-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filter-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-controls .form-group {
+    min-width: 150px;
+}
+
+.filter-controls label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.chart-widget {
+    padding: 15px;
+    height: 400px; /* กำหนดความสูงตามต้องการ */
+}
+
+canvas#attendanceChart {
+    height: 300px !important; /* ปรับความสูงของกราฟตามต้องการ */
+}
+
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}

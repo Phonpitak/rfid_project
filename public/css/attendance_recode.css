@@ -504,7 +504,7 @@ main h1 {
 
 label {
   font-size: 1em;
-  color: #333;
+  color: #000;
 }
 
 select {
@@ -544,7 +544,7 @@ button:hover {
 
 label {
   font-size: 1em;
-  color: #555;
+  color: #000;
 }
 
 
