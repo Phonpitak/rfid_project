@@ -13,7 +13,6 @@ body {
 /* ฟอร์มลงทะเบียน */
 .block {
   max-width: 800px;
-  width: 100%;
   margin: 0 auto;
   padding: 25px;
   background-color: #ffffff;
