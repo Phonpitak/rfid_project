@@ -3,54 +3,111 @@ body {
   font-family: 'Sarabun', Arial, sans-serif;
   margin: 0;
   padding: 0;
-
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
+
 /* ฟอร์มลงทะเบียน */
 .block {
-  margin: 0 0 10px;
-  padding: 20px 15px 1px;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 25px;
   background-color: #ffffff;
-  border: 1px solid #dbe1e8;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-in-out;
 }
+
+/* ตั้งค่าโครงสร้างฟอร์ม */
 form {
   display: flex;
   flex-direction: column;
-  max-width: 350px;
-  margin: 0 auto;
 }
 
+/* ช่องกรอกข้อมูล */
 .form-group {
   margin-bottom: 15px;
-  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
 }
+
+/* ป้ายกำกับ */
 label {
-  display: block;
   font-weight: bold;
-
+  margin-bottom: 5px;
+  color: #333;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* ช่องกรอกข้อมูล */
+input, select {
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease-in-out;
 }
+
+input:focus, select:focus {
+  border-color: #26e930;
+  outline: none;
+  box-shadow: 0 0 5px rgba(38, 233, 48, 0.3);
+}
+
+/* ปุ่มกด */
 button {
   background-color: #26e930;
   color: white;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out, transform 0.2s;
 }
+
 button:hover {
   background-color: #27b327;
+  transform: scale(1.05);
 }
+
+/* จัดวางช่องข้อมูลเป็นแถว */
 .inline {
   display: flex;
-  gap: 20px; /* Space between the form-group divs */
+  flex-wrap: wrap;
+  gap: 15px;
 }
+
+.inline .form-group {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* ข้อความแจ้งเตือน */
+#statusMessage {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;
+  text-align: center;
+}
+
+/* เอฟเฟกต์การแสดงผล */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* ส่วนของ Sidebar */
 aside {
