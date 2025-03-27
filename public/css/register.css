@@ -186,17 +186,24 @@ aside.mini {
 
 /* Main content */
 main {
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* ทำให้เนื้อหาชิ้นแรกอยู่ด้านบน */
   padding: 2rem;
   background-color: #2e6ba7;
-  min-height: 100vh;
+  min-height: 140vh; /* เพิ่มความสูงเป็น 120% ของความสูงหน้าจอ */
   font-family: 'Sarabun', Arial, sans-serif;
+  box-sizing: border-box; /* เพื่อให้แน่ใจว่าค่าพื้นที่ padding จะรวมกับความกว้าง */
 }
 
+/* สไตล์สำหรับ h1 ภายใน main */
 main h1 {
-  font-size: 2rem;
+  font-size: 2.5rem; /* เพิ่มขนาดตัวอักษร */
   margin-bottom: 1.5rem;
+  color: white; /* ทำให้ข้อความเป็นสีขาว */
+  font-weight: bold; /* เพิ่มความหนาของตัวอักษร */
 }
+
 
 .personal-info {
   display: flex;
